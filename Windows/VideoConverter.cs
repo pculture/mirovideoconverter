@@ -21,6 +21,7 @@ namespace Mirosubs.Converter.Windows {
         private ProcessStartInfo startInfo;
         private VideoFormat videoFormat;
         private long lengthMs = -1;
+        private string outputFileName = null;
 
         public VideoConverter(string fileName, VideoFormat format) {
             string thisExeDir = Path.GetDirectoryName(
@@ -32,7 +33,7 @@ namespace Mirosubs.Converter.Windows {
                     "-i {0} -y -vcodec libtheora -b 640k -acodec libvorbis -ab 128k " +
                     "-ac 2 {1}",
                     fileName,
-                    Path.ChangeExtension(fileName, ".ogv"));
+                    outputFileName = Path.ChangeExtension(fileName, ".ogv"));
             else if (format == VideoFormat.G1)
                 ffmpegArgs = string.Format(
                     "-i {0} -y -fpre \"{1}\" -aspect 3:2 -s 400x300 -r 23.976 " +
@@ -40,12 +41,12 @@ namespace Mirosubs.Converter.Windows {
                     "{2}",
                     fileName, 
                     Path.Combine(thisExeDir, @"ffmpeg-bin\libx264hq.ffpreset"),
-                    Path.ChangeExtension(fileName, ".mp4"));
+                    outputFileName = Path.ChangeExtension(fileName, ".mp4"));
             else // PSP
                 ffmpegArgs = string.Format(
                     "-i {0} -y -b 300k -s 320x240 -vcodec libxvid -ab 32k " +
-                    "-ar 24000 -acodec aac {1}", fileName, 
-                    Path.ChangeExtension(fileName, ".mp4"));
+                    "-ar 24000 -acodec aac {1}", fileName,
+                    outputFileName = Path.ChangeExtension(fileName, ".mp4"));
             this.startInfo = new ProcessStartInfo(
                 Path.Combine(thisExeDir,
                 @"ffmpeg-bin\ffmpeg.exe"), ffmpegArgs);
@@ -71,13 +72,24 @@ namespace Mirosubs.Converter.Windows {
             process.BeginErrorReadLine();
         }
         public void Cancel() {
-            if (process != null)
-                process.Kill();
-            // TODO: maybe delete output file
+            try {
+                if (process != null)
+                    process.Kill();
+                if (File.Exists(outputFileName))
+                    File.Delete(outputFileName);
+            }
+            catch { 
+                // do nothing
+            }
         }
         public void Dispose() {
             if (this.process != null)
                 this.process.Dispose();
+        }
+        public string OutputFileName { 
+            get {
+                return outputFileName;
+            }
         }
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e) {
             // really just for entertainment, since ffmpeg 
@@ -86,6 +98,8 @@ namespace Mirosubs.Converter.Windows {
             Debug.Print(e.Data);
         }
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e) {
+            Debug.Print("ERROR");
+            Debug.Print(e.Data);
             string line = e.Data;
             if (line == null)
                 return;

@@ -21,7 +21,7 @@ namespace Mirosubs.Converter.Windows {
     /// </summary>
     public partial class Converting : UserControl {
         internal event EventHandler<EventArgs> Cancelled;
-        internal event EventHandler<EventArgs> Finished;
+        internal event EventHandler<VideoConvertFinishedArgs> Finished;
 
         private VideoConverter converter;
         internal Converting(string fileName, VideoFormat format) {
@@ -35,23 +35,26 @@ namespace Mirosubs.Converter.Windows {
             converter.Finished += new EventHandler<EventArgs>(converter_Finished);
             converter.Start();
         }
-        void converter_Finished(object sender, EventArgs e) {
-            if (Finished != null)
-                Finished(this, new EventArgs());
+        private void converter_Finished(object sender, EventArgs e) {
+            if (this.Dispatcher.CheckAccess()) {
+                if (Finished != null)
+                    Finished(this, new VideoConvertFinishedArgs(
+                        this.converter.OutputFileName));
+            }
+            else
+                this.Dispatcher.Invoke((Action)(() => this.converter_Finished(sender, e)));
         }
-        void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
+        private void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
             if (this.Dispatcher.CheckAccess()) {
                 progressLabel.Content = string.Format("{0}% done", e.Progress);
                 progressBar.Value = e.Progress;
             }
-            else {
+            else
                 this.Dispatcher.Invoke((Action)(() => this.converter_ConvertProgress(sender, e)));
-            }
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e) {
             converter.Dispose();
         }
-
         private void CancelClicked(object sender, RoutedEventArgs e) {
             converter.Cancel();
             if (Cancelled != null)
