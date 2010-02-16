@@ -20,33 +20,23 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Converting.xaml
     /// </summary>
     public partial class Converting : UserControl {
+        private VideoConverter converter;
         internal Converting(string fileName, VideoFormat format) {
             InitializeComponent();
-            if (format == VideoFormat.Theora) {
-                string exeDir = IOPath.GetDirectoryName(
-                    System.Reflection.Assembly.GetExecutingAssembly().Location);
-                string exeName = IOPath.Combine(exeDir, 
-                    @"ffmpeg-bin\ffmpeg2theora-0.26.exe");
-                string exeArgs = string.Format(
-                    "{0} -o {1} --videoquality 8 --audioquality 6", 
-                    fileName, IOPath.ChangeExtension(fileName, ".ogv"));
-                ProcessOutputHandler.RunProcess(exeName, exeArgs);
-            }
-            else { 
-                
-            }
+            converter = new VideoConverter(fileName, format);
+            converter.ConvertProgress += 
+                new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);
+            converter.Finished += new EventHandler<EventArgs>(converter_Finished);
+            converter.Start();
         }
-
-        void cp_OnErrorReceived(object sender, string output) {
-            Debug.Print(output);
+        void converter_Finished(object sender, EventArgs e) {
+            
         }
-
-        void ErrorDataReceived(object sender, DataReceivedEventArgs e) {
-            Debug.Print(e.Data);
+        void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
+            
         }
-
-        void OutputDataReceived(object sender, DataReceivedEventArgs e) {
-            Debug.Print(e.Data);
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e) {
+            converter.Dispose();
         }
     }
 }
