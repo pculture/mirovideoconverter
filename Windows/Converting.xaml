@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="300" Width="300" Unloaded="UserControl_Unloaded">
     <Grid>
-            
+        <Label Height="28" Margin="12,59,12,0" Name="titleLabel" VerticalAlignment="Top" HorizontalContentAlignment="Center"></Label>
+        <ProgressBar Margin="23,118,99,0" Name="progressBar" Height="10" VerticalAlignment="Top" />
+        <Button HorizontalAlignment="Right" Margin="0,112,12,0" Name="cancelButton" Width="75" Height="23" VerticalAlignment="Top" Click="CancelClicked">Cancel</Button>
+        <Label Margin="23,134,99,138" Name="progressLabel"></Label>
     </Grid>
 </UserControl>

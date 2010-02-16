@@ -20,9 +20,15 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Converting.xaml
     /// </summary>
     public partial class Converting : UserControl {
+        internal event EventHandler<EventArgs> Cancelled;
+        internal event EventHandler<EventArgs> Finished;
+
         private VideoConverter converter;
         internal Converting(string fileName, VideoFormat format) {
             InitializeComponent();
+            titleLabel.Content = string.Format("Converting {0}", 
+                IOPath.GetFileName(fileName));
+            progressLabel.Content = "Starting...";
             converter = new VideoConverter(fileName, format);
             converter.ConvertProgress += 
                 new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);
@@ -30,13 +36,26 @@ namespace Mirosubs.Converter.Windows {
             converter.Start();
         }
         void converter_Finished(object sender, EventArgs e) {
-            
+            if (Finished != null)
+                Finished(this, new EventArgs());
         }
         void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
-            
+            if (this.Dispatcher.CheckAccess()) {
+                progressLabel.Content = string.Format("{0}% done", e.Progress);
+                progressBar.Value = e.Progress;
+            }
+            else {
+                this.Dispatcher.Invoke((Action)(() => this.converter_ConvertProgress(sender, e)));
+            }
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e) {
             converter.Dispose();
+        }
+
+        private void CancelClicked(object sender, RoutedEventArgs e) {
+            converter.Cancel();
+            if (Cancelled != null)
+                Cancelled(this, new EventArgs());
         }
     }
 }

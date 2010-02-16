@@ -87,6 +87,8 @@ namespace Mirosubs.Converter.Windows {
         }
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e) {
             string line = e.Data;
+            if (line == null)
+                return;
             if (lengthMs == -1 && durationRegex.IsMatch(line)) {
                 Match m = durationRegex.Match(line);
                 lengthMs = (long)TimeSpan.Parse(m.Groups[1].Value).TotalMilliseconds;
