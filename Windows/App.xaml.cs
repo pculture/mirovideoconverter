@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace Windows
+namespace Mirosubs.Converter.Windows
 {
     /// <summary>
     /// Interaction logic for App.xaml

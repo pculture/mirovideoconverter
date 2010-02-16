@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Mirosubs.Converter.Windows.FileSelect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="300" Width="356">
+    <Grid Name="grid1">
+        <ComboBox Height="23" Margin="78,0,12,80" Name="videoFormatCombo" VerticalAlignment="Bottom" Text="Pick a Device or Video Format" IsEditable="True" IsReadOnly="True" />
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="75" Click="ConvertClicked">Convert!</Button>
+        <Grid Name="topGrid" Height="147" VerticalAlignment="Top" AllowDrop="True" Drop="FilesDropped" Background="LightGray">
+            <Grid Margin="0" Name="convertGrid" Height="26" VerticalAlignment="Center">
+                <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,114,0">To convert, drag a video file here or</Label>
+                <Button Cursor="Hand" Margin="0,5,43,0" Content="choose a file" HorizontalAlignment="Right" Width="73" Click="ChooseFileClicked">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </Trigger>
+                            </Style.Triggers>
+                            <Setter Property="Foreground" Value="Blue" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
