@@ -49,7 +49,7 @@ namespace Mirosubs.Converter.Windows {
             RemoveConvertingView((Converting)sender);
             Finished finishedView = new Finished(e.outputFileName);
             this.mainGrid.Children.Add(finishedView);
-            this.Height = finishedView.Height + 20;
+            this.Height = finishedView.Height + 40;
             finishedView.FileSelected += new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
         }
 
