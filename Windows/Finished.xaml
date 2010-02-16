@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Mirosubs.Converter.Windows.Finished"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:miro="clr-namespace:Mirosubs.Converter.Windows"
+    Height="400" Width="356">
+    <Grid Width="356">
+        <miro:FileSelect x:Name="fileSelect" Margin="0,100,0,0" />
+        <Label Height="31" Margin="12,12,12,0" Name="labelFinished" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold"></Label>
+        <Button Cursor="Hand" Height="21" Margin="135,63,148,0" VerticalAlignment="Top" Name="showFileButton" FontWeight="Bold" HorizontalAlignment="Center" Click="ShowFileClicked">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Red" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Blue" />
+                </Style>
+            </Button.Style> Show File
+        </Button>
+    </Grid>
+</UserControl>

@@ -12,13 +12,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using IOPath = System.IO.Path;
 
 namespace Mirosubs.Converter.Windows {
     public partial class FileSelect : UserControl {
         internal event EventHandler<VideoSelectedEventArgs> FileSelected;
 
         private string selectedFileName = null;
-        private Label fileLabel = null;
 
         public FileSelect() {
             InitializeComponent();
@@ -48,11 +48,9 @@ namespace Mirosubs.Converter.Windows {
             convertLabel.Content = "to select a different video, drag it here or";
             convertGrid.VerticalAlignment = VerticalAlignment.Bottom;
             convertGrid.Margin = new Thickness(0d, 0d, 0d, 5d);
-            if (this.fileLabel == null) {
-                this.fileLabel = new Label();
-                topGrid.Children.Add(fileLabel);
-            }
-            this.fileLabel.Content = System.IO.Path.GetFileName(filePath);
+            string fileName = IOPath.GetFileName(filePath);
+            fileNameLabel.Content = fileName;
+            fileChosenPanel.Visibility = Visibility.Visible;
         }
 
         private void ConvertClicked(object sender, RoutedEventArgs e) {

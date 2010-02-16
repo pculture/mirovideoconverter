@@ -56,9 +56,14 @@ namespace Mirosubs.Converter.Windows {
             converter.Dispose();
         }
         private void CancelClicked(object sender, RoutedEventArgs e) {
-            converter.Cancel();
-            if (Cancelled != null)
-                Cancelled(this, new EventArgs());
+            MessageBoxResult result =
+                MessageBox.Show("Are you sure you want to cancel?",
+                "Cancel?", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                converter.Cancel();
+                if (Cancelled != null)
+                    Cancelled(this, new EventArgs());
+            }
         }
     }
 }

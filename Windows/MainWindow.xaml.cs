@@ -17,30 +17,48 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private Converting convertingView = null;
+        private double initialHeight;
 
         public MainWindow() {
             InitializeComponent();
             fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
+            initialHeight = this.Height;
         }
 
         private void VideoFileSelected(object sender, VideoSelectedEventArgs e) {
             this.mainGrid.Children.Remove(fileSelect);
             fileSelect.FileSelected -= new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
-            Converting convertingView = new Converting(e.FileName, e.Format);
+            ShowConvertingView(e.FileName, e.Format);
+        }
+        private void ShowConvertingView(string fileName, VideoFormat format) {
+            Converting convertingView = new Converting(fileName, format);
             this.mainGrid.Children.Add(convertingView);
+            convertingView.Margin = new Thickness(0);
+            convertingView.HorizontalAlignment = HorizontalAlignment.Stretch;
+            convertingView.VerticalAlignment = VerticalAlignment.Stretch;
             convertingView.Finished += new EventHandler<VideoConvertFinishedArgs>(convertingView_Finished);
             convertingView.Cancelled += new EventHandler<EventArgs>(convertingView_Cancelled);
         }
-        void convertingView_Cancelled(object sender, EventArgs e) {
+        private void convertingView_Cancelled(object sender, EventArgs e) {
             RemoveConvertingView((Converting)sender);
             fileSelect = new FileSelect();
             this.mainGrid.Children.Add(fileSelect);
             fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
         }
-        void convertingView_Finished(object sender, VideoConvertFinishedArgs e) {
+        private void convertingView_Finished(object sender, VideoConvertFinishedArgs e) {
             RemoveConvertingView((Converting)sender);
+            Finished finishedView = new Finished(e.outputFileName);
+            this.mainGrid.Children.Add(finishedView);
+            this.Height = finishedView.Height + 20;
+            finishedView.FileSelected += new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
+        }
 
+        private void FinishedViewFileSelected(object sender, VideoSelectedEventArgs e) {
+            Finished finishedView = (Finished)sender;
+            this.mainGrid.Children.Remove(finishedView);
+            finishedView.FileSelected -= new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
+            this.Height = initialHeight;
+            ShowConvertingView(e.FileName, e.Format);
         }
         private void RemoveConvertingView(Converting convertingView) {
             this.mainGrid.Children.Remove(convertingView);

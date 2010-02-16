@@ -3,8 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="300" Width="356">
     <Grid Name="grid1">
-        <ComboBox Height="23" Margin="78,0,12,80" Name="videoFormatCombo" VerticalAlignment="Bottom" Text="Pick a Device or Video Format" IsEditable="True" IsReadOnly="True" />
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="75" Click="ConvertClicked">Convert!</Button>
         <Grid Name="topGrid" Height="147" VerticalAlignment="Top" AllowDrop="True" Drop="FilesDropped" Background="LightGray">
             <Grid Margin="0" Name="convertGrid" Height="26" VerticalAlignment="Center">
                 <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,114,0">To convert, drag a video file here or</Label>
@@ -26,6 +24,13 @@
                     </Button.Style>
                 </Button>
             </Grid>
+            <StackPanel Margin="6,32,6,0" Name="fileChosenPanel" Height="36" VerticalAlignment="Top" Visibility="Hidden" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Height="38" Name="image2" Stretch="None" Width="41" Source="/MiroConverter;component/resources/video.png" />
+                <Label Height="28" Name="fileNameLabel" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Foreground="White" FontSize="14" FontWeight="Bold"></Label>
+            </StackPanel>
         </Grid>
+        <Image Margin="33,165,0,0" Name="image1" Stretch="None" HorizontalAlignment="Left" Width="39" Height="59" VerticalAlignment="Top" Source="/MiroConverter;component/resources/device.png" ClipToBounds="False" />
+        <ComboBox Margin="78,174,12,0" Name="videoFormatCombo" Text="Pick a Device or Video Format" IsEditable="True" IsReadOnly="True" Height="23" VerticalAlignment="Top" />
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="75" Click="ConvertClicked">Convert!</Button>
     </Grid>
 </UserControl>
