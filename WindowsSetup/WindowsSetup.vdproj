@@ -76,7 +76,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\MiroConverterSetup.msi"
+        "OutputFilename" = "8:f:\\ffmpegrelease\\MiroConverterSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -86,6 +86,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -202,14 +223,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Miro Video Converter"
-        "ProductCode" = "8:{54CC4E1C-80C4-4BE4-A208-CA5F103C891D}"
-        "PackageCode" = "8:{F3BE323C-ADD6-4060-A021-A550CE8E88C8}"
+        "ProductCode" = "8:{EDADB0DB-5DD1-4A44-8464-932A2D756FC4}"
+        "PackageCode" = "8:{F760EE8B-0FBD-4CB2-930D-F50C2E50BB38}"
         "UpgradeCode" = "8:{88A3135E-03D0-4D44-85E7-31F046510CA6}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.7"
+        "ProductVersion" = "8:1.1.0"
         "Manufacturer" = "8:Miro"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

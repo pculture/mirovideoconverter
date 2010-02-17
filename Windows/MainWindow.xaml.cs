@@ -38,12 +38,20 @@ namespace Mirosubs.Converter.Windows {
             convertingView.VerticalAlignment = VerticalAlignment.Stretch;
             convertingView.Finished += new EventHandler<VideoConvertFinishedArgs>(convertingView_Finished);
             convertingView.Cancelled += new EventHandler<EventArgs>(convertingView_Cancelled);
+            convertingView.UnknownFormat += new EventHandler<EventArgs>(convertingView_UnknownFormat);
         }
-        private void convertingView_Cancelled(object sender, EventArgs e) {
+        private void convertingView_UnknownFormat(object sender, EventArgs e) {
+            MessageBox.Show("Unknown format");
+            SwitchBackToFileSelect(sender);
+        }
+        private void SwitchBackToFileSelect(object sender) {
             RemoveConvertingView((Converting)sender);
             fileSelect = new FileSelect();
             this.mainGrid.Children.Add(fileSelect);
             fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
+        }
+        private void convertingView_Cancelled(object sender, EventArgs e) {
+            SwitchBackToFileSelect(sender);
         }
         private void convertingView_Finished(object sender, VideoConvertFinishedArgs e) {
             RemoveConvertingView((Converting)sender);
@@ -64,6 +72,7 @@ namespace Mirosubs.Converter.Windows {
             this.mainGrid.Children.Remove(convertingView);
             convertingView.Finished -= new EventHandler<VideoConvertFinishedArgs>(convertingView_Finished);
             convertingView.Cancelled -= new EventHandler<EventArgs>(convertingView_Cancelled);
+            convertingView.UnknownFormat -= new EventHandler<EventArgs>(convertingView_UnknownFormat);
         }
     }
 }

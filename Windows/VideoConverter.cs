@@ -14,9 +14,13 @@ namespace Mirosubs.Converter.Windows {
         private static Regex durationRegex = new Regex(@"^\s+Duration: (\d\d:\d\d:\d\d.\d\d)");
         private static Regex timeRegex = new Regex(@"time=([^\s]+)\u0020bitrate");
         private static Regex finishedRegex = new Regex(@"^video:");
+        private static Regex unknownFormatRegex = new Regex(@"Unknown format$");
 
         internal event EventHandler<VideoConvertProgressArgs> ConvertProgress;
+        internal event EventHandler<FFMPEGOutputArgs> FFMPEGOutput;
         internal event EventHandler<EventArgs> Finished;
+        internal event EventHandler<EventArgs> UnknownFormat;
+
         private Process process;
         private ProcessStartInfo startInfo;
         private VideoFormat videoFormat;
@@ -33,7 +37,7 @@ namespace Mirosubs.Converter.Windows {
                     "-i {0} -y -vcodec libtheora -b 640k -acodec libvorbis -ab 128k " +
                     "-ac 2 {1}",
                     fileName,
-                    outputFileName = Path.ChangeExtension(fileName, ".ogv"));
+                    outputFileName = Path.ChangeExtension(fileName, ".theora.ogv"));
             else if (format == VideoFormat.G1)
                 ffmpegArgs = string.Format(
                     "-i {0} -y -fpre \"{1}\" -aspect 3:2 -s 400x300 -r 23.976 " +
@@ -41,12 +45,12 @@ namespace Mirosubs.Converter.Windows {
                     "{2}",
                     fileName, 
                     Path.Combine(thisExeDir, @"ffmpeg-bin\libx264hq.ffpreset"),
-                    outputFileName = Path.ChangeExtension(fileName, ".mp4"));
+                    outputFileName = Path.ChangeExtension(fileName, ".g1.mp4"));
             else // PSP
                 ffmpegArgs = string.Format(
                     "-i {0} -y -b 300k -s 320x240 -vcodec libxvid -ab 32k " +
                     "-ar 24000 -acodec aac {1}", fileName,
-                    outputFileName = Path.ChangeExtension(fileName, ".mp4"));
+                    outputFileName = Path.ChangeExtension(fileName, ".psp.mp4"));
             this.startInfo = new ProcessStartInfo(
                 Path.Combine(thisExeDir,
                 @"ffmpeg-bin\ffmpeg.exe"), ffmpegArgs);
@@ -103,6 +107,8 @@ namespace Mirosubs.Converter.Windows {
             string line = e.Data;
             if (line == null)
                 return;
+            if (FFMPEGOutput != null)
+                FFMPEGOutput(this, new FFMPEGOutputArgs(line));
             if (lengthMs == -1 && durationRegex.IsMatch(line)) {
                 Match m = durationRegex.Match(line);
                 lengthMs = (long)TimeSpan.Parse(m.Groups[1].Value).TotalMilliseconds;
@@ -121,8 +127,13 @@ namespace Mirosubs.Converter.Windows {
                     ConvertProgress(this, new VideoConvertProgressArgs((int)(100 * ms / lengthMs)));
                 }
             }
-            else if (finishedRegex.IsMatch(line))
-                Finished(this, new EventArgs());
+            else if (finishedRegex.IsMatch(line)) {
+                if (Finished != null)
+                    Finished(this, new EventArgs());
+            }
+            else if (unknownFormatRegex.IsMatch(line))
+                if (UnknownFormat != null)
+                    UnknownFormat(this, new EventArgs());
         }
     }
 }

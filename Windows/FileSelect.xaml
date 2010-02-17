@@ -3,9 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="300" Width="356">
     <Grid Name="grid1">
-        <Grid Name="topGrid" Height="147" VerticalAlignment="Top" AllowDrop="True" Drop="FilesDropped" Background="LightGray">
+        <Grid Name="topGrid" Height="147" VerticalAlignment="Top" AllowDrop="True" Drop="FilesDropped">
+            <Grid.Background>
+                <ImageBrush ImageSource="resources\box.png"/>
+            </Grid.Background>
             <Grid Margin="0" Name="convertGrid" Height="26" VerticalAlignment="Center">
-                <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,114,0">To convert, drag a video file here or</Label>
+                <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,114,0" Foreground="White">To convert, drag a video file here or</Label>
                 <Button Cursor="Hand" Margin="0,5,43,0" Content="choose a file" HorizontalAlignment="Right" Width="73" Click="ChooseFileClicked">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -19,7 +22,7 @@
                                     <Setter Property="Foreground" Value="Red" />
                                 </Trigger>
                             </Style.Triggers>
-                            <Setter Property="Foreground" Value="Blue" />
+                            <Setter Property="Foreground" Value="White" />
                         </Style>
                     </Button.Style>
                 </Button>

@@ -2,8 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:miro="clr-namespace:Mirosubs.Converter.Windows"
-    Title="Miro Video Converter" Height="341" Width="375">
+    Title="Miro Video Converter" Height="473" Width="402">
     <Grid Name="mainGrid">
-        <miro:FileSelect x:Name="fileSelect"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="resources\bg.jpg"/>
+        </Grid.Background>
+        <miro:FileSelect x:Name="fileSelect" Margin="12,123,12,12" />
     </Grid>
 </Window>

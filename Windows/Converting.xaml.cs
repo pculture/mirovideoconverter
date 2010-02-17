@@ -22,18 +22,43 @@ namespace Mirosubs.Converter.Windows {
     public partial class Converting : UserControl {
         internal event EventHandler<EventArgs> Cancelled;
         internal event EventHandler<VideoConvertFinishedArgs> Finished;
+        internal event EventHandler<EventArgs> UnknownFormat;
 
         private VideoConverter converter;
+        private List<string> ffmpegOutput;
+        private FFMPEGOutputViewer ffmpegOutputViewer = null;
+
         internal Converting(string fileName, VideoFormat format) {
             InitializeComponent();
+            this.ffmpegOutput = new List<string>();
             titleLabel.Content = string.Format("Converting {0}", 
                 IOPath.GetFileName(fileName));
             progressLabel.Content = "Starting...";
             converter = new VideoConverter(fileName, format);
+            converter.FFMPEGOutput += new EventHandler<FFMPEGOutputArgs>(converter_FFMPEGOutput);
             converter.ConvertProgress += 
                 new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);
             converter.Finished += new EventHandler<EventArgs>(converter_Finished);
+            converter.UnknownFormat += new EventHandler<EventArgs>(converter_UnknownFormat);
             converter.Start();
+        }
+
+        void converter_UnknownFormat(object sender, EventArgs e) {
+            if (this.Dispatcher.CheckAccess()) {
+                if (UnknownFormat != null)
+                    UnknownFormat(this, e);
+            }
+            else
+                this.Dispatcher.Invoke((Action)(() => this.converter_UnknownFormat(sender, e)));
+        }
+        private void converter_FFMPEGOutput(object sender, FFMPEGOutputArgs e) {
+            if (this.Dispatcher.CheckAccess()) {
+                ffmpegOutput.Add(e.OutputLine);
+                if (ffmpegOutputViewer != null)
+                    ffmpegOutputViewer.AddOutput(e.OutputLine);
+            }
+            else
+                this.Dispatcher.Invoke((Action)(() => this.converter_FFMPEGOutput(sender, e)));
         }
         private void converter_Finished(object sender, EventArgs e) {
             if (this.Dispatcher.CheckAccess()) {
@@ -64,6 +89,11 @@ namespace Mirosubs.Converter.Windows {
                 if (Cancelled != null)
                     Cancelled(this, new EventArgs());
             }
+        }
+        private void ShowFFMPEGOutput(object sender, RoutedEventArgs e) {
+            ffmpegOutputViewer = new FFMPEGOutputViewer();
+            ffmpegOutput.ForEach(str => ffmpegOutputViewer.AddOutput(str));
+            ffmpegOutputViewer.Show();
         }
     }
 }

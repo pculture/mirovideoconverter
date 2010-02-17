@@ -86,6 +86,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FFMPEGOutputViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +114,10 @@
   <ItemGroup>
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FFMPEGOutputArgs.cs" />
+    <Compile Include="FFMPEGOutputViewer.xaml.cs">
+      <DependentUpon>FFMPEGOutputViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileSelect.xaml.cs">
       <DependentUpon>FileSelect.xaml</DependentUpon>
@@ -155,6 +163,8 @@
     <Content Include="ffmpeg-bin\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="resources\bg.jpg" />
+    <Resource Include="resources\box.png" />
     <Resource Include="resources\video.png" />
   </ItemGroup>
   <ItemGroup>
@@ -190,11 +200,5 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\AssemblyInfoTask\Microsoft.VersionNumber.Targets" />
 </Project>
