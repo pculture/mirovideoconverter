@@ -1,0 +1,112 @@
+// !$*UTF8*$!
+{
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeArchitecturePreference = i386;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 4F48270C112DE14C001F868A /* Miro Video Converter */;
+		activeTarget = 8D1107260486CEB800E47090 /* Miro Video Converter */;
+		addToTargets = (
+			8D1107260486CEB800E47090 /* Miro Video Converter */,
+		);
+		codeSenseManager = 4F482720112DE165001F868A /* Code sense */;
+		executables = (
+			4F48270C112DE14C001F868A /* Miro Video Converter */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					364,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 288221246;
+			PBXWorkspaceStateSaveDate = 288221246;
+		};
+		perUserProjectItems = {
+			4F43CB66112DF20A00E4B728 /* PBXBookmark */ = 4F43CB66112DF20A00E4B728 /* PBXBookmark */;
+			4F43CB67112DF20A00E4B728 /* PBXBookmark */ = 4F43CB67112DF20A00E4B728 /* PBXBookmark */;
+		};
+		sourceControlManager = 4F48271F112DE165001F868A /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	4F43CB58112DEAB900E4B728 /* bg.jpg */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 315}, {750, 558}}";
+		};
+	};
+	4F43CB66112DF20A00E4B728 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB58112DEAB900E4B728 /* bg.jpg */;
+	};
+	4F43CB67112DF20A00E4B728 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB58112DEAB900E4B728 /* bg.jpg */;
+	};
+	4F48270C112DE14C001F868A /* Miro Video Converter */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "Miro Video Converter";
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	4F48271F112DE165001F868A /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	4F482720112DE165001F868A /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	8D1107260486CEB800E47090 /* Miro Video Converter */ = {
+		activeExec = 0;
+		executables = (
+			4F48270C112DE14C001F868A /* Miro Video Converter */,
+		);
+	};
+}

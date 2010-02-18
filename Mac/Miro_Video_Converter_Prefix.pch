@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Miro Video Converter' target in the 'Miro Video Converter' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
