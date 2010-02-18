@@ -26,6 +26,15 @@ namespace Mirosubs.Converter.Windows {
             this.videoFormatCombo.SelectedValuePath = "Id";
             this.videoFormatCombo.DisplayMemberPath = "DisplayName";
         }
+        public string FinishedFileName { get; set; }
+        private void WasLoaded(object sender, RoutedEventArgs e) {
+            if (FinishedFileName != null) {
+                topLabel.Visibility = Visibility.Hidden;
+                finishedGrid.Visibility = Visibility.Visible;
+                finishedTextBlock.Text = string.Format("Finished converting {0}",
+                   IOPath.GetFileName(FinishedFileName));
+            }
+        }
         private void FilesDropped(object sender, DragEventArgs e) {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 string[] droppedFilePaths =
@@ -44,13 +53,13 @@ namespace Mirosubs.Converter.Windows {
         }
         private void DisplayFile(string filePath) {
             this.selectedFileName = filePath;
-            topGrid.Background = new SolidColorBrush(Colors.Fuchsia);
+            topLabel.Content = "Ready to Convert!";
             convertLabel.Content = "to select a different video, drag it here or";
             convertGrid.VerticalAlignment = VerticalAlignment.Bottom;
             convertGrid.Margin = new Thickness(0d, 0d, 0d, 5d);
             string fileName = IOPath.GetFileName(filePath);
-            fileNameLabel.Content = fileName;
-            fileChosenPanel.Visibility = Visibility.Visible;
+            fileNameTextBlock.Text = fileName;
+            fileNameTextBlock.Visibility = Visibility.Visible;
         }
 
         private void ConvertClicked(object sender, RoutedEventArgs e) {
@@ -67,6 +76,10 @@ namespace Mirosubs.Converter.Windows {
             if (FileSelected != null)
                 FileSelected(this, new VideoSelectedEventArgs(
                     selectedFileName, selectedFormat));
+        }
+
+        private void ShowFinishedFile(object sender, RoutedEventArgs e) {
+            System.Diagnostics.Process.Start(IOPath.GetDirectoryName(FinishedFileName));
         }
     }
 }

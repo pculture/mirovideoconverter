@@ -17,12 +17,9 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private double initialHeight;
-
         public MainWindow() {
             InitializeComponent();
             fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
-            initialHeight = this.Height;
         }
 
         private void VideoFileSelected(object sender, VideoSelectedEventArgs e) {
@@ -55,17 +52,16 @@ namespace Mirosubs.Converter.Windows {
         }
         private void convertingView_Finished(object sender, VideoConvertFinishedArgs e) {
             RemoveConvertingView((Converting)sender);
-            Finished finishedView = new Finished(e.outputFileName);
+            FileSelect finishedView = new FileSelect();
+            finishedView.FinishedFileName = e.outputFileName;
             this.mainGrid.Children.Add(finishedView);
-            this.Height = finishedView.Height + 40;
             finishedView.FileSelected += new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
         }
 
         private void FinishedViewFileSelected(object sender, VideoSelectedEventArgs e) {
-            Finished finishedView = (Finished)sender;
+            FileSelect finishedView = (FileSelect)sender;
             this.mainGrid.Children.Remove(finishedView);
             finishedView.FileSelected -= new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
-            this.Height = initialHeight;
             ShowConvertingView(e.FileName, e.Format);
         }
         private void RemoveConvertingView(Converting convertingView) {

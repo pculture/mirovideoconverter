@@ -1,15 +1,36 @@
 ﻿<UserControl x:Class="Mirosubs.Converter.Windows.FileSelect"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="300" Width="356">
-    <Grid Name="grid1">
-        <Grid Name="topGrid" Height="147" VerticalAlignment="Top" AllowDrop="True" Drop="FilesDropped">
+    Height="404" Width="365">
+    <Grid Name="grid1" Loaded="WasLoaded">
+        <Label Height="28" Margin="12,39,12,0" Name="topLabel" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Foreground="White" HorizontalContentAlignment="Center">Convert a Video</Label>
+        <Grid Name="finishedGrid" Height="82" Margin="12,12,12,0" VerticalAlignment="Top" Visibility="Hidden">
+            <TextBlock Margin="6,6,6,0" Name="finishedTextBlock" TextWrapping="Wrap" Foreground="White" TextAlignment="Center" Height="45" VerticalAlignment="Top" />
+            <Button Cursor="Hand" FontWeight="Bold" Height="21" Margin="143,0,145,4" Name="showFileButton" VerticalAlignment="Bottom" Click="ShowFinishedFile">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+                </Button.Style> Show File
+            </Button>
+        </Grid>
+        <Grid Name="middleGrid" AllowDrop="True" Drop="FilesDropped" Margin="12,100,12,157">
             <Grid.Background>
                 <ImageBrush ImageSource="resources\box.png"/>
             </Grid.Background>
             <Grid Margin="0" Name="convertGrid" Height="26" VerticalAlignment="Center">
-                <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,114,0" Foreground="White">To convert, drag a video file here or</Label>
-                <Button Cursor="Hand" Margin="0,5,43,0" Content="choose a file" HorizontalAlignment="Right" Width="73" Click="ChooseFileClicked">
+                <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,107,0" Foreground="White">To convert, drag a video file here or</Label>
+                <Button Cursor="Hand" Margin="0,5,35,0" Content="choose a file" HorizontalAlignment="Right" Width="73" Click="ChooseFileClicked">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
@@ -27,13 +48,10 @@
                     </Button.Style>
                 </Button>
             </Grid>
-            <StackPanel Margin="6,32,6,0" Name="fileChosenPanel" Height="36" VerticalAlignment="Top" Visibility="Hidden" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Height="38" Name="image2" Stretch="None" Width="41" Source="/MiroConverter;component/resources/video.png" />
-                <Label Height="28" Name="fileNameLabel" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Foreground="White" FontSize="14" FontWeight="Bold"></Label>
-            </StackPanel>
+            <TextBlock Margin="6,42,6,38" Name="fileNameTextBlock" Visibility="Hidden" TextWrapping="Wrap" FontWeight="Bold" Foreground="White" FontSize="14" TextAlignment="Center" />
         </Grid>
-        <Image Margin="33,165,0,0" Name="image1" Stretch="None" HorizontalAlignment="Left" Width="39" Height="59" VerticalAlignment="Top" Source="/MiroConverter;component/resources/device.png" ClipToBounds="False" />
-        <ComboBox Margin="78,174,12,0" Name="videoFormatCombo" Text="Pick a Device or Video Format" IsEditable="True" IsReadOnly="True" Height="23" VerticalAlignment="Top" />
+        <Image Margin="30,0,0,91" Name="image1" Stretch="None" HorizontalAlignment="Left" Width="39" Height="59" VerticalAlignment="Bottom" Source="/MiroConverter;component/resources/device.png" ClipToBounds="False" />
+        <ComboBox Margin="75,0,15,102" Name="videoFormatCombo" Text="Pick a Device or Video Format" IsEditable="True" IsReadOnly="True" Height="23" VerticalAlignment="Bottom" />
         <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="75" Click="ConvertClicked">Convert!</Button>
     </Grid>
 </UserControl>

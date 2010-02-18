@@ -1,12 +1,13 @@
 ﻿<UserControl x:Class="Mirosubs.Converter.Windows.Converting"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="300" Width="356" Unloaded="UserControl_Unloaded">
+    Height="404" Width="365" Unloaded="UserControl_Unloaded">
     <Grid>
-        <Label Height="28" Margin="12,59,12,0" Name="titleLabel" VerticalAlignment="Top" HorizontalContentAlignment="Center"></Label>
+        <Label Height="28" Margin="12,24,12,0" Name="titleLabel" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="White">Converting</Label>
         <ProgressBar Margin="23,118,99,0" Name="progressBar" Height="10" VerticalAlignment="Top" />
         <Button HorizontalAlignment="Right" Margin="0,112,12,0" Name="cancelButton" Width="75" Height="23" VerticalAlignment="Top" Click="CancelClicked">Cancel</Button>
-        <Label Margin="23,134,99,138" Name="progressLabel"></Label>
+        <Label Margin="23,134,99,0" Name="progressLabel" Height="27" VerticalAlignment="Top" Foreground="White"></Label>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="97" Click="ShowFFMPEGOutput">FFMPEG Output</Button>
+        <Label Height="28" Margin="0,63,12,0" Name="fileNameLabel" VerticalAlignment="Top" HorizontalAlignment="Right" Width="341" Foreground="White" HorizontalContentAlignment="Center">Label</Label>
     </Grid>
 </UserControl>

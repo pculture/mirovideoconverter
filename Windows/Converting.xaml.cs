@@ -31,8 +31,7 @@ namespace Mirosubs.Converter.Windows {
         internal Converting(string fileName, VideoFormat format) {
             InitializeComponent();
             this.ffmpegOutput = new List<string>();
-            titleLabel.Content = string.Format("Converting {0}", 
-                IOPath.GetFileName(fileName));
+            fileNameLabel.Content = IOPath.GetFileName(fileName);
             progressLabel.Content = "Starting...";
             converter = new VideoConverter(fileName, format);
             converter.FFMPEGOutput += new EventHandler<FFMPEGOutputArgs>(converter_FFMPEGOutput);

@@ -34,22 +34,22 @@ namespace Mirosubs.Converter.Windows {
             string ffmpegArgs;
             if (format == VideoFormat.Theora)
                 ffmpegArgs = string.Format(
-                    "-i {0} -y -vcodec libtheora -b 640k -acodec libvorbis -ab 128k " +
-                    "-ac 2 {1}",
+                    "-i \"{0}\" -y -vcodec libtheora -b 640k -acodec libvorbis -ab 128k " +
+                    "-ac 2 \"{1}\"",
                     fileName,
                     outputFileName = Path.ChangeExtension(fileName, ".theora.ogv"));
             else if (format == VideoFormat.G1)
                 ffmpegArgs = string.Format(
-                    "-i {0} -y -fpre \"{1}\" -aspect 3:2 -s 400x300 -r 23.976 " +
+                    "-i \"{0}\" -y -fpre \"{1}\" -aspect 3:2 -s 400x300 -r 23.976 " +
                     "-vcodec libx264 -b 480k -acodec aac -ab 96k -threads 0 " +
-                    "{2}",
+                    "\"{2}\"",
                     fileName, 
                     Path.Combine(thisExeDir, @"ffmpeg-bin\libx264hq.ffpreset"),
                     outputFileName = Path.ChangeExtension(fileName, ".g1.mp4"));
             else // PSP
                 ffmpegArgs = string.Format(
-                    "-i {0} -y -b 300k -s 320x240 -vcodec libxvid -ab 32k " +
-                    "-ar 24000 -acodec aac {1}", fileName,
+                    "-i \"{0}\" -y -b 300k -s 320x240 -vcodec libxvid -ab 32k " +
+                    "-ar 24000 -acodec aac \"{1}\"", fileName,
                     outputFileName = Path.ChangeExtension(fileName, ".psp.mp4"));
             this.startInfo = new ProcessStartInfo(
                 Path.Combine(thisExeDir,
