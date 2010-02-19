@@ -111,10 +111,12 @@
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FFMPEGOutputArgs.cs" />
+    <Compile Include="F2TVideoConverter.cs" />
+    <Compile Include="ConversionOutputArgs.cs" />
     <Compile Include="FFMPEGOutputViewer.xaml.cs">
       <DependentUpon>FFMPEGOutputViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FFMPEGVideoConverter.cs" />
     <Compile Include="FileSelect.xaml.cs">
       <DependentUpon>FileSelect.xaml</DependentUpon>
     </Compile>
@@ -154,6 +156,9 @@
     <Resource Include="resources\converter3.ico" />
     <Resource Include="resources\device.png" />
     <Content Include="ffmpeg-bin\ffmpeg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg-bin\ffmpeg2theora-0.26.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="resources\bg.jpg" />

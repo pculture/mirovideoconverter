@@ -33,8 +33,11 @@ namespace Mirosubs.Converter.Windows {
             this.ffmpegOutput = new List<string>();
             fileNameLabel.Content = IOPath.GetFileName(fileName);
             progressLabel.Content = "Starting...";
-            converter = new VideoConverter(fileName, format);
-            converter.FFMPEGOutput += new EventHandler<FFMPEGOutputArgs>(converter_FFMPEGOutput);
+            if (format == VideoFormat.Theora)
+                converter = new F2TVideoConverter(fileName);
+            else
+                converter = new FFMPEGVideoConverter(fileName, format);
+            converter.ConvertOutput += new EventHandler<ConversionOutputArgs>(converter_FFMPEGOutput);
             converter.ConvertProgress += 
                 new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);
             converter.Finished += new EventHandler<EventArgs>(converter_Finished);
@@ -50,7 +53,7 @@ namespace Mirosubs.Converter.Windows {
             else
                 this.Dispatcher.Invoke((Action)(() => this.converter_UnknownFormat(sender, e)));
         }
-        private void converter_FFMPEGOutput(object sender, FFMPEGOutputArgs e) {
+        private void converter_FFMPEGOutput(object sender, ConversionOutputArgs e) {
             if (this.Dispatcher.CheckAccess()) {
                 ffmpegOutput.Add(e.OutputLine);
                 if (ffmpegOutputViewer != null)
