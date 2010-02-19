@@ -1,0 +1,226 @@
+// !$*UTF8*$!
+{
+	256AC3D80F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {623, 292}}";
+			sepNavSelRange = "{218, 0}";
+			sepNavVisRange = "{0, 485}";
+		};
+	};
+	256AC3D90F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {623, 292}}";
+			sepNavSelRange = "{444, 0}";
+			sepNavVisRange = "{0, 459}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeArchitecturePreference = i386;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 4F48270C112DE14C001F868A /* Miro Video Converter */;
+		activeTarget = 8D1107260486CEB800E47090 /* Miro Video Converter */;
+		addToTargets = (
+			8D1107260486CEB800E47090 /* Miro Video Converter */,
+		);
+		codeSenseManager = 4F482720112DE165001F868A /* Code sense */;
+		executables = (
+			4F48270C112DE14C001F868A /* Miro Video Converter */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					445,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 288221246;
+			PBXWorkspaceStateSaveDate = 288221246;
+		};
+		perUserProjectItems = {
+			4F43CBF5112E43DA00E4B728 /* PBXBookmark */ = 4F43CBF5112E43DA00E4B728 /* PBXBookmark */;
+			4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */;
+			4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 4F48271F112DE165001F868A /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	4F43CB58112DEAB900E4B728 /* bg.jpg */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 315}, {750, 558}}";
+		};
+	};
+	4F43CB75112E00F200E4B728 /* RootViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {623, 507}}";
+			sepNavSelRange = "{1195, 40}";
+			sepNavVisRange = "{354, 887}";
+		};
+	};
+	4F43CB76112E00F200E4B728 /* RootViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {775, 572}}";
+			sepNavSelRange = "{715, 0}";
+			sepNavVisRange = "{453, 418}";
+		};
+	};
+	4F43CBD6112E343F00E4B728 /* ClickableText.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {623, 364}}";
+			sepNavSelRange = "{398, 0}";
+			sepNavVisRange = "{0, 433}";
+		};
+	};
+	4F43CBD7112E343F00E4B728 /* ClickableText.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {691, 1456}}";
+			sepNavSelRange = "{392, 0}";
+			sepNavVisRange = "{0, 450}";
+		};
+	};
+	4F43CBF5112E43DA00E4B728 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB58112DEAB900E4B728 /* bg.jpg */;
+	};
+	4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CBD6112E343F00E4B728 /* ClickableText.h */;
+		name = "ClickableText.h: 22";
+		rLen = 0;
+		rLoc = 398;
+		rType = 0;
+		vrLen = 433;
+		vrLoc = 0;
+	};
+	4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CBD7112E343F00E4B728 /* ClickableText.m */;
+		name = "ClickableText.m: 19";
+		rLen = 0;
+		rLoc = 392;
+		rType = 0;
+		vrLen = 450;
+		vrLoc = 0;
+	};
+	4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CB75112E00F200E4B728 /* RootViewController.h */;
+		name = "RootViewController.h: 36";
+		rLen = 40;
+		rLoc = 1195;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 354;
+	};
+	4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.m */;
+		name = "Miro_Video_ConverterAppDelegate.m: 17";
+		rLen = 0;
+		rLoc = 444;
+		rType = 0;
+		vrLen = 459;
+		vrLoc = 0;
+	};
+	4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D80F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.h */;
+		name = "Miro_Video_ConverterAppDelegate.h: 11";
+		rLen = 0;
+		rLoc = 218;
+		rType = 0;
+		vrLen = 485;
+		vrLoc = 0;
+	};
+	4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */;
+		name = "RootViewController.m: 29";
+		rLen = 0;
+		rLoc = 668;
+		rType = 0;
+		vrLen = 562;
+		vrLoc = 296;
+	};
+	4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */;
+		name = "RootViewController.m: 31";
+		rLen = 0;
+		rLoc = 715;
+		rType = 0;
+		vrLen = 418;
+		vrLoc = 453;
+	};
+	4F48270C112DE14C001F868A /* Miro Video Converter */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "Miro Video Converter";
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	4F48271F112DE165001F868A /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	4F482720112DE165001F868A /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	8D1107260486CEB800E47090 /* Miro Video Converter */ = {
+		activeExec = 0;
+		executables = (
+			4F48270C112DE14C001F868A /* Miro Video Converter */,
+		);
+	};
+}
