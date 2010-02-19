@@ -7,13 +7,14 @@
 //
 
 #import "Miro_Video_ConverterAppDelegate.h"
+#import "RootViewController.h"
 
 @implementation Miro_Video_ConverterAppDelegate
 
-@synthesize window;
+@synthesize window,rootViewController;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application 
+	[rootViewController setViewMode:initialView];
 }
 
 @end

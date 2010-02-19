@@ -7,11 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class RootViewController;
 
 @interface Miro_Video_ConverterAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+	RootViewController *rootViewController;
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (retain) IBOutlet RootViewController *rootViewController;
 
 @end
