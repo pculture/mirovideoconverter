@@ -32,7 +32,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					445,
+					407,
 					20,
 					48,
 					43,
@@ -49,18 +49,17 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 288221246;
-			PBXWorkspaceStateSaveDate = 288221246;
+			PBXPerProjectTemplateStateSaveDate = 288498080;
+			PBXWorkspaceStateSaveDate = 288498080;
 		};
 		perUserProjectItems = {
-			4F43CBF5112E43DA00E4B728 /* PBXBookmark */ = 4F43CBF5112E43DA00E4B728 /* PBXBookmark */;
-			4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */;
-			4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */ = 4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */;
+			4F9AFD55113232EE0007826C /* PBXTextBookmark */ = 4F9AFD55113232EE0007826C /* PBXTextBookmark */;
+			4F9AFDBD1132410F0007826C /* PBXTextBookmark */ = 4F9AFDBD1132410F0007826C /* PBXTextBookmark */;
+			4F9AFDE0113241FF0007826C /* PBXTextBookmark */ = 4F9AFDE0113241FF0007826C /* PBXTextBookmark */;
+			4F9AFDFD113243AA0007826C /* PBXBookmark */ = 4F9AFDFD113243AA0007826C /* PBXBookmark */;
+			4F9AFE1B113245270007826C /* PBXTextBookmark */ = 4F9AFE1B113245270007826C /* PBXTextBookmark */;
+			4F9AFE1C113245270007826C /* PBXBookmark */ = 4F9AFE1C113245270007826C /* PBXBookmark */;
+			4F9AFE58113248F20007826C /* PBXBookmark */ = 4F9AFE58113248F20007826C /* PBXBookmark */;
 		};
 		sourceControlManager = 4F48271F112DE165001F868A /* Source Control */;
 		userBuildSettings = {
@@ -73,16 +72,16 @@
 	};
 	4F43CB75112E00F200E4B728 /* RootViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {623, 507}}";
-			sepNavSelRange = "{1195, 40}";
-			sepNavVisRange = "{354, 887}";
+			sepNavIntBoundsRect = "{{0, 0}, {586, 572}}";
+			sepNavSelRange = "{1397, 0}";
+			sepNavVisRange = "{334, 1063}";
 		};
 	};
 	4F43CB76112E00F200E4B728 /* RootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {775, 572}}";
-			sepNavSelRange = "{715, 0}";
-			sepNavVisRange = "{453, 418}";
+			sepNavIntBoundsRect = "{{0, 0}, {845, 1768}}";
+			sepNavSelRange = "{4472, 0}";
+			sepNavVisRange = "{693, 396}";
 		};
 	};
 	4F43CBD6112E343F00E4B728 /* ClickableText.h */ = {
@@ -99,80 +98,6 @@
 			sepNavVisRange = "{0, 450}";
 		};
 	};
-	4F43CBF5112E43DA00E4B728 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 4F43CB58112DEAB900E4B728 /* bg.jpg */;
-	};
-	4F43CBF6112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F43CBD6112E343F00E4B728 /* ClickableText.h */;
-		name = "ClickableText.h: 22";
-		rLen = 0;
-		rLoc = 398;
-		rType = 0;
-		vrLen = 433;
-		vrLoc = 0;
-	};
-	4F43CBF7112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F43CBD7112E343F00E4B728 /* ClickableText.m */;
-		name = "ClickableText.m: 19";
-		rLen = 0;
-		rLoc = 392;
-		rType = 0;
-		vrLen = 450;
-		vrLoc = 0;
-	};
-	4F43CBF8112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F43CB75112E00F200E4B728 /* RootViewController.h */;
-		name = "RootViewController.h: 36";
-		rLen = 40;
-		rLoc = 1195;
-		rType = 0;
-		vrLen = 887;
-		vrLoc = 354;
-	};
-	4F43CBF9112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 256AC3D90F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.m */;
-		name = "Miro_Video_ConverterAppDelegate.m: 17";
-		rLen = 0;
-		rLoc = 444;
-		rType = 0;
-		vrLen = 459;
-		vrLoc = 0;
-	};
-	4F43CBFA112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 256AC3D80F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.h */;
-		name = "Miro_Video_ConverterAppDelegate.h: 11";
-		rLen = 0;
-		rLoc = 218;
-		rType = 0;
-		vrLen = 485;
-		vrLoc = 0;
-	};
-	4F43CBFB112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */;
-		name = "RootViewController.m: 29";
-		rLen = 0;
-		rLoc = 668;
-		rType = 0;
-		vrLen = 562;
-		vrLoc = 296;
-	};
-	4F43CBFC112E43DA00E4B728 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */;
-		name = "RootViewController.m: 31";
-		rLen = 0;
-		rLoc = 715;
-		rType = 0;
-		vrLen = 418;
-		vrLoc = 453;
-	};
 	4F48270C112DE14C001F868A /* Miro Video Converter */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -180,7 +105,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 0;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -202,6 +127,8 @@
 		showTypeColumn = 0;
 		sourceDirectories = (
 		);
+		variableFormatDictionary = {
+		};
 	};
 	4F48271F112DE165001F868A /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -216,6 +143,72 @@
 	4F482720112DE165001F868A /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
+	};
+	4F9AFD55113232EE0007826C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CB75112E00F200E4B728 /* RootViewController.h */;
+		name = "RootViewController.h: 44";
+		rLen = 0;
+		rLoc = 1397;
+		rType = 0;
+		vrLen = 1063;
+		vrLoc = 334;
+	};
+	4F9AFDBD1132410F0007826C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4FAF711B1131ED3000B1022A /* DropBoxView.h */;
+		name = "DropBoxView.h: 25";
+		rLen = 0;
+		rLoc = 621;
+		rType = 0;
+		vrLen = 621;
+		vrLoc = 0;
+	};
+	4F9AFDE0113241FF0007826C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */;
+		name = "RootViewController.m: 119";
+		rLen = 0;
+		rLoc = 3924;
+		rType = 0;
+		vrLen = 916;
+		vrLoc = 179;
+	};
+	4F9AFDFD113243AA0007826C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB58112DEAB900E4B728 /* bg.jpg */;
+	};
+	4F9AFE1B113245270007826C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4FAF711C1131ED3000B1022A /* DropBoxView.m */;
+		name = "DropBoxView.m: 58";
+		rLen = 0;
+		rLoc = 1581;
+		rType = 0;
+		vrLen = 771;
+		vrLoc = 25;
+	};
+	4F9AFE1C113245270007826C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB59112DEAB900E4B728 /* box.png */;
+	};
+	4F9AFE58113248F20007826C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F43CB59112DEAB900E4B728 /* box.png */;
+	};
+	4FAF711B1131ED3000B1022A /* DropBoxView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {586, 349}}";
+			sepNavSelRange = "{621, 0}";
+			sepNavVisRange = "{0, 621}";
+		};
+	};
+	4FAF711C1131ED3000B1022A /* DropBoxView.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {585, 754}}";
+			sepNavSelRange = "{1581, 0}";
+			sepNavVisRange = "{25, 771}";
+		};
 	};
 	8D1107260486CEB800E47090 /* Miro Video Converter */ = {
 		activeExec = 0;

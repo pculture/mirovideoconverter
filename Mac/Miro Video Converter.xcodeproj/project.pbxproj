@@ -16,6 +16,7 @@
 		4F43CB61112DEAB900E4B728 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5C112DEAB900E4B728 /* video.png */; };
 		4F43CB77112E00F200E4B728 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F43CB76112E00F200E4B728 /* RootViewController.m */; };
 		4F43CBD8112E343F00E4B728 /* ClickableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F43CBD7112E343F00E4B728 /* ClickableText.m */; };
+		4FAF711D1131ED3000B1022A /* DropBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAF711C1131ED3000B1022A /* DropBoxView.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -41,6 +42,8 @@
 		4F43CB76112E00F200E4B728 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		4F43CBD6112E343F00E4B728 /* ClickableText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickableText.h; sourceTree = "<group>"; };
 		4F43CBD7112E343F00E4B728 /* ClickableText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickableText.m; sourceTree = "<group>"; };
+		4FAF711B1131ED3000B1022A /* DropBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxView.h; sourceTree = "<group>"; };
+		4FAF711C1131ED3000B1022A /* DropBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -60,6 +63,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4FAF711B1131ED3000B1022A /* DropBoxView.h */,
+				4FAF711C1131ED3000B1022A /* DropBoxView.m */,
 				4F43CBD6112E343F00E4B728 /* ClickableText.h */,
 				4F43CBD7112E343F00E4B728 /* ClickableText.m */,
 				256AC3D80F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.h */,
@@ -205,6 +210,7 @@
 				256AC3DA0F4B6AC300CF3369 /* Miro_Video_ConverterAppDelegate.m in Sources */,
 				4F43CB77112E00F200E4B728 /* RootViewController.m in Sources */,
 				4F43CBD8112E343F00E4B728 /* ClickableText.m in Sources */,
+				4FAF711D1131ED3000B1022A /* DropBoxView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,7 @@
 @synthesize window,rootViewController;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[rootViewController setViewMode:initialView];
+  [rootViewController initialize];
 }
 
 @end
