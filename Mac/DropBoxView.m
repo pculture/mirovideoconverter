@@ -13,19 +13,11 @@
 @implementation DropBoxView
 @synthesize delegate;
 
--(void)drawBackgroundImageFromImageFile:(NSString *)imageFile{
-  static int i = 0;
-  NSRect rect = [self frame];
-  NSImage *image = [[NSImage alloc] initWithContentsOfFile:imageFile];
-  [image drawAtPoint:rect.origin fromRect:NSZeroRect
-	 operation:(NSCompositingOperation)NSCompositeSourceAtop fraction:1.0];
-  [image release];
-}
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
 
   NSPasteboard *pboard;
   NSDragOperation sourceDragMask;
- 
+
   sourceDragMask = [sender draggingSourceOperationMask];
   pboard = [sender draggingPasteboard];
  
@@ -49,7 +41,7 @@
   if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
     NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
     if([files count] == 1){
-      [delegate fileDropped:self withFilename:[files objectAtIndex:0]];
+      [delegate dropBoxView:self fileDropped:[files objectAtIndex:0]];
       return YES;
     }
   }

@@ -9,12 +9,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DropBoxView.h"
+
 @class ClickableText;
 
 typedef enum { initialView, withFileView, convertingView, finishedView } ViewMode;
 
 @interface RootViewController : NSObject <DropBoxViewDelegate>{
-
   NSTextField *dragAVideo;
   ClickableText *chooseAFile1;
   NSTextField *toSelectADifferent;
@@ -35,10 +35,9 @@ typedef enum { initialView, withFileView, convertingView, finishedView } ViewMod
 @property(nonatomic,retain) IBOutlet DropBoxView *dropBox;
 @property(nonatomic,retain) IBOutlet NSWindow *window;
 
--(IBAction) convertButtonClick:(id)sender;
--(IBAction) chooseAFile:(id)sender;
 -(void) setViewMode:(ViewMode)viewMode;
--(void) initialize;
--(NSString *) formatFilename:(NSString *)inFile;
+-(NSString*) formatFilename:(NSString *)inFile;
+-(IBAction) chooseAFile:(id)sender;
+-(IBAction) convertButtonClick:(id)sender;
 
 @end

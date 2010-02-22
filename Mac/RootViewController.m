@@ -16,35 +16,19 @@
 
 @synthesize dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2,devicePicker,convertButton,filename,dropBox,window;
 
--(void) initialize {
-  dropBox.delegate = (id)self;
-  NSString *boxImageFile = [[NSBundle mainBundle] pathForResource:@"box" ofType:@"png" inDirectory:nil];
-  //  [dropBox drawBackgroundImageFromImageFile:boxImageFile];
-  [self setViewMode:initialView];
-}
 -(IBAction) convertButtonClick:(id)sender {
-  NSString *boxImageFile = [[NSBundle mainBundle] pathForResource:@"box" ofType:@"png" inDirectory:nil];
-  [dropBox drawBackgroundImageFromImageFile:boxImageFile];
 }
 -(void) setViewMode:(ViewMode)viewMode{
+
   switch(viewMode) {
   case initialView:
     dragAVideo.alphaValue =         1;
     chooseAFile1.alphaValue =       1;
-    toSelectADifferent.alphaValue = 1;
-    chooseAFile2.alphaValue =       1;
+    toSelectADifferent.alphaValue = 0;
+    chooseAFile2.alphaValue =       0;
     devicePicker.alphaValue =       1;
     convertButton.alphaValue =      1;
-    filename.alphaValue =           1;
-    NSString *boxImageFile = [[NSBundle mainBundle] pathForResource:@"box" ofType:@"png" inDirectory:nil];
-    [dropBox drawBackgroundImageFromImageFile:boxImageFile];
-    dragAVideo.alphaValue =         1;
-    chooseAFile1.alphaValue =       1;
-    //    toSelectADifferent.alphaValue = 0;
-    //    chooseAFile2.alphaValue =       0;
-    devicePicker.alphaValue =       1;
-    convertButton.alphaValue =      1;
-    //    filename.alphaValue =           0;
+    filename.alphaValue =           0;
     [convertButton setTitle:@"Convert"];
     [dropBox registerForDraggedTypes: [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
     break;
@@ -99,12 +83,11 @@
   }
   return outFile;
 }
-- (void)fileDropped:(DropBoxView *)dropBoxView withFilename:(NSString *)aFilename {
+- (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename {
   [filename setStringValue:[self formatFilename:aFilename]];
   [self setViewMode:withFileView];
 }
 -(IBAction) chooseAFile:(id)sender {
-
   [[NSOpenPanel openPanel] beginSheetForDirectory:nil
 			   file:nil
 			   types:nil

@@ -15,10 +15,9 @@
 @property(nonatomic,retain) id delegate;
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
--(void)drawBackgroundImageFromImageFile:(NSString *)imageFile;
 @end
 
 @protocol DropBoxViewDelegate
-- (void)fileDropped:(DropBoxView *)dropBoxView withFilename:(NSString *)aFilename;
+- (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename;
 @end
 
