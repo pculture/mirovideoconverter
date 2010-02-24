@@ -38,6 +38,7 @@ typedef enum { initialView, withFileView, convertingView, finishedView } ViewMod
 -(void) setViewMode:(ViewMode)viewMode;
 -(NSString*) formatFilename:(NSString *)inFile;
 -(IBAction) chooseAFile:(id)sender;
+-(IBAction) selectADevice:(id)sender;
 -(IBAction) convertButtonClick:(id)sender;
-
+-(void) maybeEnableConvertButton;
 @end

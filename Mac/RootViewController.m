@@ -16,7 +16,14 @@
 
 @synthesize dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2,devicePicker,convertButton,filename,dropBox,window;
 
--(IBAction) convertButtonClick:(id)sender {
+-(void) awakeFromNib {
+  [devicePicker removeAllItems];
+  [devicePicker addItemWithTitle:@"Pick a Device or Video Format"];
+  [devicePicker addItemWithTitle:@"PSP"];
+  [devicePicker addItemWithTitle:@"OGG"];
+  [devicePicker addItemWithTitle:@"Theora"];
+  [devicePicker selectItemAtIndex:0];
+  [self setViewMode:initialView];
 }
 -(void) setViewMode:(ViewMode)viewMode{
 
@@ -30,6 +37,7 @@
     convertButton.alphaValue =      1;
     filename.alphaValue =           0;
     [convertButton setTitle:@"Convert"];
+    [convertButton setEnabled:NO];
     [dropBox registerForDraggedTypes: [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
     break;
   case withFileView:
@@ -86,6 +94,7 @@
 - (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename {
   [filename setStringValue:[self formatFilename:aFilename]];
   [self setViewMode:withFileView];
+  [self maybeEnableConvertButton];
 }
 -(IBAction) chooseAFile:(id)sender {
   [[NSOpenPanel openPanel] beginSheetForDirectory:nil
@@ -103,5 +112,18 @@
     [sheet close];
     [self setViewMode:withFileView];
   }
+  [self maybeEnableConvertButton];
+}
+-(IBAction) selectADevice:(id)sender {
+  [self maybeEnableConvertButton];
+}
+-(void) maybeEnableConvertButton {
+  if([devicePicker indexOfSelectedItem] != 0 && filename.alphaValue > 0)
+    [convertButton setEnabled:YES];
+  else
+    [convertButton setEnabled:NO];
+}
+-(IBAction) convertButtonClick:(id)sender {
+  convertButton.alphaValue=0;
 }
 @end
