@@ -14,7 +14,7 @@
 
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
-typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusError } FFMPEGStatus;
+typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, FFMPEGStatusError } FFMPEGStatus;
 @interface RootViewController : NSObject <DropBoxViewDelegate>{
   NSView *rootView;
   NSTextField *convertAVideo;
@@ -35,6 +35,7 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusError } FFM
   NSProgressIndicator *progressIndicator;
   NSWindow *fFMPEGOutputWindow;
   NSTextView *fFMPEGOutputTextView;
+  NSThread *conversionThread;
 }
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
@@ -55,6 +56,7 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusError } FFM
 @property(nonatomic,retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property(nonatomic,retain) IBOutlet NSWindow *fFMPEGOutputWindow;
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
+@property(nonatomic,retain) NSThread *conversionThread;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
@@ -67,9 +69,12 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusError } FFM
 -(void) showView:(int)whichView;
 -(IBAction) cancelButtonClick:(id)sender;
 -(IBAction) fFMPEGButtonClick:(id)sender;
--(void) convertingDone;
+-(void) convertingDoneWithStatus:(NSNumber *)number;
 -(void) setDonePercentage:(NSNumber *)percent;
 -(void) doFFMPEGConversion;
--(char *) fFMPEGCommandLine;
+-(char *) fFMPEGOutputFilename;
+-(char **) fFMPEGShellCommand;
+-(void) freeFFMPEGShellCommand:(char **)args;
 -(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position;
+-(void) startFFMPEGThread;
 @end
