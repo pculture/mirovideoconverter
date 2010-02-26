@@ -17,7 +17,8 @@
 @synthesize devicePicker,convertButton,filename,dropBox,window;
 @synthesize finishedConverting, showFile;      
 @synthesize convertingView, convertingFilename, percentDone, progressIndicator;
-@synthesize fFMPEGOutputWindow, fFMPEGOutputTextView, conversionThread;
+@synthesize fFMPEGOutputWindow, fFMPEGOutputTextView, conversionThread, conversionTask;
+@synthesize outputPipe;
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -54,9 +55,9 @@
   case ViewModeConverting:
     [self showView:ViewConverting];
     [convertingFilename setStringValue:[filename stringValue]];
-    [self setDonePercentage:[NSNumber numberWithDouble:0]];
+    [self setDonePercentage:0];
     [progressIndicator startAnimation:self];
-    [self startFFMPEGThread];
+    [self doFFMPEGConversion];
     break;
   case ViewModeFinished:
     [self showView:ViewRoot];
@@ -187,16 +188,20 @@
     case NSAlertDefaultReturn:
       break;
     case NSAlertAlternateReturn:
-      [conversionThread cancel];
+      if([conversionTask isRunning])
+	[conversionTask terminate];
       break;
   }
 }
 -(IBAction) fFMPEGButtonClick:(id)sender {
   [fFMPEGOutputWindow makeKeyAndOrderFront:self];
 }
--(void) convertingDoneWithStatus:(NSNumber *)number {
-  FFMPEGStatus status = (FFMPEGStatus)[number intValue];
+-(void) convertingDoneWithStatus:(FFMPEGStatus)status {
   [progressIndicator stopAnimation:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object:nil];
+  self.outputPipe = 0;
+  self.conversionTask = 0;
   switch(status) {
   case FFMPEGStatusDone:
     [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@", [filename stringValue]]];
@@ -209,84 +214,63 @@
     break;
   }
 }
--(void) setDonePercentage:(NSNumber *)percent {
-  [progressIndicator setDoubleValue:[percent doubleValue]];
-  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",[percent intValue]]];
+-(void) setDonePercentage:(int)percent {
+  [progressIndicator setDoubleValue:percent];
+  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
 }
--(char *) fFMPEGOutputFilename {
-  char *documents = malloc(1024);
-  [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
-    getCString:documents maxLength:1024 encoding:NSASCIIStringEncoding];
-  char *fn = malloc(1024);
-  sprintf(fn,"%s/%s", documents,"ffmpegOutput.txt");
-  free(documents);
-  return fn;
-}
-#define NPOINTERS 16
--(char **) fFMPEGShellCommand {
-  char *fn = [self fFMPEGOutputFilename];
-  char **args = malloc(NPOINTERS*sizeof(char *));
-  args[0] = malloc(16); strcpy(args[0],"/bin/sh");
-  args[1] = malloc(16); strcpy(args[1],"sh");
-  args[2] = malloc(16); strcpy(args[2],"-c");
-  args[3] = malloc(1024); sprintf(args[3],"\"ls -l ~ >%s 2>&1\"", fn);
-  free(fn);
-  args[4] = 0;
-  return args;
-}
--(void) freeFFMPEGShellCommand:(char **)args {
-  int i=0;
-  while(args[i])
-    free(args[i++]);
-  free(args);
-}  
 -(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
   return FFMPEGStatusConverting;
 }
--(void) startFFMPEGThread {
-  NSThread *newThread = [[NSThread alloc] initWithTarget:self selector:@selector(doFFMPEGConversion) object:nil];
-  self.conversionThread = newThread;
-  [newThread release];
-  [conversionThread start];
+-(void) conversionTaskDataAvailable:(NSNotification *)note {
+  static int textPosition = 0;
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  if(data && [data length])
+    [storage replaceCharactersInRange:NSMakeRange([storage length], 0)
+	     withString:[NSString stringWithUTF8String:[data bytes]]];
+  FFMPEGStatus fFMPEGStatus = [self parseFFMPEGOutput:storage fromPosition:textPosition];
+  textPosition = [storage length];
+  [self setDonePercentage:(float)rand()/RAND_MAX*100];
+  [(NSFileHandle *)[note object] readInBackgroundAndNotify];
+  fFMPEGStatus;
+}
+-(void) conversionTaskCompleted:(NSNotification *)note {
+  FFMPEGStatus fFMPEGStatus = FFMPEGStatusDone;
+  [self convertingDoneWithStatus:fFMPEGStatus];
+}
+#define FFMPEG_EXEC_NSSTRING @"/Users/cworth/script.sh"
+-(NSArray *) fFMPEGArguments {
+  NSMutableArray *args = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
+  [args addObject:@"5"];
+  return args;
 }
 -(void) doFFMPEGConversion {
-  int pid;
-  //  if((pid = fork()) == 0) {
-  //  sleep(10);
-  //  int t=1;
-    char **args = [self fFMPEGShellCommand];
-    execv(args[0], &args[1]);
-    [self freeFFMPEGShellCommand:args];
-    /*
-  } else {
-    NSAutoreleasePool *pool =[[NSAutoreleasePool alloc] init];
-    NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-    NSAttributedString *string = [[NSAttributedString alloc] initWithString:@"FFMPEG Output:\n"];
-    [storage setAttributedString:string];
-    [string release];
-    char *fFMPEGOutputFilename = [self fFMPEGOutputFilename];
-    FILE *fp = fopen(fFMPEGOutputFilename,"r");
-    FFMPEGStatus fFMPEGStatus = FFMPEGStatusConverting;
-    int fileLength = 0;
-    while(fFMPEGStatus == FFMPEGStatusConverting){
-      /*	 if(fgets(buf,bufsize,fp)){
-	   [storage replaceCharactersInRange:NSMakeRange([storage length], 0)
-		    withString:[NSString stringWithCString:buf]]; 
-	   fFMPEGStatus = [self parseFFMPEGOutput:storage fromPosition:textPosition];
-	   textPosition = [storage length];
-	   } */
-    /*      if([conversionThread isCancelled]){
-	kill(pid,SIGTERM);
-	fFMPEGStatus = FFMPEGStatusCancelled;
-	break;
-      }
-      usleep(100000);
-    }
-    fclose(fp);
-    [self performSelectorOnMainThread:@selector(convertingDoneWithStatus:)
-	  withObject:[NSNumber numberWithInt:(int)fFMPEGStatus] waitUntilDone:NO];
-    [pool release];
-    }
-*/
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
+  [storage setAttributedString:string];
+  [string release];
+  self.outputPipe = [NSPipe pipe];
+  NSFileHandle *output = [outputPipe fileHandleForReading];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self selector:@selector(conversionTaskDataAvailable:)
+    name:NSFileHandleReadCompletionNotification object:output];
+  NSTask *aTask = [[NSTask alloc] init];
+  self.conversionTask = aTask;
+  [aTask release];
+  [aTask setLaunchPath:FFMPEG_EXEC_NSSTRING];
+  [aTask setArguments:[self fFMPEGArguments]];
+  NSMutableDictionary *environment =
+    [[NSMutableDictionary alloc]
+      initWithDictionary:[[NSProcessInfo processInfo] environment]];
+  [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+  [aTask setEnvironment:environment];
+  [environment release];
+  [aTask setStandardOutput:outputPipe];
+  [aTask setStandardError:outputPipe];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self selector:@selector(conversionTaskCompleted:)
+    name:NSTaskDidTerminateNotification object:aTask];
+  [aTask launch];
+  [[outputPipe fileHandleForReading] readInBackgroundAndNotify];
 }
 @end

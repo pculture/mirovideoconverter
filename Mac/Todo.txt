@@ -1,0 +1,4 @@
+Fix Application Menu
+Installer - sparkle
+Show File button
+Text color white

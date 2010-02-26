@@ -43,7 +43,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{370, 282}, {622, 404}}</string>
 				<int key="NSWTFlags">1618477056</int>
-				<string key="NSWindowTitle">Window</string>
+				<string key="NSWindowTitle">FFMPEG Output</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -313,9 +313,9 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{243, 400}, {622, 404}}</string>
+					<string>{{329, 400}, {622, 404}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{243, 400}, {622, 404}}</string>
+					<string>{{329, 400}, {622, 404}}</string>
 					<boolean value="NO"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>

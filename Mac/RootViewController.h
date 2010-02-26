@@ -36,6 +36,8 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
   NSWindow *fFMPEGOutputWindow;
   NSTextView *fFMPEGOutputTextView;
   NSThread *conversionThread;
+  NSTask *conversionTask;
+  NSPipe *outputPipe;
 }
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
@@ -57,6 +59,8 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 @property(nonatomic,retain) IBOutlet NSWindow *fFMPEGOutputWindow;
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
 @property(nonatomic,retain) NSThread *conversionThread;
+@property(nonatomic,retain) NSTask *conversionTask;
+@property(nonatomic,retain) NSPipe *outputPipe;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
@@ -69,12 +73,11 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 -(void) showView:(int)whichView;
 -(IBAction) cancelButtonClick:(id)sender;
 -(IBAction) fFMPEGButtonClick:(id)sender;
--(void) convertingDoneWithStatus:(NSNumber *)number;
--(void) setDonePercentage:(NSNumber *)percent;
+-(void) convertingDoneWithStatus:(FFMPEGStatus)number;
+-(void) setDonePercentage:(int)percent;
+-(NSArray *) fFMPEGArguments;
 -(void) doFFMPEGConversion;
--(char *) fFMPEGOutputFilename;
--(char **) fFMPEGShellCommand;
--(void) freeFFMPEGShellCommand:(char **)args;
 -(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position;
--(void) startFFMPEGThread;
+-(void) conversionTaskDataAvailable:(NSNotification *)note;
+-(void) conversionTaskCompleted:(NSNotification *)note;
 @end
