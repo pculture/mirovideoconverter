@@ -1,4 +1,5 @@
-Fix Application Menu
-Installer - sparkle
-Show File button
-Text color white
+Installer - sparkle -- need more info from clients now
+Highlight on mouse over links
+
+
+

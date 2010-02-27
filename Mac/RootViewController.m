@@ -14,11 +14,11 @@
 
 @implementation RootViewController
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
-@synthesize devicePicker,convertButton,filename,dropBox,window;
-@synthesize finishedConverting, showFile;      
-@synthesize convertingView, convertingFilename, percentDone, progressIndicator;
-@synthesize fFMPEGOutputWindow, fFMPEGOutputTextView, conversionThread, conversionTask;
-@synthesize outputPipe;
+@synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
+@synthesize finishedConverting,showFile;      
+@synthesize convertingView,convertingFilename,percentDone,progressIndicator;
+@synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionTask;
+@synthesize outputPipe,conversionCancelled;
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -127,6 +127,7 @@
   return outFile;
 }
 - (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename {
+  self.filePath = aFilename;
   [filename setStringValue:[self formatFilename:aFilename]];
   [self setViewMode:ViewModeWithFile];
   [self maybeEnableConvertButton];
@@ -180,6 +181,9 @@
 -(IBAction) convertButtonClick:(id)sender {
   [self setViewMode:ViewModeConverting];
 }
+-(IBAction) showFileClick:(id)sender {
+  [[NSWorkspace sharedWorkspace] openFile:[filePath stringByDeletingLastPathComponent] withApplication:@"Finder"];
+}
 -(IBAction) cancelButtonClick:(id)sender {
  int iResponse = 
         NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
@@ -188,6 +192,7 @@
     case NSAlertDefaultReturn:
       break;
     case NSAlertAlternateReturn:
+      self.conversionCancelled = YES;
       if([conversionTask isRunning])
 	[conversionTask terminate];
       break;
@@ -195,6 +200,10 @@
 }
 -(IBAction) fFMPEGButtonClick:(id)sender {
   [fFMPEGOutputWindow makeKeyAndOrderFront:self];
+}
+-(void) setDonePercentage:(int)percent {
+  [progressIndicator setDoubleValue:percent];
+  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
 }
 -(void) convertingDoneWithStatus:(FFMPEGStatus)status {
   [progressIndicator stopAnimation:self];
@@ -210,13 +219,48 @@
   case FFMPEGStatusCancelled:
     [self setViewMode:ViewModeWithFile];
     break;
+  case FFMPEGStatusError:  
+    NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.", @"OK", nil, nil);
+    [self setViewMode:ViewModeWithFile];
+    break;
   default:
     break;
   }
 }
--(void) setDonePercentage:(int)percent {
-  [progressIndicator setDoubleValue:percent];
-  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
+#define FFMPEG_EXEC_NSSTRING @"ffmpeg.sh"
+/**
+  setup FFMPEG task with an output pipe
+  request background read and notification
+*/
+-(void) doFFMPEGConversion {
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
+  [storage setAttributedString:string];
+  [string release];
+  self.outputPipe = [NSPipe pipe];
+  NSFileHandle *output = [outputPipe fileHandleForReading];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self selector:@selector(conversionTaskDataAvailable:)
+    name:NSFileHandleReadCompletionNotification object:output];
+  NSTask *aTask = [[NSTask alloc] init];
+  self.conversionTask = aTask;
+  [aTask release];
+  self.conversionCancelled = NO;
+  [aTask setLaunchPath:[[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""]];
+  [aTask setArguments:[self fFMPEGArguments]];
+  NSMutableDictionary *environment =
+    [[NSMutableDictionary alloc]
+      initWithDictionary:[[NSProcessInfo processInfo] environment]];
+  [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+  [aTask setEnvironment:environment];
+  [environment release];
+  [aTask setStandardOutput:outputPipe];
+  [aTask setStandardError:outputPipe];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self selector:@selector(conversionTaskCompleted:)
+    name:NSTaskDidTerminateNotification object:aTask];
+  [aTask launch];
+  [[outputPipe fileHandleForReading] readInBackgroundAndNotify];
 }
 -(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
   return FFMPEGStatusConverting;
@@ -236,41 +280,16 @@
 }
 -(void) conversionTaskCompleted:(NSNotification *)note {
   FFMPEGStatus fFMPEGStatus = FFMPEGStatusDone;
+  if(conversionCancelled)
+    fFMPEGStatus = FFMPEGStatusCancelled;
+  else
+    if([[note object] terminationStatus])
+      fFMPEGStatus = FFMPEGStatusError;
   [self convertingDoneWithStatus:fFMPEGStatus];
 }
-#define FFMPEG_EXEC_NSSTRING @"/Users/cworth/script.sh"
 -(NSArray *) fFMPEGArguments {
   NSMutableArray *args = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
-  [args addObject:@"5"];
+  [args addObject:filePath];
   return args;
-}
--(void) doFFMPEGConversion {
-  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-  NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
-  [storage setAttributedString:string];
-  [string release];
-  self.outputPipe = [NSPipe pipe];
-  NSFileHandle *output = [outputPipe fileHandleForReading];
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self selector:@selector(conversionTaskDataAvailable:)
-    name:NSFileHandleReadCompletionNotification object:output];
-  NSTask *aTask = [[NSTask alloc] init];
-  self.conversionTask = aTask;
-  [aTask release];
-  [aTask setLaunchPath:FFMPEG_EXEC_NSSTRING];
-  [aTask setArguments:[self fFMPEGArguments]];
-  NSMutableDictionary *environment =
-    [[NSMutableDictionary alloc]
-      initWithDictionary:[[NSProcessInfo processInfo] environment]];
-  [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
-  [aTask setEnvironment:environment];
-  [environment release];
-  [aTask setStandardOutput:outputPipe];
-  [aTask setStandardError:outputPipe];
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self selector:@selector(conversionTaskCompleted:)
-    name:NSTaskDidTerminateNotification object:aTask];
-  [aTask launch];
-  [[outputPipe fileHandleForReading] readInBackgroundAndNotify];
 }
 @end

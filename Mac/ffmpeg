@@ -1,0 +1,6 @@
+#!/bin/bash
+echo FFMPEG converting $1 ...
+sleep 5
+
+
+

@@ -16,7 +16,7 @@
 	static NSColor *cachedColor = nil;
 	
 	if (!cachedColor)
-		cachedColor = [[NSColor colorWithCalibratedRed:0.0 green:1.0 blue:0.0 alpha:1.0] retain];
+		cachedColor = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0] retain];
 	
 	return cachedColor;
 }
@@ -26,7 +26,7 @@
 	static NSColor *cachedColor = nil;
 	
 	if (!cachedColor)
-		cachedColor = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:1.0] retain];
+		cachedColor = [[NSColor colorWithCalibratedRed:0.0 green:0.0 blue:1.0 alpha:1.0] retain];
 	
 	return cachedColor;
 }
@@ -36,7 +36,7 @@
 	static NSColor *cachedColor = nil;
 	
 	if (!cachedColor)
-		cachedColor = [[NSColor colorWithCalibratedRed:0.4 green:0.0 blue:0.7 alpha:1.0] retain];
+		cachedColor = [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0] retain];
 	
 	return cachedColor;
 }
