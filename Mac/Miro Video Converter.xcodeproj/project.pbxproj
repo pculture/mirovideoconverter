@@ -20,21 +20,18 @@
 		4F9F62D01135B1B40040352C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62CF1135B1B40040352C /* bg.jpg */; };
 		4F9F62D81135B2970040352C /* Converting.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62D61135B2970040352C /* Converting.xib */; };
 		4FAF711D1131ED3000B1022A /* DropBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAF711C1131ED3000B1022A /* DropBoxView.m */; };
-		4FD548661138609200E2157A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD548651138609200E2157A /* Sparkle.framework */; };
-		4FD548971138629100E2157A /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FD548651138609200E2157A /* Sparkle.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4FD548941138623A00E2157A /* CopyFiles */ = {
+		4FB45057113AD96500C4CA85 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = "Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Sparkle.framework\n/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Sparkle.framework";
 			dstSubfolderSpec = 10;
 			files = (
-				4FD548971138629100E2157A /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +62,7 @@
 		4F9F62D71135B2970040352C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Converting.xib; sourceTree = "<group>"; };
 		4FAF711B1131ED3000B1022A /* DropBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxView.h; sourceTree = "<group>"; };
 		4FAF711C1131ED3000B1022A /* DropBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxView.m; sourceTree = "<group>"; };
-		4FD548651138609200E2157A /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		4FB4502D113AD8BE00C4CA85 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -76,7 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				4FD548661138609200E2157A /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +97,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4FD548651138609200E2157A /* Sparkle.framework */,
+				4FB4502D113AD8BE00C4CA85 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -183,7 +179,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				4FD548941138623A00E2157A /* CopyFiles */,
+				4FB45057113AD96500C4CA85 /* CopyFiles */,
 			);
 			buildRules = (
 			);

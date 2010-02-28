@@ -12,6 +12,8 @@
 #import "ClickableText.h"
 #import "DropBoxView.h"
 
+#define FFMPEG_EXEC_NSSTRING @"ffmpeg.sh"
+
 @implementation RootViewController
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
@@ -69,6 +71,25 @@
   }
   [self setAlphaValuesForViewMode:viewMode];
 }
+-(void) showView:(int)whichView {
+  NSView *theView;
+  switch(whichView) {
+  case ViewRoot:
+    theView = rootView;
+    break;
+  case ViewConverting:
+    if(!convertingView)
+      [self loadConvertingView];
+    theView = convertingView;
+    break;
+  default:
+    break;
+  }
+  if([window contentView] != theView){
+    [[window contentView] removeFromSuperview];
+    [window setContentView:theView];
+  }
+}
 -(void) setAlphaValuesForViewMode:(ViewMode)viewMode{
   switch(viewMode) {
   case ViewModeInitial:
@@ -113,6 +134,8 @@
     break;
   }
 }
+
+// Functions for root view
 - (NSString *)formatFilename:(NSString *)inFile {
   int maxLength = 37;
   NSString *outFile = [inFile stringByAbbreviatingWithTildeInPath];
@@ -130,7 +153,6 @@
   self.filePath = aFilename;
   [filename setStringValue:[self formatFilename:aFilename]];
   [self setViewMode:ViewModeWithFile];
-  [self maybeEnableConvertButton];
 }
 -(IBAction) chooseAFile:(id)sender {
   [[NSOpenPanel openPanel] beginSheetForDirectory:nil
@@ -144,11 +166,11 @@
 - (void)openPanelDidEnd:(NSOpenPanel *)sheet returnCode:(int)returnCode
 	    contextInfo:(void *)contextInfo {
   if(returnCode == NSOKButton) {
-    [filename setStringValue:[self formatFilename:[[sheet filenames] objectAtIndex:0]]];
+    self.filePath = [[sheet filenames] objectAtIndex:0];
     [sheet close];
+    [filename setStringValue:[self formatFilename:filePath]];
     [self setViewMode:ViewModeWithFile];
   }
-  [self maybeEnableConvertButton];
 }
 -(IBAction) selectADevice:(id)sender {
   [self maybeEnableConvertButton];
@@ -159,84 +181,25 @@
   else
     [convertButton setEnabled:NO];
 }
--(void) showView:(int)whichView {
-  NSView *theView;
-  switch(whichView) {
-  case ViewRoot:
-    theView = rootView;
-    break;
-  case ViewConverting:
-    if(!convertingView)
-      [self loadConvertingView];
-    theView = convertingView;
-    break;
-  default:
-    break;
-  }
-  if([window contentView] != theView){
-    [[window contentView] removeFromSuperview];
-    [window setContentView:theView];
-  }
-}
 -(IBAction) convertButtonClick:(id)sender {
   [self setViewMode:ViewModeConverting];
 }
 -(IBAction) showFileClick:(id)sender {
   [[NSWorkspace sharedWorkspace] openFile:[filePath stringByDeletingLastPathComponent] withApplication:@"Finder"];
 }
--(IBAction) cancelButtonClick:(id)sender {
- int iResponse = 
-        NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
-                        @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
-  switch(iResponse) {
-    case NSAlertDefaultReturn:
-      break;
-    case NSAlertAlternateReturn:
-      self.conversionCancelled = YES;
-      if([conversionTask isRunning])
-	[conversionTask terminate];
-      break;
-  }
-}
--(IBAction) fFMPEGButtonClick:(id)sender {
-  [fFMPEGOutputWindow makeKeyAndOrderFront:self];
-}
--(void) setDonePercentage:(int)percent {
-  [progressIndicator setDoubleValue:percent];
-  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
-}
--(void) convertingDoneWithStatus:(FFMPEGStatus)status {
-  [progressIndicator stopAnimation:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object:nil];
-  self.outputPipe = 0;
-  self.conversionTask = 0;
-  switch(status) {
-  case FFMPEGStatusDone:
-    [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@", [filename stringValue]]];
-    [self setViewMode:ViewModeFinished];
-    break;
-  case FFMPEGStatusCancelled:
-    [self setViewMode:ViewModeWithFile];
-    break;
-  case FFMPEGStatusError:  
-    NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.", @"OK", nil, nil);
-    [self setViewMode:ViewModeWithFile];
-    break;
-  default:
-    break;
-  }
-}
-#define FFMPEG_EXEC_NSSTRING @"ffmpeg.sh"
+
+// Functions for converting view
 /**
   setup FFMPEG task with an output pipe
-  request background read and notification
+  request background read and notify
 */
 -(void) doFFMPEGConversion {
+  // initialize textbox for FFMPEG output window
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
   NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
   [storage setAttributedString:string];
   [string release];
+  // setup output pipe, read and done notifications, launch background console ffmpeg task
   self.outputPipe = [NSPipe pipe];
   NSFileHandle *output = [outputPipe fileHandleForReading];
   [[NSNotificationCenter defaultCenter]
@@ -245,7 +208,7 @@
   NSTask *aTask = [[NSTask alloc] init];
   self.conversionTask = aTask;
   [aTask release];
-  self.conversionCancelled = NO;
+  self.conversionCancelled = NO; // set flag so we know if task terminated by deliberate cancel
   [aTask setLaunchPath:[[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""]];
   [aTask setArguments:[self fFMPEGArguments]];
   NSMutableDictionary *environment =
@@ -262,8 +225,10 @@
   [aTask launch];
   [[outputPipe fileHandleForReading] readInBackgroundAndNotify];
 }
--(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
-  return FFMPEGStatusConverting;
+-(NSArray *) fFMPEGArguments {
+  NSMutableArray *args = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
+  [args addObject:filePath];
+  return args;
 }
 -(void) conversionTaskDataAvailable:(NSNotification *)note {
   static int textPosition = 0;
@@ -278,6 +243,9 @@
   [(NSFileHandle *)[note object] readInBackgroundAndNotify];
   fFMPEGStatus;
 }
+-(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
+  return FFMPEGStatusConverting;
+}
 -(void) conversionTaskCompleted:(NSNotification *)note {
   FFMPEGStatus fFMPEGStatus = FFMPEGStatusDone;
   if(conversionCancelled)
@@ -287,9 +255,50 @@
       fFMPEGStatus = FFMPEGStatusError;
   [self convertingDoneWithStatus:fFMPEGStatus];
 }
--(NSArray *) fFMPEGArguments {
-  NSMutableArray *args = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
-  [args addObject:filePath];
-  return args;
+-(IBAction) fFMPEGButtonClick:(id)sender {
+  [fFMPEGOutputWindow makeKeyAndOrderFront:self];
+}
+-(IBAction) cancelButtonClick:(id)sender {
+ int iResponse = 
+        NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
+                        @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
+  switch(iResponse) {
+    case NSAlertDefaultReturn:
+      break;
+    case NSAlertAlternateReturn:
+      self.conversionCancelled = YES;
+      if([conversionTask isRunning])
+	[conversionTask terminate];
+      break;
+  default:
+    break;
+  }
+}
+-(void) setDonePercentage:(int)percent {
+  [progressIndicator setDoubleValue:percent];
+  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
+}
+-(void) convertingDoneWithStatus:(FFMPEGStatus)status {
+  [progressIndicator stopAnimation:self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object:nil];
+  self.outputPipe = 0;
+  self.conversionTask = 0;
+  switch(status) {
+  case FFMPEGStatusDone:
+    [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
+						 [convertingFilename stringValue]]];
+    [self setViewMode:ViewModeFinished];
+    break;
+  case FFMPEGStatusCancelled:
+    [self setViewMode:ViewModeWithFile];
+    break;
+  case FFMPEGStatusError:  
+    NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.", @"OK", nil, nil);
+    [self setViewMode:ViewModeWithFile];
+    break;
+  default:
+    break;
+  }
 }
 @end
