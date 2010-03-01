@@ -20,7 +20,8 @@
 @synthesize finishedConverting,showFile;      
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionTask;
-@synthesize outputPipe,conversionCancelled;
+@synthesize outputPipe;
+@synthesize timer;
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -47,15 +48,18 @@
   switch(viewMode) {
   case ViewModeInitial:
     [self showView:ViewRoot];
+    [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
+    [self setAlphaValuesForViewMode:viewMode];
     [self maybeEnableConvertButton];
     break;
   case ViewModeConverting:
     [self showView:ViewConverting];
+    [self setAlphaValuesForViewMode:viewMode];
     [convertingFilename setStringValue:[filename stringValue]];
     [self setDonePercentage:0];
     [progressIndicator startAnimation:self];
@@ -63,13 +67,13 @@
     break;
   case ViewModeFinished:
     [self showView:ViewRoot];
+    [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
   default:
     break;
   }
-  [self setAlphaValuesForViewMode:viewMode];
 }
 -(void) showView:(int)whichView {
   NSView *theView;
@@ -199,36 +203,106 @@
   NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
   [storage setAttributedString:string];
   [string release];
-  // setup output pipe, read and done notifications, launch background console ffmpeg task
+  
   self.outputPipe = [NSPipe pipe];
   NSFileHandle *output = [outputPipe fileHandleForReading];
   [[NSNotificationCenter defaultCenter]
     addObserver:self selector:@selector(conversionTaskDataAvailable:)
     name:NSFileHandleReadCompletionNotification object:output];
+  
   NSTask *aTask = [[NSTask alloc] init];
   self.conversionTask = aTask;
   [aTask release];
-  self.conversionCancelled = NO; // set flag so we know if task terminated by deliberate cancel
-  [aTask setLaunchPath:[[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""]];
+  
+  [aTask setLaunchPath:[self fFMPEGLaunchPath]];
   [aTask setArguments:[self fFMPEGArguments]];
+
   NSMutableDictionary *environment =
     [[NSMutableDictionary alloc]
       initWithDictionary:[[NSProcessInfo processInfo] environment]];
   [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
   [aTask setEnvironment:environment];
   [environment release];
+
   [aTask setStandardOutput:outputPipe];
   [aTask setStandardError:outputPipe];
+
   [[NSNotificationCenter defaultCenter]
     addObserver:self selector:@selector(conversionTaskCompleted:)
     name:NSTaskDidTerminateNotification object:aTask];
+
+  [self fFMPEGButtonClick:self];
+
+  fFMPEGStatus = FFMPEGStatusConverting;
   [aTask launch];
+
   [[outputPipe fileHandleForReading] readInBackgroundAndNotify];
 }
+-(NSString *) fFMPEGLaunchPath {
+  if(![[devicePicker titleOfSelectedItem] compare:@"G1"])
+    return [[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""];
+  else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"])
+    return [[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""];
+  else if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
+    return [[NSBundle mainBundle] pathForResource:@"ffmpeg2theora" ofType:@""];
+  return nil;
+}
 -(NSArray *) fFMPEGArguments {
-  NSMutableArray *args = [[[NSMutableArray alloc] initWithCapacity:0] autorelease];
-  [args addObject:filePath];
-  return args;
+  NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
+  if(![[devicePicker titleOfSelectedItem] compare:@"G1"]){
+    [args addObject:@"-i"];
+    [args addObject:filePath];
+    [args addObject:@"-y"];
+    [args addObject:@"-fpre"];
+    [args addObject:[[NSBundle mainBundle] pathForResource:@"libx264hq" ofType:@"ffpreset"]];
+    [args addObject:@"-aspect"];
+    [args addObject:@"3:2"];
+    [args addObject:@"-s"];
+    [args addObject:@"400x300"];
+    [args addObject:@"-r"];
+    [args addObject:@"23.976"];
+    [args addObject:@"-vcodec"];
+    [args addObject:@"libx264"];
+    [args addObject:@"-b"];
+    [args addObject:@"480k"];
+    [args addObject:@"-acodec"];
+    [args addObject:@"aac"];
+    [args addObject:@"-ab"];
+    [args addObject:@"96k"];
+    [args addObject:@"-threads"];
+    [args addObject:@"0"];
+    [args addObject:[[filePath stringByDeletingPathExtension]
+		      stringByAppendingPathExtension:@"g1.mp4"]];
+  } else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"]){
+    [args addObject:@"-i"];
+    [args addObject:filePath];
+    [args addObject:@"-y"];
+    [args addObject:@"-b"];
+    [args addObject:@"300k"];
+    [args addObject:@"-s"];
+    [args addObject:@"320x240"];
+    [args addObject:@"-vcodec"];
+    [args addObject:@"libxvid"];
+    [args addObject:@"-ab"];
+    [args addObject:@"32k"];
+    [args addObject:@"-ar"];
+    [args addObject:@"24000"];
+    [args addObject:@"-acodec"];
+    [args addObject:@"aac"];
+    [args addObject:[[filePath stringByDeletingPathExtension]
+		      stringByAppendingPathExtension:@"psp.mp4"]];
+  } else if(![[devicePicker titleOfSelectedItem] compare:@"Theora"]){
+    [args addObject:filePath];
+    [args addObject:@"-o"];
+    [args addObject:[[filePath stringByDeletingPathExtension]
+		      stringByAppendingPathExtension:@"theora.ogv"]];
+    [args addObject:@"--videoquality"];
+    [args addObject:@"8"];
+    [args addObject:@"--audioquality"];
+    [args addObject:@"6"];
+    [args addObject:@"--frontend"];
+  }
+  return [NSArray arrayWithArray:args];
 }
 -(void) conversionTaskDataAvailable:(NSNotification *)note {
   static int textPosition = 0;
@@ -237,54 +311,41 @@
   if(data && [data length])
     [storage replaceCharactersInRange:NSMakeRange([storage length], 0)
 	     withString:[NSString stringWithUTF8String:[data bytes]]];
-  FFMPEGStatus fFMPEGStatus = [self parseFFMPEGOutput:storage fromPosition:textPosition];
+  [self parseFFMPEGOutput:storage fromPosition:textPosition];
   textPosition = [storage length];
   [self setDonePercentage:(float)rand()/RAND_MAX*100];
   [(NSFileHandle *)[note object] readInBackgroundAndNotify];
-  fFMPEGStatus;
 }
--(FFMPEGStatus) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
-  return FFMPEGStatusConverting;
+-(void) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
+  if(fFMPEGStatus == FFMPEGStatusConverting) {
+
+
+  }// don't change a cancel, done or error
 }
 -(void) conversionTaskCompleted:(NSNotification *)note {
-  FFMPEGStatus fFMPEGStatus = FFMPEGStatusDone;
-  if(conversionCancelled)
-    fFMPEGStatus = FFMPEGStatusCancelled;
-  else
+  // never change a cancel
+  if(fFMPEGStatus != FFMPEGStatusCancelled){
     if([[note object] terminationStatus])
       fFMPEGStatus = FFMPEGStatusError;
-  [self convertingDoneWithStatus:fFMPEGStatus];
-}
--(IBAction) fFMPEGButtonClick:(id)sender {
-  [fFMPEGOutputWindow makeKeyAndOrderFront:self];
-}
--(IBAction) cancelButtonClick:(id)sender {
- int iResponse = 
-        NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
-                        @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
-  switch(iResponse) {
-    case NSAlertDefaultReturn:
-      break;
-    case NSAlertAlternateReturn:
-      self.conversionCancelled = YES;
-      if([conversionTask isRunning])
-	[conversionTask terminate];
-      break;
-  default:
-    break;
+    else
+      fFMPEGStatus = FFMPEGStatusDone;
   }
+  // Reschedule to allow final output to pipe to window
+  self.timer = 
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
+	     selector:@selector(convertingDone:)
+	     userInfo:nil
+	     repeats:NO];
 }
--(void) setDonePercentage:(int)percent {
-  [progressIndicator setDoubleValue:percent];
-  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
-}
--(void) convertingDoneWithStatus:(FFMPEGStatus)status {
+-(void) convertingDone:(NSTimer *)timer {
   [progressIndicator stopAnimation:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+					name:NSTaskDidTerminateNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+					name:NSFileHandleReadCompletionNotification object:nil];
   self.outputPipe = 0;
   self.conversionTask = 0;
-  switch(status) {
+  switch(fFMPEGStatus) {
   case FFMPEGStatusDone:
     [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
 						 [convertingFilename stringValue]]];
@@ -300,5 +361,28 @@
   default:
     break;
   }
+}
+-(IBAction) fFMPEGButtonClick:(id)sender {
+  [fFMPEGOutputWindow makeKeyAndOrderFront:self];
+}
+-(IBAction) cancelButtonClick:(id)sender {
+  int iResponse = 
+    NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
+		    @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
+  switch(iResponse) {
+  case NSAlertDefaultReturn:
+    break;
+  case NSAlertAlternateReturn:
+    fFMPEGStatus = FFMPEGStatusCancelled;
+    if([conversionTask isRunning])
+      [conversionTask terminate];
+    break;
+  default:
+    break;
+  }
+}
+-(void) setDonePercentage:(int)percent {
+  [progressIndicator setDoubleValue:percent];
+  [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",percent]];
 }
 @end
