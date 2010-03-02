@@ -14,9 +14,11 @@
 
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
+typedef enum { WAITING, TASKDONE, ERROR } EndSpeedTest;
 typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, FFMPEGStatusError } FFMPEGStatus;
 @interface RootViewController : NSObject <DropBoxViewDelegate>{
   NSView *rootView;
+  ViewMode currentViewMode;
   NSTextField *convertAVideo;
   NSTextField *dragAVideo;
   ClickableText *chooseAFile1;
@@ -32,15 +34,20 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
   NSWindow *window;
   NSView *convertingView;
   NSTextField *convertingFilename;	 
-  NSTextField *percentDone;		 
+  NSTextField *percentDone;
   NSProgressIndicator *progressIndicator;
+  NSButton *cancelButton;
+  NSButton *fFMPEGButton;
   NSWindow *fFMPEGOutputWindow;
   NSTextView *fFMPEGOutputTextView;
   NSThread *conversionThread;
   NSTask *conversionTask;
-  NSPipe *outputPipe;
-  NSTimer *timer;
+  NSTimer *conversionTimer;
+  NSTimer *delayTimer;
   FFMPEGStatus fFMPEGStatus;
+  NSString *speedFile;
+  NSDate *conversionTime;
+  float percentPerOutputByte;
 }
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
@@ -60,11 +67,15 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 @property(nonatomic,retain) IBOutlet NSTextField *convertingFilename;	    
 @property(nonatomic,retain) IBOutlet NSTextField *percentDone;		    
 @property(nonatomic,retain) IBOutlet NSProgressIndicator *progressIndicator;
+@property(nonatomic,retain) IBOutlet NSButton *cancelButton;
+@property(nonatomic,retain) IBOutlet NSButton *fFMPEGButton;
 @property(nonatomic,retain) IBOutlet NSWindow *fFMPEGOutputWindow;
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
 @property(nonatomic,retain) NSTask *conversionTask;
-@property(nonatomic,retain) NSPipe *outputPipe;
-@property(nonatomic,retain) NSTimer *timer;
+@property(nonatomic,retain) NSTimer *conversionTimer;
+@property(nonatomic,retain) NSTimer *delayTimer;
+@property(nonatomic,retain) NSString *speedFile;
+@property(nonatomic,retain) NSDate *conversionTime;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
@@ -79,11 +90,18 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 -(IBAction) cancelButtonClick:(id)sender;
 -(IBAction) fFMPEGButtonClick:(id)sender;
 -(void) convertingDone:(NSTimer *)timer;
--(void) setDonePercentage:(int)percent;
+-(void) updateDonePercentage:(NSTimer *)timer;
 -(NSString *) fFMPEGLaunchPath;
--(NSArray *) fFMPEGArguments;
+-(NSString *) fFMPEGOutputFile:(NSString *)inputFile;
+-(NSArray *) fFMPEGArguments:(NSString *)path;
 -(void) doFFMPEGConversion;
--(void) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position;
+-(void) doSpeedTest;
+-(void) monitorSpeedTest:(NSTimer *)timer;
+-(void) speedTestCompleted:(EndSpeedTest) endTest;
+-(void) doConversion;
+-(NSTask *) setupTask:(NSString *)path andArguments:(NSArray *)arguments
+	   andOutPipe:(NSPipe *)outPipe andErrPipe:(NSPipe *)errPipe
+           andTerminationSelector:(SEL)selector;
 -(void) conversionTaskDataAvailable:(NSNotification *)note;
 -(void) conversionTaskCompleted:(NSNotification *)note;
 @end

@@ -3,15 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>SUFeedURL</key>
-	<string>http://127.0.0.1</string>
+	<string>http://mirovideoconverter.com/update/mac.html
+
+</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>converter3.ico</string>
+	<string>converter3.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.miro.mac.MiroVideoConverter</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

@@ -1,7 +1,2 @@
-Installer - sparkle:
-  -suupdater not found in IB
-  -need more info from clients now
 Highlight on mouse over links
-Remove auto open of FFMPEG text window
-
 
