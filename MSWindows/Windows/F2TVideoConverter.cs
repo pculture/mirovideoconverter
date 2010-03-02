@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Mirosubs.Converter.Windows {
     class F2TVideoConverter : VideoConverter {
+        private static Regex updateRegex = new Regex(@"^\{\""duration\""\s*:\s*([\d\.]+),\s*\""position\""\s*:\s*([\d\.]+)");
+        private static Regex finishedRegex = new Regex(@"\{\""result\""\s*:\s*\""ok\""\}");
+        private static Regex errorRegex = new Regex(@"^\s*\""error\""\s*:\s*\""([^\""]+)");
+
         private string fileName;
         private string outputFileName;
         private string args;
@@ -15,7 +20,7 @@ namespace Mirosubs.Converter.Windows {
             this.outputFileName =
                 Path.ChangeExtension(fileName, ".theora.ogv");
             args = string.Format(
-                "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",
+                "--frontend {0}",
                 fileName, outputFileName);
         }
         public override string OutputFileName {
@@ -23,7 +28,7 @@ namespace Mirosubs.Converter.Windows {
         }
         protected override string ConversionExeName {
             get {
-                return @"ffmpeg-bin\ffmpeg2theora-0.26.exe";
+                return @"ffmpeg-bin\ffmpeg2theora.exe";
             }
         }
         protected override string ConversionArgs {
@@ -32,10 +37,26 @@ namespace Mirosubs.Converter.Windows {
             }
         }
         protected override void process_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e) {
+            Debug.Print("Output");
             Debug.Print(e.Data);
+            string line = e.Data;
+            if (line == null)
+                return;
+            if (updateRegex.IsMatch(line)) {
+                Match m = updateRegex.Match(line);
+                float duration = float.Parse(m.Groups[1].Value);
+                float position = float.Parse(m.Groups[2].Value);
+                IssueConvertProgressEvent((int)(100 * position / duration));
+            }
+            else if (finishedRegex.IsMatch(line))
+                IssueFinishedEvent();
+            else if (errorRegex.IsMatch(line)) {
+                IssueUnknownFormatEvent();
+            }
         }
 
         protected override void process_ErrorDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e) {
+            Debug.Print("Error");
             Debug.Print(e.Data);
         }
     }

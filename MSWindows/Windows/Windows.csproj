@@ -158,7 +158,7 @@
     <Content Include="ffmpeg-bin\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ffmpeg-bin\ffmpeg2theora-0.26.exe">
+    <Content Include="ffmpeg-bin\ffmpeg2theora.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="resources\bg.jpg" />
