@@ -20,7 +20,7 @@ namespace Mirosubs.Converter.Windows {
             this.outputFileName =
                 Path.ChangeExtension(fileName, ".theora.ogv");
             args = string.Format(
-                "--frontend {0}",
+                "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",
                 fileName, outputFileName);
         }
         public override string OutputFileName {
