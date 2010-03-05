@@ -45,6 +45,8 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   int fileSize;
   float percentPerOutputByte;
   BOOL speedTestActive;
+  float videoLength;
+  float previousPercentDone;
 }
 @property(nonatomic,retain) IBOutlet NSView *rootView;
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
@@ -74,6 +76,8 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,assign) int fileSize;
 @property(nonatomic,assign) float elapsedTime;
 @property(nonatomic,assign) float percentPerOutputByte;
+@property(nonatomic,assign) float videoLength;
+@property(nonatomic,assign) float previousPercentDone;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;

@@ -19,7 +19,7 @@
 @synthesize finishedConverting,showFile;      
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton,fFMPEGButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
-@synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte;
+@synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -46,10 +46,6 @@
     [self showView:ViewRoot];
     [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
-    //testing
-    [devicePicker selectItemAtIndex:1];
-    [self dropBoxView:nil fileDropped:@"/Users/cworth/Desktop/30Rock-part.avi"];
-    //
     [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
@@ -61,8 +57,6 @@
     [self showView:ViewConverting];
     [self setAlphaValuesForViewMode:viewMode];
     [convertingFilename setStringValue:[self fFMPEGOutputFile:[filename stringValue]]];
-    [progressIndicator setDoubleValue:0];
-    [progressIndicator startAnimation:self];
     [self doFFMPEGConversion];
     break;
   case ViewModeFinished:
@@ -205,7 +199,7 @@
     case NSAlertDefaultReturn:
       break;
     case NSAlertAlternateReturn:
-      [conversionWatcher requestFinishWithStatus:EndStatusCancel];
+      [conversionWatcher requestFinishWithStatus:EndStatusOK];
       break;
     default:
       break;
@@ -214,24 +208,28 @@
 
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
-  // testing
-  [fFMPEGOutputWindow makeKeyAndOrderFront:self];  
-  //
   if(![[devicePicker titleOfSelectedItem] compare:@"Theora"]){
-    self.speedTestActive = YES;
     [self doSpeedTest];
   } else {
-    self.speedTestActive = NO;
     [self doConversion];
   }
 }
 -(void) doConversion {
-  [self startAConversion:filePath];
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Converting..."];
   [cancelButton setEnabled:YES];
   [fFMPEGButton setEnabled:YES];
+  [self startAConversion:filePath];
 }
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
+  videoLength = 0;
+  percentPerOutputByte = 0;
+  elapsedTime = 0;
+  fileSize = 0;
+  int iResponse;
   switch(status) {
   case EndStatusOK:
     [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
@@ -239,103 +237,99 @@
     [self setViewMode:ViewModeFinished];
     break;
   case EndStatusError:  
-    NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.", @"OK", nil, nil);
+    iResponse = NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.",
+                                    @"OK", @"Show FFMPEG Output", nil);
+    if(iResponse == NSAlertAlternateReturn)
+      [fFMPEGOutputWindow makeKeyAndOrderFront:self];
   case EndStatusCancel:
     [self setViewMode:ViewModeWithFile];
     break;
   }
 }
-#define TEST_SIZE 1024*384
 -(void) doSpeedTest {
+  self.speedTestActive = YES;
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Initializing..."];
   [cancelButton setEnabled:NO];
   [fFMPEGButton setEnabled:NO];
-  [percentDone setStringValue:@"Initializing..."];
-  // copy start of video to a smaller test file
-  self.speedFile = [[[filePath stringByDeletingLastPathComponent]
-                      stringByAppendingPathComponent:@"tmp"]
-                     stringByAppendingPathExtension:[filePath pathExtension]];
-  FILE *fpr = fopen([filePath UTF8String], "rb");
-  FILE *fpw = fopen([speedFile UTF8String], "wb");
-  char *buf = malloc(4096);
-  int nwrote = 0;
-  int nread;
-  if(fpr && fpw && buf){
-    while(feof(fpr)==0){
-      nread = fread(buf, 1, 4096, fpr);
-      if(nwrote+nread > TEST_SIZE){
-        nwrote += fwrite(buf, 1, TEST_SIZE - nwrote, fpw);
-        break;
-      } else
-        nwrote += fwrite(buf, 1, nread, fpw);
-    }
-    fclose(fpr); fclose(fpw);
-    free(buf);
-
-    if(nwrote){
-      [self startAConversion:speedFile];
-      return;
-    }
-  }
-  [self convertingDone:EndStatusError];
+  [self.devicePicker selectItemAtIndex:1];
+  [self startAConversion:filePath];
 }
 -(void) finishUpSpeedTest {
-  int inputFileSize=0, inputSpeedTestFileSize=0, outputSpeedTestFileSize=0;
-  if ([[NSFileManager defaultManager] isReadableFileAtPath:filePath]){
-    inputFileSize = [[[NSFileManager defaultManager]
-                       attributesOfItemAtPath:filePath error:nil]
-                      fileSize];
-  }
-  if([[NSFileManager defaultManager] isReadableFileAtPath:speedFile]){
-    inputSpeedTestFileSize =
-      [[[NSFileManager defaultManager]
-         attributesOfItemAtPath:speedFile error:nil]
-        fileSize];
-  }
-  outputSpeedTestFileSize = self.fileSize;
-  if(inputFileSize && inputSpeedTestFileSize && outputSpeedTestFileSize)
-    percentPerOutputByte = (float)100 /
-      ((float)inputFileSize * outputSpeedTestFileSize/inputSpeedTestFileSize);
-  else
-    percentPerOutputByte = 0;
-  // remove speedTest files
-  if ( [[NSFileManager defaultManager] isReadableFileAtPath:speedFile] )
-    [[NSFileManager defaultManager] removeItemAtPath:speedFile error:nil];
-  NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-  if ( [[NSFileManager defaultManager] isReadableFileAtPath:outputFile] )
-    [[NSFileManager defaultManager] removeItemAtPath:outputFile error:nil];
+  self.speedTestActive = NO;
+  [self.devicePicker selectItemAtIndex:3];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
   self.conversionWatcher = 0;
-  if(status != EndStatusOK){
-    if(self.speedTestActive)
-      self.speedTestActive = NO;
-    [self convertingDone:status];
-  } else {
-    if(self.speedTestActive){
-      self.speedTestActive = NO;
-      [self finishUpSpeedTest];
+  if(self.speedTestActive){
+    [self finishUpSpeedTest];
+    sleep(10);
+    if(status == EndStatusOK){
       [self doConversion];
-    } else {
-      [self convertingDone:status];
+      return;
     }
   }
+  [self convertingDone:status];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
+  [progressIndicator startAnimation:self];
+  char buf[128];
+  [output getBytes:buf maxLength:128 usedLength:nil
+          encoding:NSASCIIStringEncoding options:NSStringEncodingConversionAllowLossy
+          range:NSMakeRange(0,128) remainingRange:nil];
+  buf[127] = 0;
+  if(strlen(buf) == 0)
+    return;
+  static BOOL aboutToReadDuration = NO;
+  if(aboutToReadDuration){
+    self.videoLength = 0;
+    float components[3];
+    sscanf(buf,"%f:%f:%f",components,components+1, components+2);
+    for(int i=2, mult=1; i>=0; i--, mult *= 60)
+      self.videoLength += components[i]  * mult;
+    aboutToReadDuration = NO;
+    if(self.speedTestActive)
+      [conversionWatcher requestFinishWithStatus:EndStatusCancel];
+    return;
+  } else {
+    if(strstr(buf,"Duration:")){
+      aboutToReadDuration = YES;
+      return;
+    }
+  }
 
+  // time= for G1 and PSP
+  float curTime = 0;
+  for(int i=5; i < strlen(buf)-1 && i < 127; i++)
+    if(!strncmp(&buf[i-5],"time=",5)){
+      sscanf(&buf[i], "%f", &curTime);
+      break;
+    }
+  // "position": for Theora
+  for(int i=11; i < strlen(buf)-1 && i < 127; i++)
+    if(!strncmp(&buf[i-11],"\"position\":",11)){
+      sscanf(&buf[i], "%f", &curTime);
+      break;
+    }
+
+  if(self.videoLength && !self.speedTestActive){
+    if(curTime) {
+      float percent = curTime / self.videoLength * 100;
+      if(previousPercentDone && abs(percent - previousPercentDone) > 50)
+        percent = previousPercentDone;
+      if(percent > 100) percent = 99;
+      previousPercentDone = percent;
+      [progressIndicator setIndeterminate:NO];
+      [progressIndicator setDoubleValue:percent];
+      [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
+    }
+  }
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
   self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
   self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
-  if(percentPerOutputByte) {
-    double percent = self.percentPerOutputByte * self.fileSize * 0.9;
-    percent = (percent > 99.1 ? 99 : percent);
-    [progressIndicator setIndeterminate:NO];
-    [progressIndicator setDoubleValue:percent];
-    [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
-  } else {
-    [progressIndicator setIndeterminate:YES];
-    [percentDone setStringValue:@"Converting..."];
-  }
 }
 -(void) startAConversion:(NSString *)file {
   // initialize textbox for FFMPEG output window
@@ -439,3 +433,4 @@
   return [NSArray arrayWithArray:args];
 }
 @end
+

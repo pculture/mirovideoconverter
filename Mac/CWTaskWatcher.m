@@ -170,8 +170,9 @@
         NSString *newOutput = [info objectForKey:arg];
         if(textStorage)
           [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
-                       withString:[NSString stringWithFormat:@"%@: %@",
-                                            arg, newOutput]];
+                       withString:newOutput];
+//                       withString:[NSString stringWithFormat:@"%@:%@",
+//                                            arg, newOutput]];
         [delegate cwTaskWatcher:self updateString:newOutput];
       }
   }

@@ -231,8 +231,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -304,7 +302,7 @@
 							<real>220</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>799 145 852 735 0 0 1680 1028 </string>
+						<string>799 144 852 735 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -320,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>4F9F62BC1135B0E30040352C</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>CWTask.m</string>
+								<string>RootViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -328,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>4F9F62BD1135B0E30040352C</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>CWTask.m</string>
+										<string>RootViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F1AC5101140E6D100CCF217</string>
+										<string>4F1AC57A1140FE7400CCF217</string>
 										<key>history</key>
 										<array>
 											<string>4FFC7CDC113B0ED100CC16E2</string>
@@ -348,9 +346,9 @@
 											<string>4F9D387F113D2244000B6B93</string>
 											<string>4F3CDE261140E11E0061E70B</string>
 											<string>4F3CDE271140E11E0061E70B</string>
-											<string>4F1AC50D1140E6D100CCF217</string>
-											<string>4F1AC50E1140E6D100CCF217</string>
-											<string>4F1AC50F1140E6D100CCF217</string>
+											<string>4F1AC5151140F2BA00CCF217</string>
+											<string>4F1AC5721140FD1000CCF217</string>
+											<string>4F1AC5731140FD1000CCF217</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -366,7 +364,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {610, 417}}</string>
 								<key>RubberWindowFrame</key>
-								<string>799 145 852 735 0 0 1680 1028 </string>
+								<string>799 144 852 735 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -390,8 +388,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {610, 245}}</string>
-										<key>RubberWindowFrame</key>
-										<string>799 145 852 735 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -446,6 +442,8 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {610, 245}}</string>
+										<key>RubberWindowFrame</key>
+										<string>799 144 852 735 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -674,7 +672,7 @@
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>799 145 852 735 0 0 1680 1028 </string>
+	<string>799 144 852 735 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
