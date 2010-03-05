@@ -208,11 +208,10 @@
 
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
-  if(![[devicePicker titleOfSelectedItem] compare:@"Theora"]){
+  if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
     [self doSpeedTest];
-  } else {
+  else
     [self doConversion];
-  }
 }
 -(void) doConversion {
   self.previousPercentDone = 0;

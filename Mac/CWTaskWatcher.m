@@ -45,9 +45,11 @@
   [runStatusLock lock];
   switch(runStatus){
   case RunStatusNone:
+    [runStatusLock unlock];
     break;
   case RunStatusRunning:
     [self fileInfoUpdate];
+    [runStatusLock unlock];
     break;
   case RunStatusEndRequested:
     if([taskEndRequestDate timeIntervalSinceNow]*(-1) >
@@ -55,14 +57,18 @@
       [self killProcess];
       runStatus = RunStatusTaskEnded;
     }
+    [runStatusLock unlock];
     break;
   case RunStatusTaskEnded:
-    [self finish];
     runStatus = RunStatusNone;
     endStatus = EndStatusNone;
+    [runStatusLock unlock];
+    [self finish];
+    break;
+  default:
+    [runStatusLock unlock];
     break;
   }
-  [runStatusLock unlock];
 }
 - (void) finish {
   [self fileInfoUpdate];
