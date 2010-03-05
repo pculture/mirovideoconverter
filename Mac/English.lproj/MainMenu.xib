@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
 			<integer value="372"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -152,7 +152,7 @@
 			<object class="NSWindowTemplate" id="972006081">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{201, 344}, {365, 404}}</string>
+				<string key="NSWindowRect">{{0, 624}, {365, 404}}</string>
 				<int key="NSWTFlags">1954021376</int>
 				<string key="NSWindowTitle">Miro Video Converter</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -536,7 +536,7 @@
 					<string key="NSFrameSize">{365, 404}</string>
 					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
 				<string key="NSMinSize">{365, 426}</string>
 				<string key="NSMaxSize">{365, 426}</string>
 			</object>
@@ -1386,6 +1386,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cancelButton</string>
 							<string>chooseAFile1</string>
 							<string>chooseAFile2</string>
 							<string>convertAVideo</string>
@@ -1395,6 +1396,7 @@
 							<string>devicePicker</string>
 							<string>dragAVideo</string>
 							<string>dropBox</string>
+							<string>fFMPEGButton</string>
 							<string>fFMPEGOutputTextView</string>
 							<string>fFMPEGOutputWindow</string>
 							<string>filename</string>
@@ -1408,6 +1410,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSButton</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
@@ -1417,6 +1420,7 @@
 							<string>NSPopUpButton</string>
 							<string>NSTextField</string>
 							<string>DropBoxView</string>
+							<string>NSButton</string>
 							<string>NSTextView</string>
 							<string>NSWindow</string>
 							<string>NSTextField</string>
