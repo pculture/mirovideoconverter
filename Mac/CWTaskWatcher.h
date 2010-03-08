@@ -8,7 +8,7 @@
 #import "CWTask.h"
 #define TIMEOUT_INTERVAL 3
 
-typedef enum { RunStatusNone, RunStatusRunning, RunStatusEndRequested, RunStatusTaskEnded } TaskRunStatus;
+typedef enum { RunStatusNone, RunStatusRunning, RunStatusEndRequested, RunStatusKillRequested, RunStatusTaskEnded } TaskRunStatus;
 typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } TaskEndStatus;
 
 @interface CWTaskWatcher : NSObject <CWTaskDelegate>{
@@ -19,12 +19,12 @@ typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } Tas
   id delegate;
   NSTextStorage *textStorage;
   NSTimer *loopTimer;
-  NSLock *runStatusLock;
   NSString *progressFile;
   NSDate *taskStartDate;
   NSDate *taskEndRequestDate;
 }
 @property(retain) CWTask *task;
+@property(assign) int pid;
 @property(assign) id delegate;
 @property(assign) NSTextStorage *textStorage;
 @property(retain) NSTimer *loopTimer;
@@ -35,12 +35,11 @@ typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } Tas
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
    andProgressFile:(NSString *)file;
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args;
-- (void) requestFinishWithStatus:(TaskEndStatus)status;
-
-- (void) watchTask:(NSTimer *)timer;
-- (void) killProcess;
 - (void) finish;
-- (void) fileInfoUpdate;
+- (void) watchTask:(NSTimer *)timer;
+- (void) updateFileInfo;
+- (void) requestFinishWithStatus:(TaskEndStatus)status;
+- (void) killProcess;
 @end
 
 @protocol CWTaskWatcherDelegate

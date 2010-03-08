@@ -19,6 +19,7 @@
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args;
 - (void) taskUpdateStdOut:(NSNotification *)note;
 - (void) taskUpdateStdErr:(NSNotification *)note;
+- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note;
 - (void) taskEnded:(NSNotification *)note;
 - (void) tellDelegateTaskEnded:(NSTimer *)timer;
 - (void) endTask;

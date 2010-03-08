@@ -8,13 +8,12 @@
 #import <Cocoa/Cocoa.h>
 
 @implementation CWTaskWatcher
-@synthesize task,delegate,textStorage,loopTimer,progressFile,taskStartDate,taskEndRequestDate;
+@synthesize task,pid,delegate,textStorage,loopTimer,progressFile,taskStartDate,taskEndRequestDate;
 
 - (id)init {
   self = [super init];
   task = [[CWTask alloc] init];
   task.delegate = self;
-  runStatusLock = [[NSLock alloc] init];
   runStatus = RunStatusNone;
   endStatus = EndStatusNone;
   return self;
@@ -24,66 +23,134 @@
 }
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
     andProgressFile:(NSString *)file {
-  [runStatusLock lock];
   if(runStatus == RunStatusNone){
     runStatus = RunStatusRunning;
     endStatus = EndStatusNone;
     self.progressFile = file;
     if([[NSFileManager defaultManager] isReadableFileAtPath:file])
       [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
-    pid = [task startTask:path withArgs:args];
+    self.pid = [task startTask:path withArgs:args];
     self.taskStartDate = [NSDate date];
     self.loopTimer = 
-      [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
+      [NSTimer scheduledTimerWithTimeInterval:0.3 target:self
                selector:@selector(watchTask:)
                userInfo:nil
                repeats:YES];
   }
-  [runStatusLock unlock];
-}
--(void) watchTask:(NSTimer *)timer {
-  [runStatusLock lock];
-  switch(runStatus){
-  case RunStatusNone:
-    [runStatusLock unlock];
-    break;
-  case RunStatusRunning:
-    [self fileInfoUpdate];
-    [runStatusLock unlock];
-    break;
-  case RunStatusEndRequested:
-    if([taskEndRequestDate timeIntervalSinceNow]*(-1) >
-       TIMEOUT_INTERVAL) {
-      [self killProcess];
-      runStatus = RunStatusTaskEnded;
-    }
-    [runStatusLock unlock];
-    break;
-  case RunStatusTaskEnded:
-    runStatus = RunStatusNone;
-    endStatus = EndStatusNone;
-    [runStatusLock unlock];
-    [self finish];
-    break;
-  default:
-    [runStatusLock unlock];
-    break;
-  }
 }
 - (void) finish {
-  [self fileInfoUpdate];
+  if([loopTimer isValid])
+    [loopTimer invalidate];
+  [self updateFileInfo];
   if(progressFile && (endStatus == EndStatusError || endStatus == EndStatusCancel))
     if([[NSFileManager defaultManager] isReadableFileAtPath:progressFile])
       [[NSFileManager defaultManager] removeItemAtPath:progressFile error:nil];
   [delegate cwTaskWatcher:self ended:endStatus];
-  if([loopTimer isValid])
-    [loopTimer invalidate];
   self.task = 0;
   self.loopTimer = 0;
   self.progressFile = 0;
   self.taskEndRequestDate = 0;
 }
-- (void) fileInfoUpdate {
+-(void) watchTask:(NSTimer *)timer {
+  int i=1; i=2;
+  switch(runStatus){
+  case RunStatusNone:
+    break;
+  case RunStatusRunning:
+    [self updateFileInfo];
+    break;
+  case RunStatusEndRequested:
+    if([self.taskEndRequestDate timeIntervalSinceNow]*(-1) >
+       TIMEOUT_INTERVAL) {
+      runStatus = RunStatusKillRequested;
+      self.taskEndRequestDate = [NSDate date];
+      [self killProcess];
+    }
+    break;
+  case RunStatusKillRequested:
+    if([self.taskEndRequestDate timeIntervalSinceNow]*(-1) >
+       TIMEOUT_INTERVAL) {
+      runStatus = RunStatusTaskEnded;
+    }
+    break;
+  case RunStatusTaskEnded:
+    [self finish];
+    runStatus = RunStatusNone;
+    endStatus = EndStatusNone;
+    break;
+  }
+}
+- (void) updateFileInfo {
+  int filesize = 0;
+  if(progressFile && ![[NSFileManager defaultManager] isReadableFileAtPath:progressFile])
+    filesize = (int) [[[NSFileManager defaultManager]
+                        attributesOfItemAtPath:progressFile error:nil]
+                       fileSize];
+  int time = [taskStartDate timeIntervalSinceNow] * -1;
+  NSDictionary *dict =
+    [NSDictionary dictionaryWithObjects:
+                    [NSArray arrayWithObjects:
+                               [NSNumber numberWithFloat:(float)time],
+                             [NSNumber numberWithInt:filesize],nil]
+                  forKeys:
+                    [NSArray arrayWithObjects:
+                               @"elapsedTime",@"filesize",nil]];
+  [delegate cwTaskWatcher:self updateFileInfo:dict];
+}
+- (void) requestFinishWithStatus:(TaskEndStatus)status {
+  if(runStatus == RunStatusRunning){
+    runStatus = RunStatusEndRequested;
+    endStatus = status;
+    [task endTask];
+    self.taskEndRequestDate = [NSDate date];
+  }
+}
+- (void)cwTask:(CWTask *)cwtask ended:(int)returnValue{
+  switch(runStatus) {
+  case RunStatusNone:
+    break;
+  case RunStatusRunning:
+    runStatus = RunStatusTaskEnded;
+    endStatus = (returnValue == 0 ? EndStatusOK : EndStatusError);
+    break;
+  case RunStatusEndRequested:
+    runStatus = RunStatusTaskEnded;
+    break;
+  case RunStatusKillRequested:
+    runStatus = RunStatusTaskEnded;
+    break;
+  case RunStatusTaskEnded:
+    break;
+  }
+}
+- (void)cwTask:(CWTask *)cwtask update:(NSDictionary *)info{
+  if(runStatus == RunStatusRunning || runStatus == RunStatusEndRequested){
+    for(NSString *arg in [NSArray arrayWithObjects:@"stdout",@"stderr",nil]){
+      NSString *newOutput = [info objectForKey:arg];
+      if(newOutput){
+        if(textStorage)
+          [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
+                       withString:newOutput];
+        [delegate cwTaskWatcher:self updateString:newOutput];
+      }
+    }
+  }
+}
+-(void) killProcess {
+  CWTask *killTask = [[CWTask alloc] init];
+  [task startTask:@"/bin/sh"
+        withArgs:[NSArray arrayWithObjects:
+                            @"-c",
+                          [NSString stringWithFormat:@"kill -9 %i", pid],
+                          nil]];
+  [killTask release];
+}
+
+@end
+
+//                       withString:[NSString stringWithFormat:@"%@:%@",
+//                                            arg, newOutput]];
+
 //-(void) monitorSpeedTest:(NSTimer *)timer {
 //  static int oldSize = 0;
 //
@@ -116,82 +183,4 @@
 //    oldSize = 0;
 //    [self speedTestCompleted:endTest];
 //  }
-
-  int filesize = 0;
-  if(progressFile && ![[NSFileManager defaultManager] isReadableFileAtPath:progressFile])
-    filesize = (int) [[[NSFileManager defaultManager]
-                        attributesOfItemAtPath:progressFile error:nil]
-                       fileSize];
-  int time = [taskStartDate timeIntervalSinceNow] * -1;
-  NSDictionary *dict =
-    [NSDictionary dictionaryWithObjects:
-                    [NSArray arrayWithObjects:
-                               [NSNumber numberWithFloat:(float)time],
-                             [NSNumber numberWithInt:filesize],nil]
-                  forKeys:
-                    [NSArray arrayWithObjects:
-                               @"elapsedTime",@"filesize",nil]];
-  [delegate cwTaskWatcher:self updateFileInfo:dict];
-}
-- (void) requestFinishWithStatus:(TaskEndStatus)status {
-  [runStatusLock lock];
-  switch(runStatus) {
-  case RunStatusNone:
-    break;
-  case RunStatusRunning:
-    runStatus = RunStatusEndRequested;
-    endStatus = status;
-    [task endTask];
-    self.taskEndRequestDate = [NSDate date];
-    break;
-  case RunStatusEndRequested:
-    break;
-  case RunStatusTaskEnded:
-    break;
-  }
-  [runStatusLock unlock];
-}
-- (void)cwTask:(CWTask *)cwtask ended:(int)returnValue{
-  [runStatusLock lock];
-  switch(runStatus) {
-  case RunStatusNone:
-    break;
-  case RunStatusRunning:
-    runStatus = RunStatusTaskEnded;
-    endStatus = (returnValue == 0 ? EndStatusOK : EndStatusError);
-    break;
-  case RunStatusEndRequested:
-    runStatus = RunStatusTaskEnded;
-    break;
-  case RunStatusTaskEnded:
-    break;
-  }
-  [runStatusLock unlock];
-}
-- (void)cwTask:(CWTask *)cwtask update:(NSDictionary *)info{
-  [runStatusLock lock];
-  if(runStatus == RunStatusRunning || runStatus == RunStatusEndRequested){
-    for(NSString *arg in [NSArray arrayWithObjects:@"stdout",@"stderr",nil])
-      if([info objectForKey:arg]){
-        NSString *newOutput = [info objectForKey:arg];
-        if(textStorage)
-          [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
-                       withString:newOutput];
-//                       withString:[NSString stringWithFormat:@"%@:%@",
-//                                            arg, newOutput]];
-        [delegate cwTaskWatcher:self updateString:newOutput];
-      }
-  }
-  [runStatusLock unlock];
-}
--(void) killProcess {
-  CWTask *killTask = [[CWTask alloc] init];
-  [task startTask:@"/bin/sh"
-        withArgs:[NSArray arrayWithObjects:
-                            @"-c",
-                          [NSString stringWithFormat:@"kill -9 %i", pid],
-                          nil]];
-  [killTask release];
-}
-
-@end
+//  }

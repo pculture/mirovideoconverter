@@ -17,7 +17,7 @@
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      
-@synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton,fFMPEGButton;
+@synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
 @synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
 
@@ -44,12 +44,14 @@
   switch(viewMode) {
   case ViewModeInitial:
     [self showView:ViewRoot];
+    [convertAVideo setStringValue:@"Converting"];
     [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
+    [convertAVideo setStringValue:@"Ready To Convert!"];
     [self setAlphaValuesForViewMode:viewMode];
     [self maybeEnableConvertButton];
     break;
@@ -136,7 +138,7 @@
 
 // Functions for root view
 - (NSString *)formatFilename:(NSString *)inFile {
-  int maxLength = 37;
+  int maxLength = 36;
   NSString *outFile = [inFile stringByAbbreviatingWithTildeInPath];
   if([outFile length] > maxLength)
     outFile = [outFile lastPathComponent];
@@ -199,7 +201,7 @@
     case NSAlertDefaultReturn:
       break;
     case NSAlertAlternateReturn:
-      [conversionWatcher requestFinishWithStatus:EndStatusOK];
+      [conversionWatcher requestFinishWithStatus:EndStatusCancel];
       break;
     default:
       break;
@@ -208,6 +210,7 @@
 
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
+  self.videoLength = 0;
   if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
     [self doSpeedTest];
   else
@@ -219,7 +222,6 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Converting..."];
   [cancelButton setEnabled:YES];
-  [fFMPEGButton setEnabled:YES];
   [self startAConversion:filePath];
 }
 -(void) convertingDone:(TaskEndStatus)status {
@@ -237,7 +239,7 @@
     break;
   case EndStatusError:  
     iResponse = NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.",
-                                    @"OK", @"Show FFMPEG Output", nil);
+                                    @"OK", @"Show Output", nil);
     if(iResponse == NSAlertAlternateReturn)
       [fFMPEGOutputWindow makeKeyAndOrderFront:self];
   case EndStatusCancel:
@@ -252,7 +254,6 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Initializing..."];
   [cancelButton setEnabled:NO];
-  [fFMPEGButton setEnabled:NO];
   [self.devicePicker selectItemAtIndex:1];
   [self startAConversion:filePath];
 }
@@ -261,10 +262,8 @@
   [self.devicePicker selectItemAtIndex:3];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
-  self.conversionWatcher = 0;
   if(self.speedTestActive){
     [self finishUpSpeedTest];
-    sleep(10);
     if(status == EndStatusOK){
       [self doConversion];
       return;
@@ -273,50 +272,68 @@
   [self convertingDone:status];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
-  [progressIndicator startAnimation:self];
-  char buf[128];
-  [output getBytes:buf maxLength:128 usedLength:nil
-          encoding:NSASCIIStringEncoding options:NSStringEncodingConversionAllowLossy
-          range:NSMakeRange(0,128) remainingRange:nil];
-  buf[127] = 0;
-  if(strlen(buf) == 0)
-    return;
+  static int it = 0;
+  char outfile[1024];
+  sprintf(outfile,"/Users/cworth/out-%i.txt",it++);
+  FILE *itfp = fopen(outfile,"w");
+  const char *text = [output UTF8String];
+  fwrite(text,1,strlen(text),itfp);
+  fclose(itfp);
+
   static BOOL aboutToReadDuration = NO;
-  if(aboutToReadDuration){
-    self.videoLength = 0;
-    float components[3];
-    sscanf(buf,"%f:%f:%f",components,components+1, components+2);
-    for(int i=2, mult=1; i>=0; i--, mult *= 60)
-      self.videoLength += components[i]  * mult;
-    aboutToReadDuration = NO;
-    if(self.speedTestActive)
-      [conversionWatcher requestFinishWithStatus:EndStatusCancel];
+
+  [progressIndicator startAnimation:self];
+  
+  char buf[[output length]+1]; NSUInteger usedLength;
+  [output getBytes:buf maxLength:[output length] usedLength:&usedLength
+          encoding:NSASCIIStringEncoding options:NSStringEncodingConversionAllowLossy
+          range:NSMakeRange(0,[output length]) remainingRange:nil];
+  if(usedLength == 0)
     return;
-  } else {
-    if(strstr(buf,"Duration:")){
+  buf[usedLength] = 0;
+  char *p = 0;
+  if(self.videoLength == 0) {
+    // see if "Duration:" string is in this input block, and if so, if
+    // duration info is as well
+    if(strlen(buf) >= strlen("Duration:")) {
+      p = strstr(buf,"Duration:");
+    if(p && strlen(p) >= strlen("Duration: ") + strlen("00:00:00")) {
+      p += strlen("Duration: ");
       aboutToReadDuration = YES;
+    }
+    }
+    if(p==0)
+      p = buf;
+    if(aboutToReadDuration){
+      self.videoLength = 0;
+      float components[3];
+      sscanf(p,"%f:%f:%f",components,components+1, components+2);
+      for(int i=2, mult=1; i>=0; i--, mult *= 60)
+	self.videoLength += components[i]  * mult;
+      aboutToReadDuration = NO;
+      if(self.speedTestActive)
+	[conversionWatcher requestFinishWithStatus:EndStatusOK];
       return;
+    } else {
+      // if duration info was not in this block, see if "Duration: string" was
+      // (this is what usually happens)
+      if(strlen(buf) >= strlen("Duration:") && strstr(buf,"Duration:"))
+	aboutToReadDuration = YES;
     }
   }
 
-  // time= for G1 and PSP
+  // time updates: time= for G1 and PSP, 
   float curTime = 0;
-  for(int i=5; i < strlen(buf)-1 && i < 127; i++)
-    if(!strncmp(&buf[i-5],"time=",5)){
-      sscanf(&buf[i], "%f", &curTime);
-      break;
-    }
+  if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
+    sscanf(p+strlen("time="),"%f", &curTime);
   // "position": for Theora
-  for(int i=11; i < strlen(buf)-1 && i < 127; i++)
-    if(!strncmp(&buf[i-11],"\"position\":",11)){
-      sscanf(&buf[i], "%f", &curTime);
-      break;
-    }
-
+  if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
+    sscanf(p+strlen("\"position\":"),"%f", &curTime);
+  // update percent done
   if(self.videoLength && !self.speedTestActive){
     if(curTime) {
       float percent = curTime / self.videoLength * 100;
-      if(previousPercentDone && abs(percent - previousPercentDone) > 50)
+      if(previousPercentDone && percent - previousPercentDone > 50)
         percent = previousPercentDone;
       if(percent > 100) percent = 99;
       previousPercentDone = percent;

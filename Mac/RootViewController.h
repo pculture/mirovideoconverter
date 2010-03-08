@@ -36,7 +36,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   NSTextField *percentDone;
   NSProgressIndicator *progressIndicator;
   NSButton *cancelButton;
-  NSButton *fFMPEGButton;
   NSWindow *fFMPEGOutputWindow;
   NSTextView *fFMPEGOutputTextView;
   CWTaskWatcher *conversionWatcher;
@@ -67,7 +66,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,retain) IBOutlet NSTextField *percentDone;		    
 @property(nonatomic,retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property(nonatomic,retain) IBOutlet NSButton *cancelButton;
-@property(nonatomic,retain) IBOutlet NSButton *fFMPEGButton;
 @property(nonatomic,retain) IBOutlet NSWindow *fFMPEGOutputWindow;
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
 @property(nonatomic,retain) CWTaskWatcher *conversionWatcher;

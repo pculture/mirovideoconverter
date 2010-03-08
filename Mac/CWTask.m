@@ -43,35 +43,17 @@
 
   return [task processIdentifier];
 }
-
 - (void) taskUpdateStdOut:(NSNotification *)note {
-  if([[[note userInfo] objectForKey:NSFileHandleNotificationDataItem] bytes]){
-    NSDictionary *dict =
-      [NSDictionary dictionaryWithObject:
-                      [NSString stringWithUTF8String:
-                                  [[[note userInfo]
-                                     objectForKey:
-                                       NSFileHandleNotificationDataItem]
-                                    bytes]]
-                    forKey:@"stdout"];
-    [delegate cwTask:self update:dict];
-    [(NSFileHandle *)[note object] readInBackgroundAndNotify];
-  }  else
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                          name:NSFileHandleReadCompletionNotification
-                                          object:[note object]];
+  [self taskUpdateStream:@"stdout" withNote:note];
 }
-
 - (void) taskUpdateStdErr:(NSNotification *)note {
-  if([[[note userInfo] objectForKey:NSFileHandleNotificationDataItem] bytes]){
-    NSDictionary *dict =
-      [NSDictionary dictionaryWithObject:
-                      [NSString stringWithUTF8String:
-                                  [[[note userInfo]
-                                     objectForKey:
-                                       NSFileHandleNotificationDataItem]
-                                    bytes]]
-                    forKey:@"stderr"];
+  [self taskUpdateStream:@"stderr" withNote:note];
+}
+- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note {
+  NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  if([data length] > 0) {
+    NSString *string = [NSString stringWithUTF8String:[data bytes]];
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:string forKey:stream];
     [delegate cwTask:self update:dict];
     [(NSFileHandle *)[note object] readInBackgroundAndNotify];
   } else
