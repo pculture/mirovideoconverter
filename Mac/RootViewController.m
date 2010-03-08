@@ -272,14 +272,6 @@
   [self convertingDone:status];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
-  static int it = 0;
-  char outfile[1024];
-  sprintf(outfile,"/Users/cworth/out-%i.txt",it++);
-  FILE *itfp = fopen(outfile,"w");
-  const char *text = [output UTF8String];
-  fwrite(text,1,strlen(text),itfp);
-  fclose(itfp);
-
   static BOOL aboutToReadDuration = NO;
 
   [progressIndicator startAnimation:self];
