@@ -17,8 +17,12 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        private const string VERSION_URL = "http://8planes.com/miroconverterversion.xml";
+        private const string MSI_URL = "http://8planes.com";
+
         public MainWindow() {
             InitializeComponent();
+            Updater.CheckForUpdate(VERSION_URL, MSI_URL);
             fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
         }
 
