@@ -8,9 +8,12 @@ using System.Text.RegularExpressions;
 
 namespace Mirosubs.Converter.Windows {
     class F2TVideoConverter : VideoConverter {
-        private static Regex updateRegex = new Regex(@"^\{\""duration\""\s*:\s*([\d\.]+),\s*\""position\""\s*:\s*([\d\.]+)");
-        private static Regex finishedRegex = new Regex(@"\{\""result\""\s*:\s*\""ok\""\}");
-        private static Regex errorRegex = new Regex(@"^\s*\""error\""\s*:\s*\""([^\""]+)");
+        private static Regex updateRegex = new Regex(
+            @"^\{\""duration\""\s*:\s*([\d\.]+),\s*\""position\""\s*:\s*([\d\.]+)");
+        private static Regex finishedRegex = new Regex(
+            @"\{\""result\""\s*:\s*\""ok\""\}");
+        private static Regex errorRegex = new Regex(
+            @"^\s*\""error\""\s*:\s*\""([^\""]+)");
 
         private string fileName;
         private string outputFileName;
