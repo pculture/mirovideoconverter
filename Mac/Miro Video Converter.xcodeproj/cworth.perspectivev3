@@ -302,7 +302,7 @@
 							<real>199</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-2 619 503 259 0 0 1440 878 </string>
+						<string>-2 618 503 259 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -332,7 +332,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F91DA301146C6DA00BB303D</string>
+										<string>4F91DA341146C89D00BB303D</string>
 										<key>history</key>
 										<array>
 											<string>4FFC7CDC113B0ED100CC16E2</string>
@@ -369,7 +369,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {282, 105}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-2 619 503 259 0 0 1440 878 </string>
+								<string>-2 618 503 259 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -394,7 +394,7 @@
 										<key>Frame</key>
 										<string>{{10, 27}, {282, 81}}</string>
 										<key>RubberWindowFrame</key>
-										<string>-2 619 503 259 0 0 1440 878 </string>
+										<string>-2 618 503 259 0 0 1440 878 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -672,13 +672,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>4F91DA311146C6DA00BB303D</string>
 		<string>4F91DA0F1146C34000BB303D</string>
 		<string>4F91DA101146C34000BB303D</string>
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>-2 619 503 259 0 0 1440 878 </string>
+	<string>-2 618 503 259 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
