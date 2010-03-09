@@ -11,29 +11,27 @@
 #import <Cocoa/Cocoa.h>
 #import "ClickableText.h"
 #import "DropBoxView.h"
-
-#define FFMPEG_EXEC_NSSTRING @"ffmpeg.sh"
+#import "CWTaskWatcher.h"
 
 @implementation RootViewController
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      
-@synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton,fFMPEGButton;
-@synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionTask;
-@synthesize conversionTimer,delayTimer,speedFile,conversionTime;
+@synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
+@synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
+@synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
   if(firstTime){
-    [self setViewMode:ViewModeInitial];
     [devicePicker removeAllItems];
     [devicePicker addItemWithTitle:@"Pick a Device or Video Format"];
     [devicePicker addItemWithTitle:@"G1"];
     [devicePicker addItemWithTitle:@"PSP"];
     [devicePicker addItemWithTitle:@"Theora"];
-    [convertButton setEnabled:NO];
     [dropBox registerForDraggedTypes: [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
     firstTime = NO;
+    [self setViewMode:ViewModeInitial];
   }
 }
 -(void) loadConvertingView {
@@ -46,12 +44,14 @@
   switch(viewMode) {
   case ViewModeInitial:
     [self showView:ViewRoot];
+    [convertAVideo setStringValue:@"Converting"];
     [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
+    [convertAVideo setStringValue:@"Ready To Convert!"];
     [self setAlphaValuesForViewMode:viewMode];
     [self maybeEnableConvertButton];
     break;
@@ -59,8 +59,6 @@
     [self showView:ViewConverting];
     [self setAlphaValuesForViewMode:viewMode];
     [convertingFilename setStringValue:[self fFMPEGOutputFile:[filename stringValue]]];
-    [progressIndicator setDoubleValue:0];
-    [progressIndicator startAnimation:self];
     [self doFFMPEGConversion];
     break;
   case ViewModeFinished:
@@ -140,15 +138,15 @@
 
 // Functions for root view
 - (NSString *)formatFilename:(NSString *)inFile {
-  int maxLength = 37;
+  int maxLength = 36;
   NSString *outFile = [inFile stringByAbbreviatingWithTildeInPath];
   if([outFile length] > maxLength)
     outFile = [outFile lastPathComponent];
   if([outFile length] > maxLength){
     NSRange range = { 0, (maxLength-3)/2 - 1 };
     outFile = [NSString stringWithFormat:@"%@...%@",
-			[outFile substringWithRange:range],
-			[outFile substringFromIndex:[outFile length] - (maxLength-3)/2]];
+                        [outFile substringWithRange:range],
+                        [outFile substringFromIndex:[outFile length] - (maxLength-3)/2]];
   }
   return outFile;
 }
@@ -159,15 +157,15 @@
 }
 -(IBAction) chooseAFile:(id)sender {
   [[NSOpenPanel openPanel] beginSheetForDirectory:nil
-			   file:nil
-			   types:nil
-			   modalForWindow:[self window]
-			   modalDelegate:self
-			   didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-			   contextInfo:nil];
+                           file:nil
+                           types:nil
+                           modalForWindow:[self window]
+                           modalDelegate:self
+                           didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
+                           contextInfo:nil];
 }
 - (void)openPanelDidEnd:(NSOpenPanel *)sheet returnCode:(int)returnCode
-	    contextInfo:(void *)contextInfo {
+            contextInfo:(void *)contextInfo {
   if(returnCode == NSOKButton) {
     self.filePath = [[sheet filenames] objectAtIndex:0];
     [sheet close];
@@ -192,318 +190,173 @@
 }
 
 // Functions for converting view
--(void) doFFMPEGConversion {
-  [self doSpeedTest];
-}
-/**
-  setup FFMPEG task with an output pipe
-  request background read and notify
-*/
-#define TEST_SIZE 1024*384
--(void) doSpeedTest {
-  [cancelButton setEnabled:NO];
-  [fFMPEGButton setEnabled:NO];
-  [percentDone setStringValue:@"Initializing..."];
-
-  // smaller test file
-  self.speedFile = [[[filePath stringByDeletingLastPathComponent]
-			  stringByAppendingPathComponent:@"tmp"]
-			 stringByAppendingPathExtension:[filePath pathExtension]];
-  FILE *fpr = fopen([filePath UTF8String], "rb");
-  FILE *fpw = fopen([speedFile UTF8String], "wb");
-  char *buf = malloc(4096);
-  int nwrote = 0;
-  int nread;
-  if(fpr && fpw && buf){
-    while(feof(fpr)==0){
-      nread = fread(buf, 1, 4096, fpr);
-      if(nwrote+nread > TEST_SIZE){
-	nwrote += fwrite(buf, 1, TEST_SIZE - nwrote, fpw);
-	break;
-      } else
-	nwrote += fwrite(buf, 1, nread, fpw);
-    }
-    fclose(fpr); fclose(fpw);
-    free(buf);
-
-    if(nwrote){
-      // remove speedTest output file
-      NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-      if ( [[NSFileManager defaultManager] isReadableFileAtPath:outputFile] )
-	[[NSFileManager defaultManager] removeItemAtPath:outputFile error:nil];
-      //setup task
-      NSTask *aTask =
-	[self setupTask:[self fFMPEGLaunchPath]
-	      andArguments:[self fFMPEGArguments:speedFile]
-	      andOutPipe:nil
-	      andErrPipe:nil
-	      andTerminationSelector:nil];
-      self.conversionTask = aTask;
-      [aTask release];
-      
-      [aTask launch];
-
-      self.conversionTime = [NSDate date];
-      self.conversionTimer = 
-	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self
-		 selector:@selector(monitorSpeedTest:)
-		 userInfo:nil
-		 repeats:YES];
-      
-    } else
-    [self doConversion];
-  } else
-    [self doConversion];
-}    
--(void) monitorSpeedTest:(NSTimer *)timer {
-  static int oldSize = 0;
-
-  int fileSize = 0;
-  EndSpeedTest endTest = WAITING;
-  if(![conversionTask isRunning])
-    endTest = TASKDONE;   // task ended
-  else {
-    NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-    if (![[NSFileManager defaultManager] isReadableFileAtPath:outputFile]) {
-      if([conversionTime timeIntervalSinceNow]*(-1) > 3.0)
-	endTest = ERROR; // file not created for 3 sec after start
-    } else {
-      fileSize = (int) [[[NSFileManager defaultManager]
-			  attributesOfItemAtPath:outputFile error:nil]
-			 fileSize];
-      if(oldSize && fileSize == oldSize &&
-	 [conversionTime timeIntervalSinceNow]*(-1) > 3.0)
-	endTest = ERROR; // file hung for 3 sec since last update
-    }
-  }
-
-  if(endTest == WAITING){
-    if(oldSize != fileSize){
-      oldSize = fileSize;
-      self.conversionTime = [NSDate date];
-    }
-  } else {
-    [timer invalidate];
-    oldSize = 0;
-    [self speedTestCompleted:endTest];
-  }
-}
--(void) speedTestCompleted:(EndSpeedTest) endTest {
-  if([conversionTask isRunning])
-    [conversionTask terminate];
-  self.conversionTimer = 0;
-  self.conversionTask = 0;
-
-  if(endTest == ERROR) {
-    fFMPEGStatus = FFMPEGStatusError;
-  } else {
-    int inputFileSize=0, inputSpeedTestFileSize=0, outputSpeedTestFileSize=0;
-    if ([[NSFileManager defaultManager] isReadableFileAtPath:filePath]){
-      inputFileSize = [[[NSFileManager defaultManager]
-			 attributesOfItemAtPath:filePath error:nil]
-			fileSize];
-    }
-    if([[NSFileManager defaultManager] isReadableFileAtPath:speedFile]){
-      inputSpeedTestFileSize =
-	[[[NSFileManager defaultManager]
-	   attributesOfItemAtPath:speedFile error:nil]
-	  fileSize];
-    }
-    NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-    if([[NSFileManager defaultManager] isReadableFileAtPath:outputFile]){
-      outputSpeedTestFileSize =
-	[[[NSFileManager defaultManager]
-	   attributesOfItemAtPath:outputFile error:nil]
-	  fileSize];
-    }
-    if(inputFileSize && inputSpeedTestFileSize && outputSpeedTestFileSize)
-      percentPerOutputByte = (float)100 /
-	((float)inputFileSize * outputSpeedTestFileSize/inputSpeedTestFileSize);
-    else
-      percentPerOutputByte = 0;
-  }
-
-  // remove speedTest files
-  if ( [[NSFileManager defaultManager] isReadableFileAtPath:speedFile] )
-    [[NSFileManager defaultManager] removeItemAtPath:speedFile error:nil];
-  NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-  if ( [[NSFileManager defaultManager] isReadableFileAtPath:outputFile] )
-    [[NSFileManager defaultManager] removeItemAtPath:outputFile error:nil];
-
-  if(endTest == ERROR)
-    [self convertingDone:nil];
-  else
-    [self doConversion];
-}
--(void) doConversion {
-  // remove output file
-  NSString *outputFile = [self fFMPEGOutputFile:filePath];
-  if ( [[NSFileManager defaultManager] isReadableFileAtPath:outputFile] )
-    [[NSFileManager defaultManager] removeItemAtPath:outputFile error:nil];
-
-  // initialize textbox for FFMPEG output window
-  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-  NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
-  [storage setAttributedString:string];
-  [string release];
-  
-  // start conversion
-  NSPipe *outputPipe = [NSPipe pipe];
-
-  NSTask *aTask =
-    [self setupTask:[self fFMPEGLaunchPath]
-	  andArguments:[self fFMPEGArguments:filePath]
-	  andOutPipe:outputPipe
-	  andErrPipe:outputPipe
-	  andTerminationSelector:@selector(conversionTaskCompleted:)];
-  self.conversionTask = aTask;
-  [aTask release];
-  
-  NSFileHandle *output = [outputPipe fileHandleForReading];
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self selector:@selector(conversionTaskDataAvailable:)
-    name:NSFileHandleReadCompletionNotification object:output];
-  
-  fFMPEGStatus = FFMPEGStatusConverting;
-  [aTask launch];
-
-  [output readInBackgroundAndNotify];
-
-  self.conversionTimer = 
-    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
-	     selector:@selector(updateDonePercentage:)
-	     userInfo:nil
-	     repeats:YES];
-
-  [cancelButton setEnabled:YES];
-  [fFMPEGButton setEnabled:YES];
-}
--(NSTask *) setupTask:(NSString *)path andArguments:(NSArray *)arguments
-	   andOutPipe:(NSPipe *)outPipe andErrPipe:(NSPipe *)errPipe
-           andTerminationSelector:(SEL)selector {
-
-  NSTask *aTask = [[NSTask alloc] init];
-
-  [aTask setLaunchPath:path];
-  [aTask setArguments:arguments];
-
-  NSMutableDictionary *environment =
-    [[NSMutableDictionary alloc]
-      initWithDictionary:[[NSProcessInfo processInfo] environment]];
-  [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
-  [aTask setEnvironment:environment];
-  [environment release];
-
-  if(outPipe)
-    [aTask setStandardError:outPipe];
-  if(errPipe)
-    [aTask setStandardError:errPipe];
-
-  if(selector)
-    [[NSNotificationCenter defaultCenter]
-      addObserver:self selector:selector
-      name:NSTaskDidTerminateNotification object:aTask];
-
-  return aTask;
-}
--(void) conversionTaskDataAvailable:(NSNotification *)note {
-  static int textPosition = 0;
-  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-  NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
-  if(data && [data length])
-    [storage replaceCharactersInRange:NSMakeRange([storage length], 0)
-	     withString:[NSString stringWithUTF8String:[data bytes]]];
-  textPosition = [storage length];
-  [(NSFileHandle *)[note object] readInBackgroundAndNotify];
-}
--(void) parseFFMPEGOutput:(NSTextStorage *)storage fromPosition:(int)position {
-  if(fFMPEGStatus == FFMPEGStatusConverting) {
-
-
-  }// don't change a cancel, done or error
-}
--(void) conversionTaskCompleted:(NSNotification *)note {
-  // never change a cancel
-  if(fFMPEGStatus != FFMPEGStatusCancelled){
-    if([[note object] terminationStatus])
-      fFMPEGStatus = FFMPEGStatusError;
-    else
-      fFMPEGStatus = FFMPEGStatusDone;
-  }
-  // Invalidate old timer and Schedule new timer to allow final output to pipe to window
-  if([self.conversionTimer isValid])
-    [self.conversionTimer invalidate];
-  self.delayTimer = 
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
-	     selector:@selector(convertingDone:)
-	     userInfo:nil
-	     repeats:NO];
-}
--(void) convertingDone:(NSTimer *)timer {
-  [progressIndicator stopAnimation:self];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-					name:NSTaskDidTerminateNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-					name:NSFileHandleReadCompletionNotification object:nil];
-  self.conversionTask = 0;
-  NSString *outputFile = [self fFMPEGOutputFile:filePath];
-  switch(fFMPEGStatus) {
-  case FFMPEGStatusDone:
-    [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
-						 [convertingFilename stringValue]]];
-    [self setViewMode:ViewModeFinished];
-    break;
-  case FFMPEGStatusError:  
-    NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.", @"OK", nil, nil);
-  case FFMPEGStatusCancelled:
-    if ( [[NSFileManager defaultManager] isReadableFileAtPath:outputFile] )
-      [[NSFileManager defaultManager] removeItemAtPath:outputFile error:nil];
-    [self setViewMode:ViewModeWithFile];
-    break;
-  default:
-    break;
-  }
-}
 -(IBAction) fFMPEGButtonClick:(id)sender {
   [fFMPEGOutputWindow makeKeyAndOrderFront:self];
 }
 -(IBAction) cancelButtonClick:(id)sender {
   int iResponse = 
     NSRunAlertPanel(@"Cancel Conversion",@"Are you sure you want cancel the conversion?",
-		    @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
-  // may have completed conversion already (?)
-  if(currentViewMode == ViewModeConverting)
+                    @"No", @"Yes", /*third button*/nil/*,args for a printf-style msg go here*/);
     switch(iResponse) {
     case NSAlertDefaultReturn:
       break;
     case NSAlertAlternateReturn:
-      fFMPEGStatus = FFMPEGStatusCancelled;
-      if([conversionTimer isValid])
-	[conversionTimer invalidate];
-      [percentDone setStringValue:@"Cancelling..."];
-      if([conversionTask isRunning])
-	[conversionTask terminate];
+      [conversionWatcher requestFinishWithStatus:EndStatusCancel];
       break;
     default:
       break;
     }
 }
--(void) updateDonePercentage:(NSTimer *)timer {
-  NSString *outputFile = [self fFMPEGOutputFile:filePath];
-  if (percentPerOutputByte &&
-      [[NSFileManager defaultManager] isReadableFileAtPath:outputFile]){
-    int fileSize = [[[NSFileManager defaultManager]
-		      attributesOfItemAtPath:outputFile error:nil]
-		     fileSize];
-    double percent = percentPerOutputByte * fileSize;
-    percent = (percent > 99.1 ? 99 : percent);
-    [progressIndicator setIndeterminate:NO];
-    [progressIndicator setDoubleValue:percent];
-    [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
-  } else {
-    [progressIndicator setIndeterminate:YES];
-    [percentDone setStringValue:@"Converting..."];
-  }    
+
+// Functions for ffmpeg conversion handling
+-(void) doFFMPEGConversion {
+  self.videoLength = 0;
+  if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
+    [self doSpeedTest];
+  else
+    [self doConversion];
+}
+-(void) doConversion {
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Converting..."];
+  [cancelButton setEnabled:YES];
+  [self startAConversion:filePath];
+}
+-(void) convertingDone:(TaskEndStatus)status {
+  [progressIndicator stopAnimation:self];
+  videoLength = 0;
+  percentPerOutputByte = 0;
+  elapsedTime = 0;
+  fileSize = 0;
+  int iResponse;
+  switch(status) {
+  case EndStatusOK:
+    [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
+                                                 [convertingFilename stringValue]]];
+    [self setViewMode:ViewModeFinished];
+    break;
+  case EndStatusError:  
+    iResponse = NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.",
+                                    @"OK", @"Show Output", nil);
+    if(iResponse == NSAlertAlternateReturn)
+      [fFMPEGOutputWindow makeKeyAndOrderFront:self];
+  case EndStatusCancel:
+    [self setViewMode:ViewModeWithFile];
+    break;
+  }
+}
+-(void) doSpeedTest {
+  self.speedTestActive = YES;
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Initializing..."];
+  [cancelButton setEnabled:NO];
+  [self.devicePicker selectItemAtIndex:1];
+  [self startAConversion:filePath];
+}
+-(void) finishUpSpeedTest {
+  self.speedTestActive = NO;
+  [self.devicePicker selectItemAtIndex:3];
+}
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
+  if(self.speedTestActive){
+    [self finishUpSpeedTest];
+    if(status == EndStatusOK){
+      [self doConversion];
+      return;
+    }
+  }
+  [self convertingDone:status];
+}
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
+  static BOOL aboutToReadDuration = NO;
+
+  [progressIndicator startAnimation:self];
+  
+  char buf[[output length]+1]; NSUInteger usedLength;
+  [output getBytes:buf maxLength:[output length] usedLength:&usedLength
+          encoding:NSASCIIStringEncoding options:NSStringEncodingConversionAllowLossy
+          range:NSMakeRange(0,[output length]) remainingRange:nil];
+  if(usedLength == 0)
+    return;
+  buf[usedLength] = 0;
+  char *p = 0;
+  if(self.videoLength == 0) {
+    // see if "Duration:" string is in this input block, and if so, if
+    // duration info is as well
+    if(strlen(buf) >= strlen("Duration:")) {
+      p = strstr(buf,"Duration:");
+    if(p && strlen(p) >= strlen("Duration: ") + strlen("00:00:00")) {
+      p += strlen("Duration: ");
+      aboutToReadDuration = YES;
+    }
+    }
+    if(p==0)
+      p = buf;
+    if(aboutToReadDuration){
+      self.videoLength = 0;
+      float components[3];
+      sscanf(p,"%f:%f:%f",components,components+1, components+2);
+      for(int i=2, mult=1; i>=0; i--, mult *= 60)
+	self.videoLength += components[i]  * mult;
+      aboutToReadDuration = NO;
+      if(self.speedTestActive)
+	[conversionWatcher requestFinishWithStatus:EndStatusOK];
+      return;
+    } else {
+      // if duration info was not in this block, see if "Duration: string" was
+      // (this is what usually happens)
+      if(strlen(buf) >= strlen("Duration:") && strstr(buf,"Duration:"))
+	aboutToReadDuration = YES;
+    }
+  }
+
+  // time updates: time= for G1 and PSP, 
+  float curTime = 0;
+  if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
+    sscanf(p+strlen("time="),"%f", &curTime);
+  // "position": for Theora
+  if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
+    sscanf(p+strlen("\"position\":"),"%f", &curTime);
+  // update percent done
+  if(self.videoLength && !self.speedTestActive){
+    if(curTime) {
+      float percent = curTime / self.videoLength * 100;
+      if(previousPercentDone && percent - previousPercentDone > 50)
+        percent = previousPercentDone;
+      if(percent > 100) percent = 99;
+      previousPercentDone = percent;
+      [progressIndicator setIndeterminate:NO];
+      [progressIndicator setDoubleValue:percent];
+      [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
+    }
+  }
+}
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
+  self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
+  self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
+}
+-(void) startAConversion:(NSString *)file {
+  // initialize textbox for FFMPEG output window
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSAttributedString *string =
+    [[NSAttributedString alloc]
+      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[self fFMPEGLaunchPath] lastPathComponent],
+					  [[self fFMPEGArguments:file] componentsJoinedByString:@" "]]];
+  [storage setAttributedString:string];
+  [string release];
+  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
+  self.conversionWatcher = aWatcher;
+  [aWatcher release];
+  conversionWatcher.delegate = self;
+  conversionWatcher.textStorage = storage;
+  [conversionWatcher startTask:
+                       [self fFMPEGLaunchPath]
+                     withArgs:[self fFMPEGArguments:file]
+                     andProgressFile:[self fFMPEGOutputFile:file]];
 }
 -(NSString *) fFMPEGLaunchPath {
   if(![[devicePicker titleOfSelectedItem] compare:@"G1"])
@@ -546,8 +399,6 @@
     [args addObject:@"aac"];
     [args addObject:@"-ab"];
     [args addObject:@"96k"];
-    [args addObject:@"-threads"];
-    [args addObject:@"0"];
     [args addObject:[self fFMPEGOutputFile:path]];
   } else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"]){
     [args addObject:@"-i"];
@@ -590,3 +441,4 @@
   return [NSArray arrayWithArray:args];
 }
 @end
+

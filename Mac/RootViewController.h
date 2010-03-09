@@ -9,14 +9,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DropBoxView.h"
+#import "CWTaskWatcher.h"
 
 @class ClickableText;
 
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
-typedef enum { WAITING, TASKDONE, ERROR } EndSpeedTest;
-typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, FFMPEGStatusError } FFMPEGStatus;
-@interface RootViewController : NSObject <DropBoxViewDelegate>{
+@interface RootViewController : NSObject <DropBoxViewDelegate,CWTaskWatcherDelegate>{
   NSView *rootView;
   ViewMode currentViewMode;
   NSTextField *convertAVideo;
@@ -37,27 +36,26 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
   NSTextField *percentDone;
   NSProgressIndicator *progressIndicator;
   NSButton *cancelButton;
-  NSButton *fFMPEGButton;
   NSWindow *fFMPEGOutputWindow;
   NSTextView *fFMPEGOutputTextView;
-  NSThread *conversionThread;
-  NSTask *conversionTask;
-  NSTimer *conversionTimer;
-  NSTimer *delayTimer;
-  FFMPEGStatus fFMPEGStatus;
+  CWTaskWatcher *conversionWatcher;
   NSString *speedFile;
-  NSDate *conversionTime;
+  float elapsedTime;
+  int fileSize;
   float percentPerOutputByte;
+  BOOL speedTestActive;
+  float videoLength;
+  float previousPercentDone;
 }
-@property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
-@property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
-@property(nonatomic,retain) IBOutlet NSTextField *showFile;      
 @property(nonatomic,retain) IBOutlet NSView *rootView;
+@property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *dragAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *chooseAFile1;
 @property(nonatomic,retain) IBOutlet NSTextField *toSelectADifferent;
 @property(nonatomic,retain) IBOutlet NSTextField *chooseAFile2;
 @property(nonatomic,retain) NSString *filePath;
+@property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
+@property(nonatomic,retain) IBOutlet NSTextField *showFile;      
 @property(nonatomic,retain) IBOutlet NSPopUpButton *devicePicker;
 @property(nonatomic,retain) IBOutlet NSButton *convertButton;
 @property(nonatomic,retain) IBOutlet NSTextField *filename;
@@ -68,14 +66,16 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 @property(nonatomic,retain) IBOutlet NSTextField *percentDone;		    
 @property(nonatomic,retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property(nonatomic,retain) IBOutlet NSButton *cancelButton;
-@property(nonatomic,retain) IBOutlet NSButton *fFMPEGButton;
 @property(nonatomic,retain) IBOutlet NSWindow *fFMPEGOutputWindow;
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
-@property(nonatomic,retain) NSTask *conversionTask;
-@property(nonatomic,retain) NSTimer *conversionTimer;
-@property(nonatomic,retain) NSTimer *delayTimer;
+@property(nonatomic,retain) CWTaskWatcher *conversionWatcher;
 @property(nonatomic,retain) NSString *speedFile;
-@property(nonatomic,retain) NSDate *conversionTime;
+@property(nonatomic,assign) BOOL speedTestActive;
+@property(nonatomic,assign) int fileSize;
+@property(nonatomic,assign) float elapsedTime;
+@property(nonatomic,assign) float percentPerOutputByte;
+@property(nonatomic,assign) float videoLength;
+@property(nonatomic,assign) float previousPercentDone;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
@@ -89,19 +89,13 @@ typedef enum { FFMPEGStatusConverting, FFMPEGStatusDone, FFMPEGStatusCancelled, 
 -(void) showView:(int)whichView;
 -(IBAction) cancelButtonClick:(id)sender;
 -(IBAction) fFMPEGButtonClick:(id)sender;
--(void) convertingDone:(NSTimer *)timer;
--(void) updateDonePercentage:(NSTimer *)timer;
+-(void) doFFMPEGConversion;
+-(void) doConversion;
+-(void) convertingDone:(TaskEndStatus)status;
+-(void) doSpeedTest;
+-(void) finishUpSpeedTest;
+-(void) startAConversion:(NSString *)file;
 -(NSString *) fFMPEGLaunchPath;
 -(NSString *) fFMPEGOutputFile:(NSString *)inputFile;
 -(NSArray *) fFMPEGArguments:(NSString *)path;
--(void) doFFMPEGConversion;
--(void) doSpeedTest;
--(void) monitorSpeedTest:(NSTimer *)timer;
--(void) speedTestCompleted:(EndSpeedTest) endTest;
--(void) doConversion;
--(NSTask *) setupTask:(NSString *)path andArguments:(NSArray *)arguments
-	   andOutPipe:(NSPipe *)outPipe andErrPipe:(NSPipe *)errPipe
-           andTerminationSelector:(SEL)selector;
--(void) conversionTaskDataAvailable:(NSNotification *)note;
--(void) conversionTaskCompleted:(NSNotification *)note;
 @end
