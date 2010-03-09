@@ -6,23 +6,15 @@ using System.Xml;
 
 namespace Mirosubs.Converter.Windows {
     class Updater {
-        public static void CheckForUpdate(string versionURL, string msiURL) {
+        internal event EventHandler<EventArgs> NeedsUpdateHandler;
+        public void CheckForUpdate(string versionURL) {
             Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             string versionString = string.Format("{0}.{1}.{2}.{3}",
                 v.Major, v.Minor, v.Build, v.Revision);
             bool needsUpdate = false;
-            try {
-                needsUpdate = NeedsUpdate(versionURL, versionString);
-            }
-            catch (Exception) {
-                // just eat it
-            }
-            if (needsUpdate) {
-                UpdateNotification updateNotification =
-                    new UpdateNotification();
-                updateNotification.MSIURL = msiURL;
-                updateNotification.ShowDialog();
-            }
+            needsUpdate = NeedsUpdate(versionURL, versionString);
+            if (needsUpdate)
+                NeedsUpdateHandler(this, new EventArgs());
         }
         private static bool NeedsUpdate(string versionURL, string versionString) {
             using (XmlTextReader reader = new XmlTextReader(versionURL)) {

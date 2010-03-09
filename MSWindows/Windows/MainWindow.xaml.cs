@@ -11,21 +11,48 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private const string VERSION_URL = "http://8planes.com/miroconverterversion.xml";
+        private const string VERSION_URL = 
+            "http://8planes.com/miroconverterversion.xml";
         private const string MSI_URL = "http://8planes.com";
 
         public MainWindow() {
             InitializeComponent();
-            Updater.CheckForUpdate(VERSION_URL, MSI_URL);
-            fileSelect.FileSelected += new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
+            Thread updateThread = new Thread(
+                new ThreadStart(this.CheckForUpdates));
+            updateThread.Start();
+            fileSelect.FileSelected += 
+                new EventHandler<VideoSelectedEventArgs>(
+                    VideoFileSelected);
         }
-
+        private void CheckForUpdates() {
+            try {
+                Updater updater = new Updater();
+                updater.NeedsUpdateHandler +=
+                    new EventHandler<EventArgs>(NeedsUpdate);
+                updater.CheckForUpdate(MSI_URL);
+            }
+            catch (Exception) { 
+                // just eat it.
+            }
+        }
+        private void NeedsUpdate(object sender, EventArgs args) {
+            if (this.Dispatcher.CheckAccess()) {
+                UpdateNotification updateNotification =
+                    new UpdateNotification();
+                updateNotification.MSIURL = MSI_URL;
+                updateNotification.ShowDialog();
+            }
+            else
+                this.Dispatcher.Invoke((Action)(() => 
+                    this.NeedsUpdate(sender, args)));
+        }
         private void VideoFileSelected(object sender, VideoSelectedEventArgs e) {
             this.mainGrid.Children.Remove(fileSelect);
             fileSelect.FileSelected -= new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
