@@ -139,7 +139,7 @@
 					<object class="NSTextField" id="387666140">
 						<reference key="NSNextResponder" ref="744407090"/>
 						<int key="NSvFlags">271</int>
-						<string key="NSFrame">{{29, 329}, {307, 14}}</string>
+						<string key="NSFrame">{{17, 329}, {331, 14}}</string>
 						<reference key="NSSuperview" ref="744407090"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="126107462">
@@ -176,7 +176,7 @@
 						<reference key="NSNextResponder" ref="744407090"/>
 						<int key="NSvFlags">1292</int>
 						<object class="NSPSMatrix" key="NSDrawMatrix"/>
-						<string key="NSFrame">{{30, 220}, {246, 20}}</string>
+						<string key="NSFrame">{{25, 220}, {251, 20}}</string>
 						<reference key="NSSuperview" ref="744407090"/>
 						<int key="NSpiFlags">16394</int>
 						<double key="NSMaxValue">100</double>
@@ -184,7 +184,7 @@
 					<object class="NSTextField" id="598481441">
 						<reference key="NSNextResponder" ref="744407090"/>
 						<int key="NSvFlags">271</int>
-						<string key="NSFrame">{{34, 200}, {135, 16}}</string>
+						<string key="NSFrame">{{25, 200}, {135, 16}}</string>
 						<reference key="NSSuperview" ref="744407090"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="616268943">
@@ -212,7 +212,7 @@
 					<object class="NSButton" id="742588120">
 						<reference key="NSNextResponder" ref="744407090"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{287, 219}, {64, 25}}</string>
+						<string key="NSFrame">{{282, 214}, {74, 32}}</string>
 						<reference key="NSSuperview" ref="744407090"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="824944050">
@@ -221,12 +221,17 @@
 							<string key="NSContents">Cancel</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">11</double>
-								<int key="NSfFlags">16</int>
+								<double key="NSSize">13</double>
+								<int key="NSfFlags">1044</int>
 							</object>
 							<reference key="NSControlView" ref="742588120"/>
 							<int key="NSButtonFlags">-2038284033</int>
-							<int key="NSButtonFlags2">163</int>
+							<int key="NSButtonFlags2">129</int>
+							<object class="NSFont" key="NSAlternateImage">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">13</double>
+								<int key="NSfFlags">16</int>
+							</object>
 							<string key="NSAlternateContents"/>
 							<string type="base64-UTF8" key="NSKeyEquivalent">Gw</string>
 							<int key="NSPeriodicDelay">200</int>
@@ -332,11 +337,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="614621074"/>
 							<reference ref="990641164"/>
-							<reference ref="718996787"/>
 							<reference ref="274620182"/>
-							<reference ref="387666140"/>
 							<reference ref="742588120"/>
+							<reference ref="718996787"/>
 							<reference ref="598481441"/>
+							<reference ref="387666140"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Converting View</string>

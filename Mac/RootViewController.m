@@ -13,6 +13,10 @@
 #import "DropBoxView.h"
 #import "CWTaskWatcher.h"
 
+#define DROPBOX_MAX_FILE_LENGTH 32
+#define CONVERTING_MAX_FILE_LENGTH 45
+#define CONVERTING_DONE_MAX_FILE_LENGTH 27
+
 @implementation RootViewController
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
@@ -44,7 +48,7 @@
   switch(viewMode) {
   case ViewModeInitial:
     [self showView:ViewRoot];
-    [convertAVideo setStringValue:@"Converting"];
+    [convertAVideo setStringValue:@"Convert a Video"];
     [self setAlphaValuesForViewMode:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
@@ -58,7 +62,10 @@
   case ViewModeConverting:
     [self showView:ViewConverting];
     [self setAlphaValuesForViewMode:viewMode];
-    [convertingFilename setStringValue:[self fFMPEGOutputFile:[filename stringValue]]];
+    [convertingFilename setStringValue:
+			  [self formatFilename:
+				  [self fFMPEGOutputFile:filePath]
+				maxLength:CONVERTING_MAX_FILE_LENGTH]];
     [self doFFMPEGConversion];
     break;
   case ViewModeFinished:
@@ -137,11 +144,8 @@
 }
 
 // Functions for root view
-- (NSString *)formatFilename:(NSString *)inFile {
-  int maxLength = 36;
-  NSString *outFile = [inFile stringByAbbreviatingWithTildeInPath];
-  if([outFile length] > maxLength)
-    outFile = [outFile lastPathComponent];
+- (NSString *)formatFilename:(NSString *)inFile maxLength:(int)maxLength{
+  NSString *outFile = [[inFile stringByAbbreviatingWithTildeInPath] lastPathComponent];
   if([outFile length] > maxLength){
     NSRange range = { 0, (maxLength-3)/2 - 1 };
     outFile = [NSString stringWithFormat:@"%@...%@",
@@ -152,7 +156,7 @@
 }
 - (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename {
   self.filePath = aFilename;
-  [filename setStringValue:[self formatFilename:aFilename]];
+  [filename setStringValue:[self formatFilename:aFilename maxLength:DROPBOX_MAX_FILE_LENGTH]];
   [self setViewMode:ViewModeWithFile];
 }
 -(IBAction) chooseAFile:(id)sender {
@@ -169,7 +173,7 @@
   if(returnCode == NSOKButton) {
     self.filePath = [[sheet filenames] objectAtIndex:0];
     [sheet close];
-    [filename setStringValue:[self formatFilename:filePath]];
+    [filename setStringValue:[self formatFilename:filePath maxLength:DROPBOX_MAX_FILE_LENGTH]];
     [self setViewMode:ViewModeWithFile];
   }
 }
@@ -233,8 +237,10 @@
   int iResponse;
   switch(status) {
   case EndStatusOK:
-    [finishedConverting setStringValue:[NSString stringWithFormat:@"Finished converting %@",
-                                                 [convertingFilename stringValue]]];
+    [finishedConverting setStringValue:
+			  [NSString stringWithFormat:@"Finished converting %@",
+				    [self formatFilename:[self fFMPEGOutputFile:filePath]
+					  maxLength:CONVERTING_DONE_MAX_FILE_LENGTH]]];
     [self setViewMode:ViewModeFinished];
     break;
   case EndStatusError:  
