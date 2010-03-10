@@ -50,9 +50,9 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,retain) IBOutlet NSView *rootView;
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *dragAVideo;
-@property(nonatomic,retain) IBOutlet NSTextField *chooseAFile1;
+@property(nonatomic,retain) IBOutlet ClickableText *chooseAFile1;
 @property(nonatomic,retain) IBOutlet NSTextField *toSelectADifferent;
-@property(nonatomic,retain) IBOutlet NSTextField *chooseAFile2;
+@property(nonatomic,retain) IBOutlet ClickableText *chooseAFile2;
 @property(nonatomic,retain) NSString *filePath;
 @property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
 @property(nonatomic,retain) IBOutlet NSTextField *showFile;      

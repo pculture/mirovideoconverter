@@ -9,7 +9,8 @@
 #import <Cocoa/Cocoa.h>
 @class RootViewController;
 
-@interface Miro_Video_ConverterAppDelegate : NSObject <NSApplicationDelegate> {
+//@interface Miro_Video_ConverterAppDelegate : NSObject <NSApplicationDelegate> {  // 10.6
+@interface Miro_Video_ConverterAppDelegate : NSObject {  // 10.5
     NSWindow *window;
 	RootViewController *rootViewController;
 }
