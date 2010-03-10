@@ -9,19 +9,17 @@ namespace Mirosubs.Converter.Windows {
         internal event EventHandler<EventArgs> NeedsUpdateHandler;
         public void CheckForUpdate(string versionURL) {
             Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            string versionString = string.Format("{0}.{1}.{2}.{3}",
-                v.Major, v.Minor, v.Build, v.Revision);
             bool needsUpdate = false;
-            needsUpdate = NeedsUpdate(versionURL, versionString);
+            needsUpdate = NeedsUpdate(versionURL, v);
             if (needsUpdate)
                 NeedsUpdateHandler(this, new EventArgs());
         }
-        private static bool NeedsUpdate(string versionURL, string versionString) {
+        private static bool NeedsUpdate(string versionURL, Version runningVersion) {
             using (XmlTextReader reader = new XmlTextReader(versionURL)) {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(reader);
-                string newestVersion = xmlDoc.ChildNodes[1].ChildNodes[0].Value;
-                return newestVersion != versionString;
+                Version newestVersion = new Version(xmlDoc.ChildNodes[1].ChildNodes[0].Value);
+                return newestVersion.CompareTo(runningVersion) > 0;
             }
         }
     }

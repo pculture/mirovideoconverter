@@ -18,9 +18,9 @@ namespace Mirosubs.Converter.Windows {
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private const string VERSION_URL = 
-            "http://8planes.com/miroconverterversion.xml";
-        private const string MSI_URL = "http://8planes.com";
+        private const string VERSION_URL =
+            "http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/MiroConverterVersion.xml";
+        private const string MSI_URL = "http://mirovideoconverter.com";
 
         public MainWindow() {
             InitializeComponent();
@@ -36,9 +36,9 @@ namespace Mirosubs.Converter.Windows {
                 Updater updater = new Updater();
                 updater.NeedsUpdateHandler +=
                     new EventHandler<EventArgs>(NeedsUpdate);
-                updater.CheckForUpdate(MSI_URL);
+                updater.CheckForUpdate(VERSION_URL);
             }
-            catch (Exception) { 
+            catch (Exception) {
                 // just eat it.
             }
         }

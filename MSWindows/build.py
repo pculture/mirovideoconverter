@@ -29,7 +29,8 @@ def update_msi_version():
 
 def build():
     print "Building"
-    for line in os.popen("devenv /build Release FFMPEGWrapper.sln /project WindowsSetup").readlines():
+    for line in os.popen(("devenv /build Release FFMPEGWrapper.sln "
+        "/project WindowsSetup")).readlines():
         print line
 
 def find_assembly_version_no():
