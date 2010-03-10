@@ -50,7 +50,20 @@ def make_version_file():
         f.write("<version>%s</version>" % version_no)
 
 def upload_to_server():
-    
+    print "Uploading to server"
+    for line in os.popen(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
+        ".\\WindowsSetup\\Release\MiroConverterSetup.msi " 
+        "pculture@ftp-osl.osuosl.org:"
+        "/home/pculture/data/mirovideoconverter/MiroConverterSetup.msi")).readlines():
+        print line
+    for line in os.popen(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
+        "c:\\temp\miroconverterversion.xml " 
+        "pculture@ftp-osl.osuosl.org:"
+        "/home/pculture/data/mirovideoconverter/MiroConverterVersion.xml")).readlines():
+        print line
+    for line in os.popen(("plink -ssh -i %USERPROFILE%\.ssh\osuosl.ppk "
+        "pculture@ftp-osl.osuosl.org ./run-trigger")).readlines():
+        print line
         
 def main(argv):
     update_msi_version()
