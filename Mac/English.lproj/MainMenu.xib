@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
 			<integer value="372"/>
+			<integer value="57"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -782,6 +782,14 @@
 					</object>
 					<int key="connectionID">643</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">checkForUpdates</string>
+						<reference key="source" ref="275990797"/>
+						<reference key="destination" ref="748839169"/>
+					</object>
+					<int key="connectionID">644</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1320,7 +1328,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">643</int>
+			<int key="maxID">644</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1395,6 +1403,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>cancelButton</string>
+							<string>checkForUpdates</string>
 							<string>chooseAFile1</string>
 							<string>chooseAFile2</string>
 							<string>convertAVideo</string>
@@ -1418,6 +1427,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSButton</string>
+							<string>NSMenuItem</string>
 							<string>ClickableText</string>
 							<string>ClickableText</string>
 							<string>NSTextField</string>

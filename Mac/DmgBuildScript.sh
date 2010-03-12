@@ -1,6 +1,9 @@
 #!/bin/bash
+if [ $# -lt 1 ]; then
+echo Need Version String
+else
 app="Miro Video Converter"
-version="1.0"
+version="$1"
 target="$app-$version.dmg"
 targetWritable="$app-Writable.dmg"
 hdiutil eject "/Volumes/$app"
@@ -24,3 +27,5 @@ read
 hdiutil eject "/Volumes/$app"
 hdiutil convert -format UDZO "$targetWritable" -o "$target"
 rm -f "$targetWritable"
+fi
+

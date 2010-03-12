@@ -16,6 +16,7 @@
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
 @interface RootViewController : NSObject <DropBoxViewDelegate,CWTaskWatcherDelegate>{
+  NSMenuItem *checkForUpdates;
   NSView *rootView;
   ViewMode currentViewMode;
   NSTextField *convertAVideo;
@@ -47,6 +48,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   float videoLength;
   float previousPercentDone;
 }
+@property(nonatomic,retain) IBOutlet NSMenuItem *checkForUpdates;
 @property(nonatomic,retain) IBOutlet NSView *rootView;
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *dragAVideo;
