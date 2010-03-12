@@ -79,7 +79,8 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
--(void) setAlphaValuesForViewMode:(ViewMode)viewMode;
+-(void) revealViewControls:(ViewMode)viewMode;
+-(void) revealSubview:(NSView *)subview show:(BOOL)show;
 -(NSString *)formatFilename:(NSString *)inFile maxLength:(int)maxLength;
 -(IBAction) chooseAFile:(id)sender;
 -(IBAction) selectADevice:(id)sender;

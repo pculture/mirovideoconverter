@@ -49,19 +49,19 @@
   case ViewModeInitial:
     [self showView:ViewRoot];
     [convertAVideo setStringValue:@"Convert a Video"];
-    [self setAlphaValuesForViewMode:viewMode];
+    [self revealViewControls:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
     [convertAVideo setStringValue:@"Ready To Convert!"];
-    [self setAlphaValuesForViewMode:viewMode];
+    [self revealViewControls:viewMode];
     [self maybeEnableConvertButton];
     break;
   case ViewModeConverting:
     [self showView:ViewConverting];
-    [self setAlphaValuesForViewMode:viewMode];
+    [self revealViewControls:viewMode];
     [convertingFilename setStringValue:
 			  [self formatFilename:
 				  [self fFMPEGOutputFile:filePath]
@@ -70,7 +70,7 @@
     break;
   case ViewModeFinished:
     [self showView:ViewRoot];
-    [self setAlphaValuesForViewMode:viewMode];
+    [self revealViewControls:viewMode];
     [devicePicker selectItemAtIndex:0];
     [self maybeEnableConvertButton];
     break;
@@ -98,45 +98,57 @@
     [window setContentView:theView];
   }
 }
--(void) setAlphaValuesForViewMode:(ViewMode)viewMode{
+-(void) revealSubview:(NSView *)subview show:(BOOL)show {
+  for(NSView *item in [rootView subviews]){
+    if(item == subview && show == YES)
+      return;
+    if(item == subview && show == NO){
+      [subview removeFromSuperview];
+      return;
+    }
+  }
+  if(show == YES)
+    [rootView addSubview:subview];
+}
+-(void) revealViewControls:(ViewMode)viewMode{
   switch(viewMode) {
   case ViewModeInitial:
-    convertAVideo.alphaValue =      1;
-    dragAVideo.alphaValue =         1;
-    chooseAFile1.alphaValue =       1;
-    toSelectADifferent.alphaValue = 0;
-    chooseAFile2.alphaValue =       0;
-    devicePicker.alphaValue =       1;
-    convertButton.alphaValue =      1;
-    filename.alphaValue =           0;
-    finishedConverting.alphaValue = 0;
-    showFile.alphaValue =           0;
+    [self revealSubview:convertAVideo      show:YES];
+    [self revealSubview:dragAVideo         show:YES];
+    [self revealSubview:chooseAFile1       show:YES];
+    [self revealSubview:toSelectADifferent show:NO];
+    [self revealSubview:chooseAFile2       show:NO];
+    [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:convertButton      show:YES];
+    [self revealSubview:filename           show:NO];
+    [self revealSubview:finishedConverting show:NO];
+    [self revealSubview:showFile           show:NO];
     break;
   case ViewModeWithFile:
-    convertAVideo.alphaValue =      1;
-    dragAVideo.alphaValue =         0;
-    chooseAFile1.alphaValue =       0;
-    toSelectADifferent.alphaValue = 1;
-    chooseAFile2.alphaValue =       1;
-    devicePicker.alphaValue =       1;
-    convertButton.alphaValue =      1;
-    filename.alphaValue =           1;
-    finishedConverting.alphaValue = 0;
-    showFile.alphaValue =           0;
+    [self revealSubview:convertAVideo      show:YES];
+    [self revealSubview:dragAVideo         show:NO];
+    [self revealSubview:chooseAFile1       show:NO];
+    [self revealSubview:toSelectADifferent show:YES];
+    [self revealSubview:chooseAFile2       show:YES];
+    [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:convertButton      show:YES];
+    [self revealSubview:filename           show:YES];
+    [self revealSubview:finishedConverting show:NO];
+    [self revealSubview:showFile           show:NO];
     break;
   case ViewModeConverting:
     break;
   case ViewModeFinished:
-    convertAVideo.alphaValue =      0;
-    dragAVideo.alphaValue =         1;
-    chooseAFile1.alphaValue =       1;
-    toSelectADifferent.alphaValue = 0;
-    chooseAFile2.alphaValue =       0;
-    devicePicker.alphaValue =       1;
-    convertButton.alphaValue =      1;
-    filename.alphaValue =           0;
-    finishedConverting.alphaValue = 1;
-    showFile.alphaValue =           1;
+    [self revealSubview:convertAVideo      show:NO];
+    [self revealSubview:dragAVideo         show:YES];
+    [self revealSubview:chooseAFile1       show:YES];
+    [self revealSubview:toSelectADifferent show:NO];
+    [self revealSubview:chooseAFile2       show:NO];
+    [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:convertButton      show:YES];
+    [self revealSubview:filename           show:NO];
+    [self revealSubview:finishedConverting show:YES];
+    [self revealSubview:showFile           show:YES];
     break;
   default:
     break;

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Project</string>
+	<string>Debug</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -200,8 +200,8 @@
 	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
-		<integer>1440</integer>
-		<integer>1440</integer>
+		<integer>1680</integer>
+		<integer>1680</integer>
 	</array>
 	<key>Perspectives</key>
 	<array>
@@ -231,8 +231,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -283,13 +281,11 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>15</integer>
-									<integer>14</integer>
-									<integer>0</integer>
+									<integer>46</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 158}, {202, 156}}</string>
+							<string>{{0, 8}, {202, 910}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -299,14 +295,12 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {219, 174}}</string>
+						<string>{{0, 0}, {219, 928}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>202</real>
 						</array>
-						<key>RubberWindowFrame</key>
-						<string>-3 663 356 215 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -322,7 +316,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>4F9F62BC1135B0E30040352C</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Miro_Video_Converter_Prefix.pch</string>
+								<string>RootViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -330,11 +324,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>4F9F62BD1135B0E30040352C</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Miro_Video_Converter_Prefix.pch</string>
+										<string>RootViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4FB8FA2F1147E5A40017F6BD</string>
+										<string>4F2AA70011498EB70059490A</string>
 										<key>history</key>
 										<array>
 											<string>4FFC7CDC113B0ED100CC16E2</string>
@@ -354,8 +348,8 @@
 											<string>4F900F1A11456F8A001030F4</string>
 											<string>4FA06F9B11458C4E007D25D4</string>
 											<string>4F91DA181146C39B00BB303D</string>
-											<string>4FB8FA2D1147E5A40017F6BD</string>
-											<string>4FB8FA2E1147E5A40017F6BD</string>
+											<string>4F2AA6B3114970160059490A</string>
+											<string>4F2AA6B4114970160059490A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -369,18 +363,16 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {132, 50}}</string>
-								<key>RubberWindowFrame</key>
-								<string>-3 663 356 215 0 0 1440 878 </string>
+								<string>{{0, 0}, {1456, 789}}</string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>50pt</string>
+							<string>789pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>119pt</string>
+							<string>134pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -394,9 +386,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {132, 92}}</string>
-										<key>RubberWindowFrame</key>
-										<string>-3 663 356 215 0 0 1440 878 </string>
+										<string>{{10, 27}, {1456, 107}}</string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -450,7 +440,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1219, 81}}</string>
+										<string>{{10, 27}, {1456, 107}}</string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -459,7 +449,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>132pt</string>
+					<string>1456pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -478,11 +468,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>4FB8FA2A1147E25D0017F6BD</string>
+				<string>4F2AA69711496B1D0059490A</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>4FB8FA2B1147E25D0017F6BD</string>
+				<string>4F2AA69811496B1D0059490A</string>
 				<string>4F9F62BC1135B0E30040352C</string>
-				<string>4FB8FA2C1147E25D0017F6BD</string>
+				<string>4F2AA69911496B1D0059490A</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -533,12 +523,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {1440, 233}}</string>
+						<string>{{0, 0}, {949, 0}}</string>
+						<key>RubberWindowFrame</key>
+						<string>0 408 949 620 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
 					<key>Proportion</key>
-					<string>233pt</string>
+					<string>0pt</string>
 				</dict>
 				<dict>
 					<key>ContentConfiguration</key>
@@ -557,8 +549,8 @@
 								<string>yes</string>
 								<key>sizes</key>
 								<array>
-									<string>{{0, 0}, {594, 231}}</string>
-									<string>{{594, 0}, {846, 231}}</string>
+									<string>{{0, 0}, {399, 259}}</string>
+									<string>{{399, 0}, {550, 259}}</string>
 								</array>
 							</dict>
 							<key>VerticalSplitView</key>
@@ -573,8 +565,8 @@
 								<string>yes</string>
 								<key>sizes</key>
 								<array>
-									<string>{{0, 0}, {1440, 231}}</string>
-									<string>{{0, 231}, {1440, 309}}</string>
+									<string>{{0, 0}, {949, 259}}</string>
+									<string>{{0, 259}, {949, 315}}</string>
 								</array>
 							</dict>
 						</dict>
@@ -594,7 +586,7 @@
 						<key>DebugSTDIOWindowFrame</key>
 						<string>{{200, 200}, {500, 300}}</string>
 						<key>Frame</key>
-						<string>{{0, 238}, {1440, 540}}</string>
+						<string>{{0, 5}, {949, 574}}</string>
 						<key>PBXDebugSessionStackFrameViewKey</key>
 						<dict>
 							<key>DebugVariablesTableConfiguration</key>
@@ -606,16 +598,20 @@
 								<string>Value</string>
 								<real>85</real>
 								<string>Summary</string>
-								<real>529</real>
+								<real>233</real>
 							</array>
 							<key>Frame</key>
-							<string>{{594, 0}, {846, 231}}</string>
+							<string>{{399, 0}, {550, 259}}</string>
+							<key>RubberWindowFrame</key>
+							<string>0 408 949 620 0 0 1680 1028 </string>
 						</dict>
+						<key>RubberWindowFrame</key>
+						<string>0 408 949 620 0 0 1680 1028 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
 					<key>Proportion</key>
-					<string>540pt</string>
+					<string>574pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -633,14 +629,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>4F91DA081146C34000BB303D</string>
+				<string>4F2AA6A611496FB00059490A</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>4F91DA091146C34000BB303D</string>
-				<string>4F91DA0A1146C34000BB303D</string>
-				<string>4F91DA0B1146C34000BB303D</string>
-				<string>4F91DA0C1146C34000BB303D</string>
-				<string>4F91DA0D1146C34000BB303D</string>
+				<string>4F2AA6A711496FB00059490A</string>
+				<string>4F2AA6A811496FB00059490A</string>
+				<string>4F2AA6A911496FB00059490A</string>
+				<string>4F2AA6AA11496FB00059490A</string>
+				<string>4F2AA6AB11496FB00059490A</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -674,10 +670,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>4F2AA6AD11496FB00059490A</string>
+		<string>4F2AA6AE11496FB00059490A</string>
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>-3 663 356 215 0 0 1440 878 </string>
+	<string>0 408 949 620 0 0 1680 1028 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
