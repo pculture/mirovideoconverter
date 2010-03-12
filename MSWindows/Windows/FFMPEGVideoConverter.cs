@@ -19,20 +19,55 @@ namespace Mirosubs.Converter.Windows {
         private string outputFileName;
 
         internal FFMPEGVideoConverter(string fileName, VideoFormat format) {
-            if (format == VideoFormat.G1)
+            // FIXME: possibly replace conditional with polymorphism
+            if (format == VideoFormat.G1 ||
+                format == VideoFormat.MagicMyTouch ||
+                format == VideoFormat.ErisDesire ||
+                format == VideoFormat.Hero ||
+                format == VideoFormat.CliqDEXT ||
+                format == VideoFormat.BeholdII)
                 args = string.Format(
-                    "-i \"{0}\" -y -fpre \"{1}\" -aspect 3:2 -s 400x300 -r 23.976 " +
-                    "-vcodec libx264 -b 480k -acodec aac -ab 96k -threads 0 " +
+                    "-i \"{0}\" -y -fpre \"{1}\" -aspect 3:2 -s 480x320 " +
+                    "-vcodec libx264 -sameq -acodec aac -ab 96k -threads 0 " +
                     "\"{2}\"",
                     fileName,
                     Path.Combine(ExecutableDir, 
                         @"ffmpeg-bin\libx264hq.ffpreset"),
-                    outputFileName = Path.ChangeExtension(fileName, ".g1.mp4"));
+                    outputFileName = Path.ChangeExtension(fileName, 
+                        string.Format(".{0}.mp4", format.FilePart)));
+            else if (format == VideoFormat.NexusOne)
+                args = string.Format(
+                    "-i \"{0}\" -y -fpre \"{1}\" -aspect 1.6666 -s 800x480 " +
+                    "-vcodec libx264 -sameq -acodec aac -ab 96k -threads 0 " +
+                    "\"{2}\"",
+                    fileName,
+                    Path.Combine(ExecutableDir,
+                        @"ffmpeg-bin\libx264hq.ffpreset"),
+                    outputFileName = Path.ChangeExtension(fileName,
+                        string.Format(".{0}.mp4", format.FilePart)));
+            else if (format == VideoFormat.Droid)
+                args = string.Format(
+                    "-i \"{0}\" -y -fpre \"{1}\" -aspect 1.7791 -s 854x480 " +
+                    "-vcodec libx264 -sameq -acodec aac -ab 96k -threads 0 " +
+                    "\"{2}\"",
+                    fileName,
+                    Path.Combine(ExecutableDir,
+                        @"ffmpeg-bin\libx264hq.ffpreset"),
+                    outputFileName = Path.ChangeExtension(fileName,
+                        string.Format(".{0}.mp4", format.FilePart)));
+            else if (format.Group == VideoFormatGroup.Apple)
+                args = string.Format(
+                    "-i \"{0}\" -y -f mp4 -vcodec libxvid -maxrate 1000k " +
+                    "-b 700k -qmin 3 -qmax 5 -bufsize 4096 -g 300 -acodec aac " +
+                    "-ab 192 -s 320×240 -aspect 4:3 \"{1}\"", fileName,
+                    outputFileName = Path.ChangeExtension(fileName, 
+                        string.Format(".{0}.mp4", format.FilePart)));
             else if (format == VideoFormat.PSP)
                 args = string.Format(
-                    "-i \"{0}\" -y -b 300k -s 320x240 -vcodec libxvid -ab 32k " +
-                    "-ar 24000 -acodec aac \"{1}\"", fileName,
-                    outputFileName = Path.ChangeExtension(fileName, ".psp.mp4"));
+                    "-i \"{0}\" -y -aspect 4:3 -s 320×240 -vcodec libxvid " +
+                    "-sameq -ab 32k -ar 24000 -acodec aac \"{1}\"", fileName,
+                    outputFileName = Path.ChangeExtension(fileName,
+                        string.Format(".{0}.mp4", format.FilePart)));
             else
                 throw new ArgumentException();
         }
@@ -70,7 +105,13 @@ namespace Mirosubs.Converter.Windows {
                 long curFactor = 1;
                 for (int i = 0; i < components.Length; i++) {
                     curFactor *= factors[i];
-                    ms += Int32.Parse(components[components.Length - 1 - i]) * curFactor;
+                    try {
+                        ms += Int32.Parse(components[components.Length - 1 - i]) * curFactor;
+                    }
+                    catch (Exception) {
+                        // FFMPEG sometimes reports time as 10000000000.00
+                        ms += 0;
+                    }
                 }
                 IssueConvertProgressEvent((int)(100 * ms / lengthMs));
             }
