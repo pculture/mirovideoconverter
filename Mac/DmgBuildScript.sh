@@ -5,7 +5,7 @@ target="$app-$version.dmg"
 targetWritable="$app-Writable.dmg"
 hdiutil eject "/Volumes/$app"
 rm -f "$target" "$targetWritable"
-hdiutil create -megabytes 30 "$targetWritable" -layout NONE -partitionType Apple_HFS
+hdiutil create -megabytes 50 "$targetWritable" -layout NONE -partitionType Apple_HFS
 disk=`hdid -nomount "$targetWritable"`
 newfs_hfs -v "$app" $disk
 hdiutil eject $disk
