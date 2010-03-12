@@ -1,1 +1,0 @@
-./ffmpeg -i ~/Desktop/30Rock-part.avi -y -fpre ~/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/build/Release/Miro\ Video\ Converter.app/Contents/Resources/libx264hq.ffpreset -aspect 3:2 -s 400x300 -r 23.976 -vcodec libx264 -b 480k -acodec aac -ab 96k ~/Desktop/30Rock-part.g1.mp4

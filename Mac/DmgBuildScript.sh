@@ -1,11 +1,14 @@
 #!/bin/bash
+if [ $# -lt 1 ]; then
+echo Need Version String
+else
 app="Miro Video Converter"
-version="1.0"
+version="$1"
 target="$app-$version.dmg"
 targetWritable="$app-Writable.dmg"
 hdiutil eject "/Volumes/$app"
 rm -f "$target" "$targetWritable"
-hdiutil create -megabytes 30 "$targetWritable" -layout NONE -partitionType Apple_HFS
+hdiutil create -megabytes 50 "$targetWritable" -layout NONE -partitionType Apple_HFS
 disk=`hdid -nomount "$targetWritable"`
 newfs_hfs -v "$app" $disk
 hdiutil eject $disk
@@ -24,3 +27,5 @@ read
 hdiutil eject "/Volumes/$app"
 hdiutil convert -format UDZO "$targetWritable" -o "$target"
 rm -f "$targetWritable"
+fi
+

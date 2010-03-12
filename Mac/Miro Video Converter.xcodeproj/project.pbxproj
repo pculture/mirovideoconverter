@@ -14,9 +14,9 @@
 		4F3CDE091140DF670061E70B /* DropBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE011140DF670061E70B /* DropBoxView.m */; };
 		4F3CDE0A1140DF670061E70B /* Miro_Video_ConverterAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE031140DF670061E70B /* Miro_Video_ConverterAppDelegate.m */; };
 		4F3CDE0B1140DF670061E70B /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE051140DF670061E70B /* RootViewController.m */; };
-		4F3F6C38113884BF005A9EE3 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4F3F6C37113884BF005A9EE3 /* ffmpeg */; };
 		4F43CB60112DEAB900E4B728 /* device.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5B112DEAB900E4B728 /* device.png */; };
 		4F43CB61112DEAB900E4B728 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5C112DEAB900E4B728 /* video.png */; };
+		4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4F6948B3114A9985001514E5 /* dsa_pub.pem */; };
 		4F95FF1D11333093008B7180 /* bgwithbox.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F95FF1C11333093008B7180 /* bgwithbox.jpg */; };
 		4F963F0C1136DE94004C8F19 /* FFMPEGOutputWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F963F0B1136DE94004C8F19 /* FFMPEGOutputWindow.xib */; };
 		4F9D116411418B1500839BBE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9D116311418B1500839BBE /* Sparkle.framework */; };
@@ -65,9 +65,9 @@
 		4F3CDE031140DF670061E70B /* Miro_Video_ConverterAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Miro_Video_ConverterAppDelegate.m; sourceTree = "<group>"; };
 		4F3CDE041140DF670061E70B /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		4F3CDE051140DF670061E70B /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		4F3F6C37113884BF005A9EE3 /* ffmpeg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = ffmpeg; sourceTree = "<group>"; };
 		4F43CB5B112DEAB900E4B728 /* device.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = device.png; path = ../MSWindows/Windows/resources/device.png; sourceTree = SOURCE_ROOT; };
 		4F43CB5C112DEAB900E4B728 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = video.png; path = ../MSWindows/Windows/resources/video.png; sourceTree = SOURCE_ROOT; };
+		4F6948B3114A9985001514E5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		4F95FF1C11333093008B7180 /* bgwithbox.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bgwithbox.jpg; sourceTree = "<group>"; };
 		4F963F0B1136DE94004C8F19 /* FFMPEGOutputWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FFMPEGOutputWindow.xib; sourceTree = "<group>"; };
 		4F9D116311418B1500839BBE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -144,10 +144,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F6948B3114A9985001514E5 /* dsa_pub.pem */,
 				4FFA35E9113D12D100043ECB /* converter3.icns */,
 				4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */,
 				4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */,
-				4F3F6C37113884BF005A9EE3 /* ffmpeg */,
 				4F9F62D61135B2970040352C /* Converting.xib */,
 				4F9F62CF1135B1B40040352C /* bg.jpg */,
 				4F95FF1C11333093008B7180 /* bgwithbox.jpg */,
@@ -200,6 +200,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				4FE34107113D09E400712467 /* CopyFiles */,
+				4F52656C114AA04B00394650 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -244,14 +245,30 @@
 				4F9F62D01135B1B40040352C /* bg.jpg in Resources */,
 				4F9F62D81135B2970040352C /* Converting.xib in Resources */,
 				4F963F0C1136DE94004C8F19 /* FFMPEGOutputWindow.xib in Resources */,
-				4F3F6C38113884BF005A9EE3 /* ffmpeg in Resources */,
 				4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */,
 				4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */,
 				4FFA35EA113D12D100043ECB /* converter3.icns in Resources */,
+				4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4F52656C114AA04B00394650 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp ffmpeg build/Release/Miro\\ Video\\ Converter.app/Contents/Resources/.\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -353,7 +370,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -361,16 +378,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
-					x86_64,
 					i386,
+					x86_64,
 					ppc,
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
