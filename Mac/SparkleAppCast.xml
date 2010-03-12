@@ -1,0 +1,21 @@
+<?Xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>Miro Video Converter for Mac OS X Changelog</title>
+      <link>http://colinspage.com/MiroVideoConverter/mac/SparkleAppCast.xml</link>
+      <description>Most recent changes with links to updates.</description>
+      <language>en</language>
+         <item>
+            <title>Version 1.1</title>
+	    <sparkle:releaseNotesLink>
+	      http://colinspage.com/MiroVideoConverter/mac/1.1.html
+	    </sparkle:releaseNotesLink>
+            <pubDate>Wed, 12 Mar2010 11:00:00 +0000</pubDate>
+            <enclosure url="http://colinspage.com/MiroVideoConverter/mac/Miro Video Converter-1.1.dmg"
+		       sparkle:version="1.1"
+		       sparkle:dsaSignature="MCwCFDHg/uf8xO992r8PjzwTav5dukldAhQT6jdOiy7BZUeFoAPxjoB9LuiF+A=="
+		       length="50049024"
+		       type="application/octet-stream"  />
+         </item>
+   </channel>
+</rss>
