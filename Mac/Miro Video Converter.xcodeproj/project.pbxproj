@@ -200,7 +200,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				4FE34107113D09E400712467 /* CopyFiles */,
-				4F52656C114AA04B00394650 /* ShellScript */,
+				4F5B7FD3114D67620032F806 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -255,7 +255,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4F52656C114AA04B00394650 /* ShellScript */ = {
+		4F5B7FD3114D67620032F806 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,7 +266,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp ffmpeg build/Release/Miro\\ Video\\ Converter.app/Contents/Resources/.\n";
+			shellScript = "cp ffmpeg build/Release/Miro\\ Video\\ Converter.app/Contents/Resources";
 		};
 /* End PBXShellScriptBuildPhase section */
 
