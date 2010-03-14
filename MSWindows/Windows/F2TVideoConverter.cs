@@ -45,6 +45,7 @@ namespace Mirosubs.Converter.Windows {
             string line = e.Data;
             if (line == null)
                 return;
+            IssueConvertOutputEvent(line);
             if (updateRegex.IsMatch(line)) {
                 Match m = updateRegex.Match(line);
                 float duration = float.Parse(m.Groups[1].Value);

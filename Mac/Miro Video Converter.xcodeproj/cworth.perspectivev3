@@ -276,12 +276,14 @@
 								<string>1058C7A0FEA54F0111CA2CBB</string>
 								<string>1058C7A2FEA54F0111CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
+								<string>4F52656D114AA06600394650</string>
 								<string>1C77FABC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>46</integer>
+									<integer>43</integer>
+									<integer>42</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -302,7 +304,7 @@
 							<real>210</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>127 228 949 620 0 0 1680 1028 </string>
+						<string>374 162 949 620 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -342,7 +344,6 @@
 											<string>4FE34085113D03E500712467</string>
 											<string>4FE34087113D03E500712467</string>
 											<string>4FE34088113D03E500712467</string>
-											<string>4F9D387F113D2244000B6B93</string>
 											<string>4F3CDE261140E11E0061E70B</string>
 											<string>4F3CDE271140E11E0061E70B</string>
 											<string>4F900E9F11454472001030F4</string>
@@ -367,7 +368,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {717, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>127 228 949 620 0 0 1680 1028 </string>
+								<string>374 162 949 620 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -529,12 +530,12 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {949, 0}}</string>
+						<string>{{0, 0}, {424, 270}}</string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
 					<key>Proportion</key>
-					<string>0pt</string>
+					<string>270pt</string>
 				</dict>
 				<dict>
 					<key>ContentConfiguration</key>
@@ -629,14 +630,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>4F4273D7114A25B4003B8FCB</string>
+				<string>4F52656F114AA06600394650</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>4F4273D8114A25B4003B8FCB</string>
-				<string>4F4273D9114A25B4003B8FCB</string>
-				<string>4F4273DA114A25B4003B8FCB</string>
-				<string>4F4273DB114A25B4003B8FCB</string>
-				<string>4F9F62BC1135B0E30040352C</string>
+				<string>4F526570114AA06600394650</string>
+				<string>4F526571114AA06600394650</string>
+				<string>4F526572114AA06600394650</string>
+				<string>4F526573114AA06600394650</string>
+				<string>4F526574114AA06600394650</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -673,7 +674,7 @@
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>127 228 949 620 0 0 1680 1028 </string>
+	<string>374 162 949 620 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

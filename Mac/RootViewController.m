@@ -18,6 +18,7 @@
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
 
 @implementation RootViewController
+@synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      

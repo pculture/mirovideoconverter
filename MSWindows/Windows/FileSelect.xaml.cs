@@ -22,9 +22,7 @@ namespace Mirosubs.Converter.Windows {
 
         public FileSelect() {
             InitializeComponent();
-            this.videoFormatCombo.ItemsSource = VideoFormat.All;
-            this.videoFormatCombo.SelectedValuePath = "Id";
-            this.videoFormatCombo.DisplayMemberPath = "DisplayName";
+            ((CollectionViewSource)this.Resources["GroupedVideoFormats"]).Source = VideoFormat.All;
         }
         public string FinishedFileName { get; set; }
         private void WasLoaded(object sender, RoutedEventArgs e) {
@@ -71,11 +69,10 @@ namespace Mirosubs.Converter.Windows {
                 MessageBox.Show("You must select a format first.");
                 return;
             }
-            VideoFormat selectedFormat = VideoFormat.ForId(
-                (int)videoFormatCombo.SelectedValue);
             if (FileSelected != null)
                 FileSelected(this, new VideoSelectedEventArgs(
-                    selectedFileName, selectedFormat));
+                    selectedFileName, 
+                    (VideoFormat)videoFormatCombo.SelectedValue));
         }
 
         private void ShowFinishedFile(object sender, RoutedEventArgs e) {

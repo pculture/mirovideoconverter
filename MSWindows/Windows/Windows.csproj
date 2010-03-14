@@ -145,6 +145,7 @@
     <Compile Include="VideoConvertFinishedArgs.cs" />
     <Compile Include="VideoConvertProgressArgs.cs" />
     <Compile Include="VideoFormat.cs" />
+    <Compile Include="VideoFormatGroup.cs" />
     <Compile Include="VideoSelectedEventArgs.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
