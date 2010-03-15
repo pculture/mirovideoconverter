@@ -1,5 +1,4 @@
 #!/bin/bash
-SERVER=192.168.0.2
 if [ $# -lt 1 ]; then
     echo Need version string
 else
@@ -26,5 +25,8 @@ else
 EOF
     echo add newCast.xml to SparkleAppCast.xml, create $1.html, then press return
     read
-    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@$SERVER://var/www/MiroVideoConverter/mac/.
+#    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@192.168.0.2://var/www/MiroVideoConverter/mac/.
+    echo scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
+    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
+    rm newCast.xml
 fi

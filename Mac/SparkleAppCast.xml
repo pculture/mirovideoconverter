@@ -6,15 +6,15 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
       <item>
-        <title>Version 1.1</title>
+        <title>Version 1.0</title>
 	<sparkle:releaseNotesLink>
-	  http://colinspage.com/MiroVideoConverter/mac/1.1.html
+	  http://colinspage.com/MiroVideoConverter/mac/1.0.html
 	</sparkle:releaseNotesLink>
         <pubDate>Wed, 12 Mar2010 11:00:00 +0000</pubDate>
-        <enclosure url="http://colinspage.com/MiroVideoConverter/mac/Miro Video Converter-1.1.dmg"
-		   sparkle:version="1.1"
-		   sparkle:dsaSignature="MC0CFQDB1iWsZUFpKAUnSaHcUamVR21IrgIUQKRYH3P98PCj7ImfRDwt+pHdOGQ="
-		   length="20013056"
+        <enclosure url="http://colinspage.com/MiroVideoConverter/mac/Miro Video Converter-1.0.dmg"
+		   sparkle:version="1.0"
+		   sparkle:dsaSignature="MC0CFEPZg873zWfb0Q62ShINv7+xRouVAhUAoxzD72fc8e7EFmTthZHAXEylj94="
+		   length="19681280"
 		   type="application/octet-stream"  />
       </item>
    </channel>

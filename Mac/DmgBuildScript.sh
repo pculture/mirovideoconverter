@@ -18,7 +18,7 @@ ln -s /Applications .
 popd
 cp -r "build/Release/$app.app" "/Volumes/$app"
 mkdir "/Volumes/$app/.background"
-cp ../MSWindows/Windows/resources/bg.jpg "/Volumes/$app/.background/."
+cp dmg-background.png "/Volumes/$app/.background/."
 open "/Volumes/$app"
 open .
 open "/Volumes/$app/.background"
