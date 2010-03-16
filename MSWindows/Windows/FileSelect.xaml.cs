@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using IOPath = System.IO.Path;
+using Mirosubs.Converter.Windows.VideoFormats;
 
 namespace Mirosubs.Converter.Windows {
     public partial class FileSelect : UserControl {

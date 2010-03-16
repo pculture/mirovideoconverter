@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using Mirosubs.Converter.Windows.VideoFormats;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>

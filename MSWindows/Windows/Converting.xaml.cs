@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using IOPath = System.IO.Path;
 using System.Threading;
+using Mirosubs.Converter.Windows.VideoFormats;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>
@@ -33,10 +34,7 @@ namespace Mirosubs.Converter.Windows {
             this.ffmpegOutput = new List<string>();
             fileNameLabel.Content = IOPath.GetFileName(fileName);
             progressLabel.Content = "Starting...";
-            if (format == VideoFormat.Theora)
-                converter = new F2TVideoConverter(fileName);
-            else
-                converter = new FFMPEGVideoConverter(fileName, format);
+            converter = format.MakeConverter(fileName);
             converter.ConvertOutput += new EventHandler<ConversionOutputArgs>(converter_FFMPEGOutput);
             converter.ConvertProgress += 
                 new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);

@@ -144,7 +144,11 @@
     <Compile Include="VideoConverter.cs" />
     <Compile Include="VideoConvertFinishedArgs.cs" />
     <Compile Include="VideoConvertProgressArgs.cs" />
-    <Compile Include="VideoFormat.cs" />
+    <Compile Include="VideoFormats\AndroidVideoFormat.cs" />
+    <Compile Include="VideoFormats\AppleVideoFormat.cs" />
+    <Compile Include="VideoFormats\PSPVideoFormat.cs" />
+    <Compile Include="VideoFormats\TheoraVideoFormat.cs" />
+    <Compile Include="VideoFormats\VideoFormat.cs" />
     <Compile Include="VideoFormatGroup.cs" />
     <Compile Include="VideoSelectedEventArgs.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

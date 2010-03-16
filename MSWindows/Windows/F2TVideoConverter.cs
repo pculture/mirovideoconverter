@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Mirosubs.Converter.Windows.VideoFormats;
 
 namespace Mirosubs.Converter.Windows {
     class F2TVideoConverter : VideoConverter {
@@ -21,10 +22,9 @@ namespace Mirosubs.Converter.Windows {
         internal F2TVideoConverter(string fileName) {
             this.fileName = fileName;
             this.outputFileName =
-                Path.ChangeExtension(fileName, ".theora.ogv");
-            args = string.Format(
-                "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",
-                fileName, outputFileName);
+                Path.ChangeExtension(fileName, 
+                TheoraVideoFormat.Theora.OutputFileExtension);
+            args = TheoraVideoFormat.Theora.GetArguments(fileName, outputFileName);
         }
         public override string OutputFileName {
             get { return this.fileName; }
