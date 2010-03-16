@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Mirosubs.Converter.Windows.VideoFormats;
 
-namespace Mirosubs.Converter.Windows {
+namespace Mirosubs.Converter.Windows.Process {
     class F2TVideoConverter : VideoConverter {
         private static Regex updateRegex = new Regex(
             @"^\{\""duration\""\s*:\s*([\d\.]+),\s*\""position\""\s*:\s*([\d\.]+)");
@@ -27,14 +27,14 @@ namespace Mirosubs.Converter.Windows {
             args = TheoraVideoFormat.Theora.GetArguments(fileName, outputFileName);
         }
         public override string OutputFileName {
-            get { return this.fileName; }
+            get { return this.outputFileName; }
         }
-        protected override string ConversionExeName {
+        protected override string ExeName {
             get {
                 return @"ffmpeg-bin\ffmpeg2theora.exe";
             }
         }
-        protected override string ConversionArgs {
+        protected override string Args {
             get {
                 return args;
             }
@@ -45,7 +45,7 @@ namespace Mirosubs.Converter.Windows {
             string line = e.Data;
             if (line == null)
                 return;
-            IssueConvertOutputEvent(line);
+            IssueOutputEvent(line);
             if (updateRegex.IsMatch(line)) {
                 Match m = updateRegex.Match(line);
                 float duration = float.Parse(m.Groups[1].Value);

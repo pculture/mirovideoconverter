@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Mirosubs.Converter.Windows {
+namespace Mirosubs.Converter.Windows.Process {
     class VideoConvertProgressArgs : EventArgs {
         public readonly int Progress;
         public VideoConvertProgressArgs(int progress) {

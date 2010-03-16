@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using Mirosubs.Converter.Windows.VideoFormats;
 
-namespace Mirosubs.Converter.Windows {
+namespace Mirosubs.Converter.Windows.Process {
     class FFMPEGVideoConverter : VideoConverter {
         private readonly string args;
 
@@ -24,10 +24,10 @@ namespace Mirosubs.Converter.Windows {
                 outputFileName = Path.ChangeExtension(fileName,
                     format.OutputFileExtension));
         }
-        protected override string ConversionExeName {
-            get { return @"ffmpeg-bin/ffmpeg.exe"; }
+        protected override string ExeName {
+            get { return @"ffmpeg-bin\ffmpeg.exe"; }
         }
-        protected override string ConversionArgs {
+        protected override string Args {
             get { return args; }
         }
         public override string OutputFileName {
@@ -45,7 +45,7 @@ namespace Mirosubs.Converter.Windows {
             string line = e.Data;
             if (line == null)
                 return;
-            IssueConvertOutputEvent(line);
+            IssueOutputEvent(line);
             if (lengthMs == -1 && durationRegex.IsMatch(line)) {
                 Match m = durationRegex.Match(line);
                 lengthMs = (long)TimeSpan.Parse(m.Groups[1].Value).TotalMilliseconds;

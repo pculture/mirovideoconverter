@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Mirosubs.Converter.Windows {
-    class ConversionOutputArgs : EventArgs {
+namespace Mirosubs.Converter.Windows.Process {
+    class ProcessOutputArgs : EventArgs {
         public readonly String OutputLine;
-        public ConversionOutputArgs(string outputLine) {
+        public ProcessOutputArgs(string outputLine) {
             this.OutputLine = outputLine;
         }
     }

@@ -15,6 +15,7 @@ using System.Diagnostics;
 using IOPath = System.IO.Path;
 using System.Threading;
 using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.Process;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>
@@ -35,7 +36,7 @@ namespace Mirosubs.Converter.Windows {
             fileNameLabel.Content = IOPath.GetFileName(fileName);
             progressLabel.Content = "Starting...";
             converter = format.MakeConverter(fileName);
-            converter.ConvertOutput += new EventHandler<ConversionOutputArgs>(converter_FFMPEGOutput);
+            converter.Output += new EventHandler<ProcessOutputArgs>(converter_FFMPEGOutput);
             converter.ConvertProgress += 
                 new EventHandler<VideoConvertProgressArgs>(converter_ConvertProgress);
             converter.Finished += new EventHandler<EventArgs>(converter_Finished);
@@ -51,7 +52,7 @@ namespace Mirosubs.Converter.Windows {
             else
                 this.Dispatcher.Invoke((Action)(() => this.converter_UnknownFormat(sender, e)));
         }
-        private void converter_FFMPEGOutput(object sender, ConversionOutputArgs e) {
+        private void converter_FFMPEGOutput(object sender, ProcessOutputArgs e) {
             if (this.Dispatcher.CheckAccess()) {
                 ffmpegOutput.Add(e.OutputLine);
                 if (ffmpegOutputViewer != null)

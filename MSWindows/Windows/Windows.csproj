@@ -115,15 +115,17 @@
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="F2TVideoConverter.cs" />
-    <Compile Include="ConversionOutputArgs.cs" />
+    <Compile Include="Process\F2TVideoConverter.cs" />
+    <Compile Include="Process\ProcessOutputArgs.cs" />
     <Compile Include="FFMPEGOutputViewer.xaml.cs">
       <DependentUpon>FFMPEGOutputViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FFMPEGVideoConverter.cs" />
+    <Compile Include="Process\FFMPEGVideoConverter.cs" />
     <Compile Include="FileSelect.xaml.cs">
       <DependentUpon>FileSelect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Process\VideoParameterOracle.cs" />
+    <Compile Include="Process\VideoParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -141,9 +143,9 @@
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="Updater.cs" />
-    <Compile Include="VideoConverter.cs" />
-    <Compile Include="VideoConvertFinishedArgs.cs" />
-    <Compile Include="VideoConvertProgressArgs.cs" />
+    <Compile Include="Process\VideoConverter.cs" />
+    <Compile Include="Process\VideoConvertFinishedArgs.cs" />
+    <Compile Include="Process\VideoConvertProgressArgs.cs" />
     <Compile Include="VideoFormats\AndroidVideoFormat.cs" />
     <Compile Include="VideoFormats\AppleVideoFormat.cs" />
     <Compile Include="VideoFormats\PSPVideoFormat.cs" />

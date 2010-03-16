@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.Process;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>
