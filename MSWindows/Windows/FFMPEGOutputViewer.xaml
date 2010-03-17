@@ -3,6 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="FFMPEG Output Viewer" Height="473" Width="512">
     <Grid>
-        <ListBox Name="outputList" />
+        <FlowDocumentScrollViewer>
+            <FlowDocument Name="outputList">
+                
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
     </Grid>
 </Window>

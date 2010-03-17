@@ -23,6 +23,7 @@ namespace Mirosubs.Converter.Windows.Process {
             if (process != null)
                 throw new InvalidOperationException(
                     "VideoConverter is used once then disposed");
+            IssueOutputEvent(string.Format("{0} {1}", ExeName, Args));
             ProcessStartInfo startInfo = new ProcessStartInfo(
                 Path.Combine(ExecutableDir, ExeName),
                 Args);

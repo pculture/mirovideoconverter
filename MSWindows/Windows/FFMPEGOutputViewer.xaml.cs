@@ -20,7 +20,10 @@ namespace Mirosubs.Converter.Windows {
             InitializeComponent();
         }
         public void AddOutput(string output) {
-            this.outputList.Items.Add(output);
+            Paragraph p = new Paragraph(new Run(output));
+            p.TextAlignment = TextAlignment.Left;
+            p.FontFamily = new FontFamily("Courier New");
+            outputList.Blocks.Add(p);
         }
     }
 }

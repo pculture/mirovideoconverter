@@ -29,10 +29,10 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
                     paramsWriter.Write("-x {0} -y {1} ", 
                         parms.Width, parms.Height);
                 if (parms.VideoBitrate.HasValue && parms.AudioBitrate.HasValue)
-                    paramsWriter.Write("-V {0} -A {1}", 
+                    paramsWriter.Write("-V {0} -A {1} --two-pass ", 
                         parms.VideoBitrate, parms.AudioBitrate);
                 else
-                    paramsWriter.Write("--videoquality 8 --audioquality 6");
+                    paramsWriter.Write("--videoquality 8 --audioquality 6 ");
                 paramsWriter.Close();
                 return string.Format(
                     "\"{0}\" -o \"{1}\" {2} --frontend",
