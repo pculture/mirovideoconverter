@@ -1,0 +1,2 @@
+(fset 'paramliststartend
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([18 83 84 65 82 84 58 right right right right right right right 67108896 19 32 left right 23 19 69 78 68 1 return up tab 91 97 114 103 115 32 97 100 100 79 98 106 101 99 116 58 64 34 25 backspace 34 93 59] 0 "%d")) arg)))

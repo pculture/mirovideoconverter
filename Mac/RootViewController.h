@@ -12,6 +12,9 @@
 #import "CWTaskWatcher.h"
 
 @class ClickableText;
+@class VideoConversionCommands;
+
+extern char *deviceNames[];
 
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
@@ -47,6 +50,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   BOOL speedTestActive;
   float videoLength;
   float previousPercentDone;
+  VideoConversionCommands *video;
 }
 @property(nonatomic,retain) IBOutlet NSMenuItem *checkForUpdates;
 @property(nonatomic,retain) IBOutlet NSView *rootView;
@@ -78,6 +82,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,assign) float percentPerOutputByte;
 @property(nonatomic,assign) float videoLength;
 @property(nonatomic,assign) float previousPercentDone;
+@property(nonatomic,retain) VideoConversionCommands *video;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
@@ -97,8 +102,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 -(void) convertingDone:(TaskEndStatus)status;
 -(void) doSpeedTest;
 -(void) finishUpSpeedTest;
--(void) startAConversion:(NSString *)file;
--(NSString *) fFMPEGLaunchPath;
--(NSString *) fFMPEGOutputFile:(NSString *)inputFile;
--(NSArray *) fFMPEGArguments:(NSString *)path;
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device;
+
 @end
