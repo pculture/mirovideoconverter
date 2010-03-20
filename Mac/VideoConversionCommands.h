@@ -27,7 +27,7 @@ extern char *converterExecutables[];
 -(NSArray *) droidArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) erisArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) heroArgsForFile:(NSString *)file andDevice:(NSString *)device;
--(NSArray *) clickArgsForFile:(NSString *)file andDevice:(NSString *)device;
+-(NSArray *) cliqArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) beholdArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) iPhoneArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) ipodArgsForFile:(NSString *)file andDevice:(NSString *)device;

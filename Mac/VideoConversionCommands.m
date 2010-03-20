@@ -185,7 +185,7 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   return [self dreamArgsForFile:file andDevice:device];
 }
 
--(NSArray *) clickArgsForFile:(NSString *)file andDevice:(NSString *)device {
+-(NSArray *) cliqArgsForFile:(NSString *)file andDevice:(NSString *)device {
   return [self dreamArgsForFile:file andDevice:device];
 }
 
