@@ -26,7 +26,7 @@
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
 @synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
-@synthesize video;
+@synthesize video,ffmpegFinishedOkayBeforeError;
 
 
 -(void) awakeFromNib {
@@ -268,6 +268,8 @@
   percentPerOutputByte = 0;
   elapsedTime = 0;
   fileSize = 0;
+  if(status == EndStatusError && self.ffmpegFinishedOkayBeforeError == YES)
+    status = EndStatusOK;
   int iResponse;
   switch(status) {
   case EndStatusOK:
@@ -385,12 +387,18 @@
       [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
     }
   }
+
+  // Check for libxvid malloc error at end, may have completed successfully
+  if(strlen(buf) > strlen("muxing overhead") && (p=strstr(buf,"muxing overhead")))
+    self.ffmpegFinishedOkayBeforeError = YES;
+  return;
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
   self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
   self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
 }
 -(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+  self.ffmpegFinishedOkayBeforeError = NO;
   // initialize textbox for FFMPEG output window
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
   NSAttributedString *string =
@@ -409,5 +417,23 @@
                      withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
                      andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
 }
+
+- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
+  char *p = [input UTF8String], *q;
+  char *str = malloc([input length] + 10);
+  strncpy(str,p,[input length]);
+  if(strlen(str) > strlen("pointer being freed was not allocated"))
+    q = strstr(str,"pointer being freed was not allocated");
+  else
+    return input;
+  if(!q) return input;
+  for(;q >= str && *q != '\n'; q--);
+  if(q==str) sprintf(q,"[sic]\n");
+  else sprintf(q+1,"[sic]\n");
+  NSString *output = [NSString stringWithFormat:@"%s",str];
+  free(str);
+  return output;
+}
+
 @end
 

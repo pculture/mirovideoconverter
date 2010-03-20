@@ -44,13 +44,14 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   NSTextView *fFMPEGOutputTextView;
   CWTaskWatcher *conversionWatcher;
   NSString *speedFile;
+  VideoConversionCommands *video;
+  BOOL ffmpegFinishedOkayBeforeError;
   float elapsedTime;
   int fileSize;
   float percentPerOutputByte;
   BOOL speedTestActive;
   float videoLength;
   float previousPercentDone;
-  VideoConversionCommands *video;
 }
 @property(nonatomic,retain) IBOutlet NSMenuItem *checkForUpdates;
 @property(nonatomic,retain) IBOutlet NSView *rootView;
@@ -76,13 +77,14 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,retain) IBOutlet NSTextView *fFMPEGOutputTextView;
 @property(nonatomic,retain) CWTaskWatcher *conversionWatcher;
 @property(nonatomic,retain) NSString *speedFile;
+@property(nonatomic,retain) VideoConversionCommands *video;
 @property(nonatomic,assign) BOOL speedTestActive;
 @property(nonatomic,assign) int fileSize;
 @property(nonatomic,assign) float elapsedTime;
 @property(nonatomic,assign) float percentPerOutputByte;
 @property(nonatomic,assign) float videoLength;
 @property(nonatomic,assign) float previousPercentDone;
-@property(nonatomic,retain) VideoConversionCommands *video;
+@property(nonatomic,assign) BOOL ffmpegFinishedOkayBeforeError;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;

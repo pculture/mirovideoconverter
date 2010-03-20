@@ -231,8 +231,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -273,11 +271,12 @@
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1DDD58140DA1D0A300B32029</string>
 								<string>1C37FBAC04509CD000000102</string>
+								<string>1C77FABC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>41</integer>
+									<integer>44</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -314,7 +313,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>4F5B7FB5114D66950032F806</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Miro_Video_Converter-Info.plist</string>
+								<string>RootViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -322,11 +321,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>4F5B7FB6114D66950032F806</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Miro_Video_Converter-Info.plist</string>
+										<string>RootViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F1178521155275500DFCC73</string>
+										<string>4F1178E7115540B000DFCC73</string>
 										<key>history</key>
 										<array>
 											<string>4F9D10EF114EC8BB00CB443E</string>
@@ -336,13 +335,15 @@
 											<string>4F9D10F3114EC8BB00CB443E</string>
 											<string>4F9D10F4114EC8BB00CB443E</string>
 											<string>4F9D10F5114EC8BB00CB443E</string>
-											<string>4FA4087D1154E6B900241C47</string>
 											<string>4FA408A21154EDA800241C47</string>
 											<string>4FA408BE1154FD0700241C47</string>
 											<string>4FA4092911551E2400241C47</string>
-											<string>4FA4093F1155215100241C47</string>
-											<string>4FA409591155252500241C47</string>
-											<string>4FA4095D1155254A00241C47</string>
+											<string>4F1178911155386C00DFCC73</string>
+											<string>4F1178921155386C00DFCC73</string>
+											<string>4F1178931155386C00DFCC73</string>
+											<string>4F1178D511553F6600DFCC73</string>
+											<string>4F1178D711553F9A00DFCC73</string>
+											<string>4F1178E6115540B000DFCC73</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -382,8 +383,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {769, 401}}</string>
-										<key>RubberWindowFrame</key>
-										<string>419 84 976 870 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -437,7 +436,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {769, 390}}</string>
+										<string>{{10, 27}, {769, 401}}</string>
+										<key>RubberWindowFrame</key>
+										<string>419 84 976 870 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -520,12 +521,12 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {976, 407}}</string>
+						<string>{{0, 0}, {976, 242}}</string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
 					<key>Proportion</key>
-					<string>407pt</string>
+					<string>242pt</string>
 				</dict>
 				<dict>
 					<key>ContentConfiguration</key>
@@ -544,8 +545,8 @@
 								<string>yes</string>
 								<key>sizes</key>
 								<array>
-									<string>{{0, 0}, {476, 202}}</string>
-									<string>{{476, 0}, {500, 202}}</string>
+									<string>{{0, 0}, {476, 282}}</string>
+									<string>{{476, 0}, {500, 282}}</string>
 								</array>
 							</dict>
 							<key>VerticalSplitView</key>
@@ -560,8 +561,8 @@
 								<string>yes</string>
 								<key>sizes</key>
 								<array>
-									<string>{{0, 0}, {976, 202}}</string>
-									<string>{{0, 202}, {976, 215}}</string>
+									<string>{{0, 0}, {976, 282}}</string>
+									<string>{{0, 282}, {976, 300}}</string>
 								</array>
 							</dict>
 						</dict>
@@ -581,7 +582,7 @@
 						<key>DebugSTDIOWindowFrame</key>
 						<string>{{200, 200}, {500, 300}}</string>
 						<key>Frame</key>
-						<string>{{0, 412}, {976, 417}}</string>
+						<string>{{0, 247}, {976, 582}}</string>
 						<key>PBXDebugSessionStackFrameViewKey</key>
 						<dict>
 							<key>DebugVariablesTableConfiguration</key>
@@ -594,13 +595,13 @@
 								<real>270</real>
 							</array>
 							<key>Frame</key>
-							<string>{{476, 0}, {500, 202}}</string>
+							<string>{{476, 0}, {500, 282}}</string>
 						</dict>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
 					<key>Proportion</key>
-					<string>417pt</string>
+					<string>582pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -659,7 +660,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>4F11785C1155275500DFCC73</string>
 		<string>4F11785D1155275500DFCC73</string>
 		<string>4F11785E1155275500DFCC73</string>
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>

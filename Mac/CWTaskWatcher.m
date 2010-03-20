@@ -126,12 +126,19 @@
 - (void)cwTask:(CWTask *)cwtask update:(NSDictionary *)info{
   if(runStatus == RunStatusRunning || runStatus == RunStatusEndRequested){
     for(NSString *arg in [NSArray arrayWithObjects:@"stdout",@"stderr",nil]){
-      NSString *newOutput = [info objectForKey:arg];
-      if(newOutput){
-        if(textStorage)
-          [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
-                       withString:newOutput];
-        [delegate cwTaskWatcher:self updateString:newOutput];
+      NSString *tmpOutput = [info objectForKey:arg];
+      NSString *newOutput;
+      if(tmpOutput){
+        if([delegate respondsToSelector:@selector(cwTaskWatcher:censorOutput:)])
+          newOutput = [delegate cwTaskWatcher:self censorOutput:tmpOutput];
+        else
+          newOutput = [NSString stringWithString:tmpOutput];
+        if(newOutput){
+          if(textStorage)
+            [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
+                         withString:newOutput];
+          [delegate cwTaskWatcher:self updateString:newOutput];
+        }
       }
     }
   }
