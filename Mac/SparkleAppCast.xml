@@ -10,10 +10,10 @@
           <sparkle:releaseNotesLink>
             http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/1.2.html
           </sparkle:releaseNotesLink>
-          <pubDate>Sat, 21 Mar2010 11:00:00 -0400</pubDate>
+          <pubDate>Sun, 21 Mar2010 11:00:00 -0400</pubDate>
           <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-1.2.dmg"
       	       sparkle:version="1.2"
-      	       sparkle:dsaSignature="MC4CFQCxukqW7eR1ow7eJWktFasxTA+DGAIVANJNS1GbZQXrky4C9OqycZr+ONSl"
+      	       sparkle:dsaSignature="MCwCFEutT2HrU5O9/UTFL+MxMdPXw5EMAhRX+1x/JXxpEzGcpgYwHCZ+PPVbvw=="
       	       length="19517440"
       	       type="application/octet-stream"  />
        </item>
