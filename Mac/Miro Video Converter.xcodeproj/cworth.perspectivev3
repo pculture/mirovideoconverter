@@ -327,7 +327,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F974C2311564172005E695F</string>
+										<string>4F974C271156426B005E695F</string>
 										<key>history</key>
 										<array>
 											<string>4F9D10EF114EC8BB00CB443E</string>
@@ -401,8 +401,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {769, 446}}</string>
-										<key>RubberWindowFrame</key>
-										<string>419 84 976 870 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXProjectFindModule</string>
@@ -440,7 +438,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {769, 423}}</string>
+										<string>{{10, 27}, {769, 446}}</string>
+										<key>RubberWindowFrame</key>
+										<string>419 84 976 870 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
