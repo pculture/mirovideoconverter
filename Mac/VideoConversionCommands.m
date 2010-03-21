@@ -212,7 +212,7 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   [args addObject:@"-subcmp"];
   [args addObject:@"2"];
   [args addObject:@"-s"];
-  [args addObject:@"320x480"];
+  [args addObject:@"640x480"];
   [args addObject:@"-r"];
   [args addObject:@"20"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
