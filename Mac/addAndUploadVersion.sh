@@ -10,23 +10,23 @@ else
     echo adding key $key
     echo adding length $length
     cat >newCast.xml <<EOF
-         <item>
-            <title>Version $1</title>
-	    <sparkle:releaseNotesLink>
-	      http://colinspage.com/MiroVideoConverter/mac/$1.html
-	    </sparkle:releaseNotesLink>
-            <pubDate>Wed, 12 Mar2010 11:00:00 +0000</pubDate>
-            <enclosure url="http://colinspage.com/MiroVideoConverter/mac/Miro Video Converter-$1.dmg"
-		       sparkle:version="$1"
-		       sparkle:dsaSignature="$key"
-		       length="$length"
-		       type="application/octet-stream"  />
-         </item>
+       <item>
+          <title>Version $1</title>
+          <sparkle:releaseNotesLink>
+            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/$1.html
+          </sparkle:releaseNotesLink>
+          <pubDate>Sat, 20 Mar2010 11:00:00 -0400</pubDate>
+          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-$1.dmg"
+      	       sparkle:version="$1"
+      	       sparkle:dsaSignature="$key"
+      	       length="$length"
+      	       type="application/octet-stream"  />
+       </item>
 EOF
     echo add newCast.xml to SparkleAppCast.xml, create $1.html, then press return
     read
 #    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@192.168.0.2://var/www/MiroVideoConverter/mac/.
-    echo scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
-    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
+    echo scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
+    scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
     rm newCast.xml
 fi

@@ -3,11 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>SUShowReleaseNotes</key>
-	<false/>
+	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUFeedURL</key>
-	<string>http://colinspage.com/MiroVideoConverter/mac/SparkleAppCast.xml</string>
+	<string>http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/SparkleAppCast.xml</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -29,7 +31,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.2</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

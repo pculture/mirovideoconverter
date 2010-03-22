@@ -24,6 +24,8 @@
 		4F9D117111418B2D00839BBE /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F9D116311418B1500839BBE /* Sparkle.framework */; };
 		4F9F62D01135B1B40040352C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62CF1135B1B40040352C /* bg.jpg */; };
 		4F9F62D81135B2970040352C /* Converting.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62D61135B2970040352C /* Converting.xib */; };
+		4FA408931154EBD500241C47 /* VideoConversionCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA408921154EBD500241C47 /* VideoConversionCommands.m */; };
+		4FA4090A11550D4900241C47 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4090911550D4900241C47 /* ffmpeg */; };
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -74,6 +76,9 @@
 		4F9D116311418B1500839BBE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4F9F62CF1135B1B40040352C /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bg.jpg; path = ../MSWindows/Windows/resources/bg.jpg; sourceTree = SOURCE_ROOT; };
 		4F9F62D71135B2970040352C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Converting.xib; sourceTree = "<group>"; };
+		4FA408911154EBD500241C47 /* VideoConversionCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoConversionCommands.h; sourceTree = "<group>"; };
+		4FA408921154EBD500241C47 /* VideoConversionCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoConversionCommands.m; sourceTree = "<group>"; };
+		4FA4090911550D4900241C47 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
@@ -144,6 +149,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA4090911550D4900241C47 /* ffmpeg */,
 				4F9D10E9114EBE9F00CB443E /* icon.icns */,
 				4F6948B3114A9985001514E5 /* dsa_pub.pem */,
 				4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */,
@@ -173,6 +179,8 @@
 		4F3CDDF91140DF3D0061E70B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4FA408911154EBD500241C47 /* VideoConversionCommands.h */,
+				4FA408921154EBD500241C47 /* VideoConversionCommands.m */,
 				4F3CDDFA1140DF670061E70B /* ClickableText.h */,
 				4F3CDDFB1140DF670061E70B /* ClickableText.m */,
 				4F3CDDFC1140DF670061E70B /* CWTask.h */,
@@ -249,6 +257,7 @@
 				4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */,
 				4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */,
 				4F9D10EA114EBE9F00CB443E /* icon.icns in Resources */,
+				4FA4090A11550D4900241C47 /* ffmpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +291,7 @@
 				4F3CDE091140DF670061E70B /* DropBoxView.m in Sources */,
 				4F3CDE0A1140DF670061E70B /* Miro_Video_ConverterAppDelegate.m in Sources */,
 				4F3CDE0B1140DF670061E70B /* RootViewController.m in Sources */,
+				4FA408931154EBD500241C47 /* VideoConversionCommands.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +325,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4FFC610311540A2B00EF9EE6 /* DebugTargeted */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = DebugTargeted;
+		};
+		4FFC610411540A2B00EF9EE6 /* DebugTargeted */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_DIR)/Sparkle 1.5b6/With Garbage Collection\"",
+					"\"$(SRCROOT)\"",
+					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
+					"\"$(DEVELOPER_DIR)/Sparkle\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Miro_Video_Converter_Prefix.pch;
+				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "Miro Video Converter";
+			};
+			name = DebugTargeted;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -399,6 +447,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
+				4FFC610411540A2B00EF9EE6 /* DebugTargeted */,
 				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -408,6 +457,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
+				4FFC610311540A2B00EF9EE6 /* DebugTargeted */,
 				C01FCF5008A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

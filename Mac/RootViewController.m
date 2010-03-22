@@ -12,6 +12,7 @@
 #import "ClickableText.h"
 #import "DropBoxView.h"
 #import "CWTaskWatcher.h"
+#import "VideoConversionCommands.h"
 
 #define DROPBOX_MAX_FILE_LENGTH 32
 #define CONVERTING_MAX_FILE_LENGTH 45
@@ -25,15 +26,38 @@
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
 @synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
+@synthesize video,ffmpegFinishedOkayBeforeError;
+
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
   if(firstTime){
+    video = [[VideoConversionCommands alloc] init];
+    [devicePicker setAutoenablesItems:NO];
     [devicePicker removeAllItems];
     [devicePicker addItemWithTitle:@"Pick a Device or Video Format"];
-    [devicePicker addItemWithTitle:@"G1"];
-    [devicePicker addItemWithTitle:@"PSP"];
-    [devicePicker addItemWithTitle:@"Theora"];
+    int i=0, j=1;
+    while(deviceNames[i++]){
+      [[devicePicker menu] addItem:[NSMenuItem separatorItem]]; j++;
+      [devicePicker addItemWithTitle:[NSString stringWithFormat:@"%s",deviceNames[i-1]]];
+      NSMenuItem *item = [devicePicker itemAtIndex:j++];
+      NSDictionary *attrib =
+        [[NSDictionary alloc] initWithObjectsAndKeys:
+                                [NSFont systemFontOfSize:14.0], NSFontAttributeName,
+                              [NSColor blackColor], NSForegroundColorAttributeName,
+                              [NSNumber numberWithFloat:-4], NSStrokeWidthAttributeName, nil];
+      NSAttributedString *title =
+        [[NSAttributedString alloc]
+          initWithString:[NSString stringWithFormat:@"%s",deviceNames[i-1]]
+          attributes:attrib];
+      [attrib release];
+      [item setAttributedTitle:title];
+      [item setEnabled:NO];
+      while(deviceNames[i++]){
+        [devicePicker addItemWithTitle:[NSString stringWithFormat:@"%s",deviceNames[i-1]]];
+        j++;
+      }
+    }
     [dropBox registerForDraggedTypes: [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
     firstTime = NO;
     [self setViewMode:ViewModeInitial];
@@ -63,10 +87,8 @@
   case ViewModeConverting:
     [self showView:ViewConverting];
     [self revealViewControls:viewMode];
-    [convertingFilename setStringValue:
-			  [self formatFilename:
-				  [self fFMPEGOutputFile:filePath]
-				maxLength:CONVERTING_MAX_FILE_LENGTH]];
+    NSString *op = [video fFMPEGOutputFileForFile:filePath andDevice:[devicePicker titleOfSelectedItem]];
+    [convertingFilename setStringValue:[self formatFilename:op maxLength:CONVERTING_MAX_FILE_LENGTH]];
     [self doFFMPEGConversion];
     break;
   case ViewModeFinished:
@@ -227,11 +249,10 @@
 
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
+  // this is a separate fn in case we want to launch an initial run first
+  // prev ran speedtest
   self.videoLength = 0;
-  if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
-    [self doSpeedTest];
-  else
-    [self doConversion];
+  [self doConversion];
 }
 -(void) doConversion {
   self.previousPercentDone = 0;
@@ -239,7 +260,7 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Converting..."];
   [cancelButton setEnabled:YES];
-  [self startAConversion:filePath];
+  [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem]];
 }
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
@@ -247,12 +268,14 @@
   percentPerOutputByte = 0;
   elapsedTime = 0;
   fileSize = 0;
+  if(status == EndStatusError && self.ffmpegFinishedOkayBeforeError == YES)
+    status = EndStatusOK;
   int iResponse;
   switch(status) {
   case EndStatusOK:
     [finishedConverting setStringValue:
 			  [NSString stringWithFormat:@"Finished converting %@",
-				    [self formatFilename:[self fFMPEGOutputFile:filePath]
+				    [self formatFilename:[video fFMPEGOutputFileForFile:filePath andDevice:[devicePicker titleOfSelectedItem]]
 					  maxLength:CONVERTING_DONE_MAX_FILE_LENGTH]]];
     [self setViewMode:ViewModeFinished];
     break;
@@ -273,12 +296,10 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Initializing..."];
   [cancelButton setEnabled:NO];
-  [self.devicePicker selectItemAtIndex:1];
-  [self startAConversion:filePath];
+  [self startAConversion:filePath forDevice:@" Playstation Portable (PSP)"];
 }
 -(void) finishUpSpeedTest {
   self.speedTestActive = NO;
-  [self.devicePicker selectItemAtIndex:3];
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
   if(self.speedTestActive){
@@ -304,40 +325,53 @@
   buf[usedLength] = 0;
   char *p = 0;
   if(self.videoLength == 0) {
-    // see if "Duration:" string is in this input block, and if so, if
+    char durStr[256];
+    if(![[devicePicker titleOfSelectedItem] compare:@" Theora"])
+      strcpy(durStr,"\"duration\":");
+    else
+      strcpy(durStr,"Duration:");
+    // see if durStr string is in this input block, and if so, if
     // duration info is as well
-    if(strlen(buf) >= strlen("Duration:")) {
-      p = strstr(buf,"Duration:");
-    if(p && strlen(p) >= strlen("Duration: ") + strlen("00:00:00")) {
-      p += strlen("Duration: ");
-      aboutToReadDuration = YES;
-    }
+    if(strlen(buf) >= strlen(durStr)) {
+      p = strstr(buf,durStr);
+      if(p && strlen(p) >= strlen(durStr) + 9) {
+        p += strlen(durStr) + 1;
+        aboutToReadDuration = YES;
+      }
     }
     if(p==0)
       p = buf;
     if(aboutToReadDuration){
       self.videoLength = 0;
-      float components[3];
-      sscanf(p,"%f:%f:%f",components,components+1, components+2);
-      for(int i=2, mult=1; i>=0; i--, mult *= 60)
-	self.videoLength += components[i]  * mult;
+      if(strstr(durStr,"Dur")){
+        //ffmpeg
+        float components[3];
+        sscanf(p,"%f:%f:%f",components,components+1, components+2);
+        for(int i=2, mult=1; i>=0; i--, mult *= 60)
+          self.videoLength += components[i]  * mult;
+      } else {
+        //theora
+        float dur;
+        sscanf(p,"%f",&dur);
+        self.videoLength = dur;
+      }
       aboutToReadDuration = NO;
       if(self.speedTestActive)
 	[conversionWatcher requestFinishWithStatus:EndStatusOK];
       return;
     } else {
-      // if duration info was not in this block, see if "Duration: string" was
-      // (this is what usually happens)
-      if(strlen(buf) >= strlen("Duration:") && strstr(buf,"Duration:"))
+      // if duration info was not in this block, see if durStr was
+      // (this often happens for ffmpeg)
+      if(strlen(buf) >= strlen(durStr) && strstr(buf,durStr))
 	aboutToReadDuration = YES;
     }
   }
 
-  // time updates: time= for G1 and PSP, 
+  // time updates: time= for ffmpeg
   float curTime = 0;
   if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
     sscanf(p+strlen("time="),"%f", &curTime);
-  // "position": for Theora
+  // "position": for ffpeg2theora
   if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
     sscanf(p+strlen("\"position\":"),"%f", &curTime);
   // update percent done
@@ -353,18 +387,24 @@
       [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
     }
   }
+
+  // Check for libxvid malloc error at end, may have completed successfully
+  if(strlen(buf) > strlen("muxing overhead") && (p=strstr(buf,"muxing overhead")))
+    self.ffmpegFinishedOkayBeforeError = YES;
+  return;
 }
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
   self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
   self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
 }
--(void) startAConversion:(NSString *)file {
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+  self.ffmpegFinishedOkayBeforeError = NO;
   // initialize textbox for FFMPEG output window
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
   NSAttributedString *string =
     [[NSAttributedString alloc]
-      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[self fFMPEGLaunchPath] lastPathComponent],
-					  [[self fFMPEGArguments:file] componentsJoinedByString:@" "]]];
+      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
+                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
   [storage setAttributedString:string];
   [string release];
   CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
@@ -373,91 +413,27 @@
   conversionWatcher.delegate = self;
   conversionWatcher.textStorage = storage;
   [conversionWatcher startTask:
-                       [self fFMPEGLaunchPath]
-                     withArgs:[self fFMPEGArguments:file]
-                     andProgressFile:[self fFMPEGOutputFile:file]];
+                       [video fFMPEGLaunchPathForDevice:device]
+                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
+                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
 }
--(NSString *) fFMPEGLaunchPath {
-  if(![[devicePicker titleOfSelectedItem] compare:@"G1"])
-    return [[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""];
-  else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"])
-    return [[NSBundle mainBundle] pathForResource:@"ffmpeg" ofType:@""];
-  else if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
-    return [[NSBundle mainBundle] pathForResource:@"ffmpeg2theora" ofType:@""];
-  return nil;
+
+- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
+  char *p = [input UTF8String], *q;
+  char *str = malloc([input length] + 10);
+  strncpy(str,p,[input length]);
+  if(strlen(str) > strlen("pointer being freed was not allocated"))
+    q = strstr(str,"pointer being freed was not allocated");
+  else
+    return input;
+  if(!q) return input;
+  for(;q >= str && *q != '\n'; q--);
+  if(q==str) sprintf(q,"[sic]\n");
+  else sprintf(q+1,"[sic]\n");
+  NSString *output = [NSString stringWithFormat:@"%s",str];
+  free(str);
+  return output;
 }
--(NSString *) fFMPEGOutputFile:(NSString *)inputFile {
-  NSString *returnValue;
-  if(![[devicePicker titleOfSelectedItem] compare:@"G1"])
-    returnValue = [[inputFile stringByDeletingPathExtension] stringByAppendingPathExtension:@"g1.mp4"];
-  else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"])
-    returnValue = [[inputFile stringByDeletingPathExtension] stringByAppendingPathExtension:@"psp.mp4"];
-  else if(![[devicePicker titleOfSelectedItem] compare:@"Theora"])
-    returnValue = [[inputFile stringByDeletingPathExtension] stringByAppendingPathExtension:@"theora.ogv"];
-  return returnValue;
-}
--(NSArray *) fFMPEGArguments:(NSString *)path {
-  NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
-  if(![[devicePicker titleOfSelectedItem] compare:@"G1"]){
-    [args addObject:@"-i"];
-    [args addObject:path];
-    [args addObject:@"-y"];
-    [args addObject:@"-fpre"];
-    [args addObject:[[NSBundle mainBundle] pathForResource:@"libx264hq" ofType:@"ffpreset"]];
-    [args addObject:@"-aspect"];
-    [args addObject:@"3:2"];
-    [args addObject:@"-s"];
-    [args addObject:@"400x300"];
-    [args addObject:@"-r"];
-    [args addObject:@"23.976"];
-    [args addObject:@"-vcodec"];
-    [args addObject:@"libx264"];
-    [args addObject:@"-b"];
-    [args addObject:@"480k"];
-    [args addObject:@"-acodec"];
-    [args addObject:@"aac"];
-    [args addObject:@"-ab"];
-    [args addObject:@"96k"];
-    [args addObject:[self fFMPEGOutputFile:path]];
-  } else if(![[devicePicker titleOfSelectedItem] compare:@"PSP"]){
-    [args addObject:@"-i"];
-    [args addObject:path];
-    [args addObject:@"-b"];
-    [args addObject:@"1200k"];
-    [args addObject:@"-s"];
-    [args addObject:@"320x240"];
-    [args addObject:@"-vcodec"];
-    [args addObject:@"mpeg4"];
-    [args addObject:@"-ab"];
-    [args addObject:@"128k"];
-    [args addObject:@"-ar"];
-    [args addObject:@"24000"];
-    [args addObject:@"-acodec"];
-    [args addObject:@"aac"];
-    [args addObject:@"-mbd"];
-    [args addObject:@"2"];
-    [args addObject:@"-flags"];
-    [args addObject:@"+4mv"];
-    [args addObject:@"-trellis"];
-    [args addObject:@"2"];
-    [args addObject:@"-cmp"];
-    [args addObject:@"2"];
-    [args addObject:@"-subcmp"];
-    [args addObject:@"2"];
-    [args addObject:@"-r"];
-    [args addObject:@"30000/1001"];
-    [args addObject:[self fFMPEGOutputFile:path]];
-  } else if(![[devicePicker titleOfSelectedItem] compare:@"Theora"]){
-    [args addObject:path];
-    [args addObject:@"-o"];
-    [args addObject:[self fFMPEGOutputFile:path]];
-    [args addObject:@"--videoquality"];
-    [args addObject:@"8"];
-    [args addObject:@"--audioquality"];
-    [args addObject:@"6"];
-    [args addObject:@"--frontend"];
-  }
-  return [NSArray arrayWithArray:args];
-}
+
 @end
 
