@@ -3,3 +3,6 @@ MSWindows/Windows/obj/
 MSWindows/WindowsSetup/Debug/
 MSWindows/WindowsSetup/Release/
 Mac/build/
+*.pyc
+*.pfx
+pcfpfxpassword.yaml

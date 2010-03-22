@@ -18,23 +18,28 @@ namespace Mirosubs.Converter.Windows.Process {
             @"audio\"": \[\{[^\}]+bitrate\"": ([\d\.]+)", 
             RegexOptions.Multiline);
 
-        public static VideoParameters GetParameters(string videoFileName) { 
-            string exeName = Path.Combine(Path.GetDirectoryName(
-                    System.Reflection.Assembly.GetExecutingAssembly().Location),
-                    @"ffmpeg-bin\ffmpeg2theora.exe");
-            string args = string.Format("--info {0}", videoFileName);
-            ProcessStartInfo startInfo = new ProcessStartInfo(
-                exeName, args);
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-            SProcess process = new SProcess();
-            process.StartInfo = startInfo;
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            return ParamsFromOutput(output);
+        public static VideoParameters GetParameters(string videoFileName) {
+            try {
+                string exeName = Path.Combine(Path.GetDirectoryName(
+                        System.Reflection.Assembly.GetExecutingAssembly().Location),
+                        @"ffmpeg-bin\ffmpeg2theora.exe");
+                string args = string.Format("--info {0}", videoFileName);
+                ProcessStartInfo startInfo = new ProcessStartInfo(
+                    exeName, args);
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                SProcess process = new SProcess();
+                process.StartInfo = startInfo;
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                return ParamsFromOutput(output);
+            }
+            catch (Exception) {
+                return null;
+            }
         }
 
         private static VideoParameters ParamsFromOutput(string output) {
