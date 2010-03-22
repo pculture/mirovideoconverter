@@ -13,11 +13,8 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
             : base(displayName, filePart, "ogv", VideoFormatGroup.Formats) { 
         }
         public override string GetArguments(string inputFileName, string outputFileName) {
-            VideoParameters parms = null;
-            try {
-                parms = VideoParameterOracle.GetParameters(inputFileName);
-            }
-            catch (Exception) { }
+            VideoParameters parms = 
+                VideoParameterOracle.GetParameters(inputFileName);
             if (parms == null)
                 return string.Format(
                     "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",

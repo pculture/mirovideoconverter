@@ -6,23 +6,24 @@ using Mirosubs.Converter.Windows.Process;
 
 namespace Mirosubs.Converter.Windows.VideoFormats {
     class AndroidVideoFormat : VideoFormat {
-        private const string DEFAULT_ASPECT = "3:2";
-        private const string DEFAULT_DIM = "480x320";
-        private const string NEXUS_ASPECT = "1.6666";
-        private const string NEXUS_DIM = "800x480";
-        private const string DROID_ASPECT = "1.7666";
-        private const string DROID_DIM = "848x480";
+
+        private static readonly VideoSize DEFAULT_DIM = 
+            new VideoSize() { Width = 480, Height = 320 };
+        private static readonly VideoSize NEXUS_DIM =
+            new VideoSize() { Width = 800, Height = 480 };
+        private static readonly VideoSize DROID_DIM =
+            new VideoSize() { Width = 854, Height = 480 };
 
         public readonly static VideoFormat G1 =
             new AndroidVideoFormat("G1", "g1");
         public readonly static VideoFormat NexusOne =
             new AndroidVideoFormat("Nexus One", "nexusone",
-                NEXUS_ASPECT, NEXUS_DIM);
+                NEXUS_DIM);
         public readonly static VideoFormat MagicMyTouch =
             new AndroidVideoFormat("Magic / myTouch", "magic");
         public readonly static VideoFormat Droid =
-            new AndroidVideoFormat("Droid", "droid",
-                DROID_ASPECT, DROID_DIM);
+            new AndroidVideoFormat("Droid", "droid", 
+                DROID_DIM);
         public readonly static VideoFormat ErisDesire =
             new AndroidVideoFormat("Eris / Desire", "eris");
         public readonly static VideoFormat Hero =
@@ -32,26 +33,35 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         public readonly static VideoFormat BeholdII =
             new AndroidVideoFormat("Behold II", "behold");
 
-        private string aspectRatio;
-        private string dimensions;
+        private VideoSize size;
 
         private AndroidVideoFormat(string displayName, string filePart)
-            : this(displayName, filePart, DEFAULT_ASPECT, DEFAULT_DIM) {
+            : this(displayName, filePart, DEFAULT_DIM) {
         }
 
-        private AndroidVideoFormat(string displayName, 
-            string filePart, string aspectRatio, string dimensions) 
+        private AndroidVideoFormat(string displayName,
+            string filePart, VideoSize size) 
             : base(displayName, filePart, "mp4", VideoFormatGroup.Android) {
-            this.aspectRatio = aspectRatio;
-            this.dimensions = dimensions;
+            this.size = size;
         }
 
         public override string GetArguments(string inputFileName, string outputFileName) {
+            VideoParameters parms =
+                VideoParameterOracle.GetParameters(inputFileName);
+            VideoSize size = parms == null ? null : parms.VideoSize;
+            string sizeArg = "";
+            if (size != null && size.CompareTo(this.size) > 0) {
+                float widthRatio = (float)size.Width / this.size.Width;
+                float heightRatio = (float)size.Height / this.size.Height;
+                float ratio = Math.Max(widthRatio, heightRatio);
+                sizeArg = string.Format("-s {0}x{1}",
+                    (int)(size.Width / ratio), 
+                    (int)(size.Height / ratio));
+            }
             return string.Format(
-                "-i \"{0}\" -y -f mp4 -vcodec libxvid -maxrate 1000k -b 700k " +
-                "-qmin 3 -qmax 5 -bufsize 4096 -g 300 -aspect {1} -s {2} " +
-                "-acodec aac -ab 96000 \"{3}\"",
-                inputFileName, aspectRatio, dimensions, outputFileName);
+                "-i \"{0}\" -y -f mp4 -vcodec mpeg4 -sameq {1} " +
+                "-acodec aac -ab 48000 -r 18 \"{2}\"",
+                inputFileName, sizeArg, outputFileName);
         }
 
         public override VideoConverter MakeConverter(string fileName) {
