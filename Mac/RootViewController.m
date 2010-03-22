@@ -262,6 +262,26 @@
   [cancelButton setEnabled:YES];
   [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem]];
 }
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+  self.ffmpegFinishedOkayBeforeError = NO;
+  // initialize textbox for FFMPEG output window
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSAttributedString *string =
+    [[NSAttributedString alloc]
+      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
+                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
+  [storage setAttributedString:string];
+  [string release];
+  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
+  self.conversionWatcher = aWatcher;
+  [aWatcher release];
+  conversionWatcher.delegate = self;
+  conversionWatcher.textStorage = storage;
+  [conversionWatcher startTask:
+                       [video fFMPEGLaunchPathForDevice:device]
+                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
+                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+}
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
   videoLength = 0;
@@ -311,6 +331,27 @@
   }
   [self convertingDone:status];
 }
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
+  self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
+  self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
+}
+- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
+  char *p = [input UTF8String], *q;
+  char *str = malloc([input length] + 10);
+  strncpy(str,p,[input length]);
+  if(strlen(str) > strlen("pointer being freed was not allocated"))
+    q = strstr(str,"pointer being freed was not allocated");
+  else
+    return input;
+  if(!q) return input;
+  for(;q >= str && *q != '\n'; q--);
+  if(q==str) sprintf(q,"[sic]\n");
+  else sprintf(q+1,"[sic]\n");
+  NSString *output = [NSString stringWithFormat:@"%s",str];
+  free(str);
+  return output;
+}
+
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
   static BOOL aboutToReadDuration = NO;
 
@@ -393,47 +434,5 @@
     self.ffmpegFinishedOkayBeforeError = YES;
   return;
 }
-- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
-  self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
-  self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
-}
--(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
-  self.ffmpegFinishedOkayBeforeError = NO;
-  // initialize textbox for FFMPEG output window
-  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-  NSAttributedString *string =
-    [[NSAttributedString alloc]
-      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
-                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
-  [storage setAttributedString:string];
-  [string release];
-  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
-  self.conversionWatcher = aWatcher;
-  [aWatcher release];
-  conversionWatcher.delegate = self;
-  conversionWatcher.textStorage = storage;
-  [conversionWatcher startTask:
-                       [video fFMPEGLaunchPathForDevice:device]
-                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
-                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
-}
-
-- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
-  char *p = [input UTF8String], *q;
-  char *str = malloc([input length] + 10);
-  strncpy(str,p,[input length]);
-  if(strlen(str) > strlen("pointer being freed was not allocated"))
-    q = strstr(str,"pointer being freed was not allocated");
-  else
-    return input;
-  if(!q) return input;
-  for(;q >= str && *q != '\n'; q--);
-  if(q==str) sprintf(q,"[sic]\n");
-  else sprintf(q+1,"[sic]\n");
-  NSString *output = [NSString stringWithFormat:@"%s",str];
-  free(str);
-  return output;
-}
-
 @end
 
