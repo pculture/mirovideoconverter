@@ -21,7 +21,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         public override string GetArguments(string inputFileName, string outputFileName) {
             return string.Format(
                 "-i \"{0}\"  -acodec aac -ab 96000 -vcodec mpeg4 -b 1200kb " +
-                "-mbd 2 -cmp 2 -subcmp 2 -s 320x480 -r 20 \"{1}\"",
+                "-mbd 2 -cmp 2 -subcmp 2 -s 480x320 -r 20 \"{1}\"",
                 inputFileName, outputFileName);
         }
         public override VideoConverter MakeConverter(string fileName) {
