@@ -15,7 +15,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
 
         public override string GetArguments(string inputFileName, string outputFileName) {
             return string.Format(
-                "-i \"{0}\" -y -aspect 4:3 -s 480×272 -vcodec libxvid -sameq " + 
+                "-i \"{0}\" -y -aspect 4:3 -s 480x272 -vcodec libxvid -sameq " +
                 "-ab 32000 -ar 24000 -acodec aac \"{1}\"", inputFileName,
                 outputFileName);
         }
