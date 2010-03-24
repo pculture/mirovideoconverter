@@ -23,7 +23,7 @@ namespace Mirosubs.Converter.Windows.Process {
                 string exeName = Path.Combine(Path.GetDirectoryName(
                         System.Reflection.Assembly.GetExecutingAssembly().Location),
                         @"ffmpeg-bin\ffmpeg2theora.exe");
-                string args = string.Format("--info {0}", videoFileName);
+                string args = string.Format("--info \"{0}\"", videoFileName);
                 ProcessStartInfo startInfo = new ProcessStartInfo(
                     exeName, args);
                 startInfo.UseShellExecute = false;
