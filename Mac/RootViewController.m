@@ -76,13 +76,11 @@
     [convertAVideo setStringValue:@"Convert a Video"];
     [self revealViewControls:viewMode];
     [devicePicker selectItemAtIndex:0];
-    [self maybeEnableConvertButton];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
     [convertAVideo setStringValue:@"Ready To Convert!"];
     [self revealViewControls:viewMode];
-    [self maybeEnableConvertButton];
     break;
   case ViewModeConverting:
     [self showView:ViewConverting];
@@ -95,12 +93,12 @@
     [self showView:ViewRoot];
     [self revealViewControls:viewMode];
     [devicePicker selectItemAtIndex:0];
-    [self maybeEnableConvertButton];
     break;
   default:
     break;
   }
   currentViewMode = viewMode;
+  [self maybeEnableConvertButton];
 }
 -(void) showView:(int)whichView {
   NSView *theView;
@@ -216,7 +214,8 @@
   [self maybeEnableConvertButton];
 }
 -(void) maybeEnableConvertButton {
-  if([devicePicker indexOfSelectedItem] != 0 && filename.alphaValue > 0)
+  if([devicePicker indexOfSelectedItem] != 0 &&
+     [self.rootView.subviews containsObject:filename])
     [convertButton setEnabled:YES];
   else
     [convertButton setEnabled:NO];
@@ -262,6 +261,26 @@
   [cancelButton setEnabled:YES];
   [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem]];
 }
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+  self.ffmpegFinishedOkayBeforeError = NO;
+  // initialize textbox for FFMPEG output window
+  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
+  NSAttributedString *string =
+    [[NSAttributedString alloc]
+      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
+                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
+  [storage setAttributedString:string];
+  [string release];
+  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
+  self.conversionWatcher = aWatcher;
+  [aWatcher release];
+  conversionWatcher.delegate = self;
+  conversionWatcher.textStorage = storage;
+  [conversionWatcher startTask:
+                       [video fFMPEGLaunchPathForDevice:device]
+                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
+                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+}
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
   videoLength = 0;
@@ -270,21 +289,25 @@
   fileSize = 0;
   if(status == EndStatusError && self.ffmpegFinishedOkayBeforeError == YES)
     status = EndStatusOK;
+  NSString *file = [video fFMPEGOutputFileForFile:filePath andDevice:[devicePicker titleOfSelectedItem]];
   int iResponse;
   switch(status) {
   case EndStatusOK:
     [finishedConverting setStringValue:
 			  [NSString stringWithFormat:@"Finished converting %@",
-				    [self formatFilename:[video fFMPEGOutputFileForFile:filePath andDevice:[devicePicker titleOfSelectedItem]]
-					  maxLength:CONVERTING_DONE_MAX_FILE_LENGTH]]];
+				    [self formatFilename:file maxLength:CONVERTING_DONE_MAX_FILE_LENGTH]]];
     [self setViewMode:ViewModeFinished];
     break;
-  case EndStatusError:  
+  case EndStatusError:
+    if([[NSFileManager defaultManager] isReadableFileAtPath:file])
+      [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
     iResponse = NSRunAlertPanel(@"Conversion Failed", @"Your file could not be converted.",
                                     @"OK", @"Show Output", nil);
     if(iResponse == NSAlertAlternateReturn)
       [fFMPEGOutputWindow makeKeyAndOrderFront:self];
   case EndStatusCancel:
+    if([[NSFileManager defaultManager] isReadableFileAtPath:file])
+      [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
     [self setViewMode:ViewModeWithFile];
     break;
   }
@@ -311,6 +334,27 @@
   }
   [self convertingDone:status];
 }
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
+  self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
+  self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
+}
+- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
+  char *p = [input UTF8String], *q;
+  char *str = malloc([input length] + 10);
+  strncpy(str,p,[input length]);
+  if(strlen(str) > strlen("pointer being freed was not allocated"))
+    q = strstr(str,"pointer being freed was not allocated");
+  else
+    return input;
+  if(!q) return input;
+  for(;q >= str && *q != '\n'; q--);
+  if(q==str) sprintf(q,"[sic]\n");
+  else sprintf(q+1,"[sic]\n");
+  NSString *output = [NSString stringWithFormat:@"%s",str];
+  free(str);
+  return output;
+}
+
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
   static BOOL aboutToReadDuration = NO;
 
@@ -393,47 +437,5 @@
     self.ffmpegFinishedOkayBeforeError = YES;
   return;
 }
-- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict {
-  self.fileSize = [[dict objectForKey:@"filesize"] intValue];;
-  self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
-}
--(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
-  self.ffmpegFinishedOkayBeforeError = NO;
-  // initialize textbox for FFMPEG output window
-  NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
-  NSAttributedString *string =
-    [[NSAttributedString alloc]
-      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
-                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
-  [storage setAttributedString:string];
-  [string release];
-  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
-  self.conversionWatcher = aWatcher;
-  [aWatcher release];
-  conversionWatcher.delegate = self;
-  conversionWatcher.textStorage = storage;
-  [conversionWatcher startTask:
-                       [video fFMPEGLaunchPathForDevice:device]
-                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
-                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
-}
-
-- (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
-  char *p = [input UTF8String], *q;
-  char *str = malloc([input length] + 10);
-  strncpy(str,p,[input length]);
-  if(strlen(str) > strlen("pointer being freed was not allocated"))
-    q = strstr(str,"pointer being freed was not allocated");
-  else
-    return input;
-  if(!q) return input;
-  for(;q >= str && *q != '\n'; q--);
-  if(q==str) sprintf(q,"[sic]\n");
-  else sprintf(q+1,"[sic]\n");
-  NSString *output = [NSString stringWithFormat:@"%s",str];
-  free(str);
-  return output;
-}
-
 @end
 

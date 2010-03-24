@@ -42,9 +42,6 @@
   if([loopTimer isValid])
     [loopTimer invalidate];
   [self updateFileInfo];
-  if(progressFile && (endStatus == EndStatusError || endStatus == EndStatusCancel))
-    if([[NSFileManager defaultManager] isReadableFileAtPath:progressFile])
-      [[NSFileManager defaultManager] removeItemAtPath:progressFile error:nil];
   [delegate cwTaskWatcher:self ended:endStatus];
   self.task = 0;
   self.loopTimer = 0;
