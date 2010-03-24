@@ -6,38 +6,14 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
        <item>
-          <title>Version 1.2</title>
+          <title>Version 1.3</title>
           <sparkle:releaseNotesLink>
-            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/1.2.html
+            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/1.3.html
           </sparkle:releaseNotesLink>
-          <pubDate>Sun, 21 Mar2010 11:00:00 -0400</pubDate>
-          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-1.2.dmg"
-      	       sparkle:version="1.2"
-      	       sparkle:dsaSignature="MCwCFEutT2HrU5O9/UTFL+MxMdPXw5EMAhRX+1x/JXxpEzGcpgYwHCZ+PPVbvw=="
-      	       length="19517440"
-      	       type="application/octet-stream"  />
-       </item>
-       <item>
-          <title>Version 1.1</title>
-          <sparkle:releaseNotesLink>
-            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/1.1.html
-          </sparkle:releaseNotesLink>
-          <pubDate>Sat, 20 Mar2010 14:40:00 -0400</pubDate>
-          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-1.1.dmg"
-      	       sparkle:version="1.1"
-      	       sparkle:dsaSignature="MC4CFQC9dfdLrtthbz1JEXuud0yn9xuODQIVAIBtG2Ps2wxzu9xqBnYJRJ2/py9w"
-      	       length="19517440"
-      	       type="application/octet-stream"  />
-       </item>
-       <item>
-          <title>Version 1.0</title>
-          <sparkle:releaseNotesLink>
-            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/1.0.html
-          </sparkle:releaseNotesLink>
-          <pubDate>Sat, 20 Mar2010 11:00:00 -0400</pubDate>
-          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-1.0.dmg"
-      	       sparkle:version="1.0"
-      	       sparkle:dsaSignature="MCwCFFQXFrrvRHC+rRMZOK0gzEgVffuiAhQ2YzvS/j6R5jMCyVqGza6ZCisjCQ=="
+          <pubDate>Mon, 22 Mar2010 16:42:00 -0400</pubDate>
+          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-1.3.dmg"
+      	       sparkle:version="1.3"
+      	       sparkle:dsaSignature="MCwCFBJ9byCJlkd62b/0guhFRfmRBwaVAhRYq6nno3TKdxNucF6hL8IxT/lTdg=="
       	       length="19517440"
       	       type="application/octet-stream"  />
        </item>

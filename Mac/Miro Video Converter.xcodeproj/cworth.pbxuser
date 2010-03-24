@@ -2,7 +2,7 @@
 {
 	089C165DFE840E0CC02AAC07 /* English */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {542, 339}}";
+			sepNavIntBoundsRect = "{{0, 0}, {708, 269}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 45}";
 			sepNavWindowFrame = "{{15, 465}, {750, 558}}";
@@ -107,24 +107,24 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 290981055;
-			PBXWorkspaceStateSaveDate = 290981055;
+			PBXPerProjectTemplateStateSaveDate = 290982122;
+			PBXWorkspaceStateSaveDate = 290982122;
 		};
 		perUserProjectItems = {
 			4F1178921155386C00DFCC73 /* PBXTextBookmark */ = 4F1178921155386C00DFCC73 /* PBXTextBookmark */;
 			4F1178D511553F6600DFCC73 /* PBXTextBookmark */ = 4F1178D511553F6600DFCC73 /* PBXTextBookmark */;
 			4F1178D711553F9A00DFCC73 /* PBXTextBookmark */ = 4F1178D711553F9A00DFCC73 /* PBXTextBookmark */;
 			4F35078411554DA500644F02 /* PBXTextBookmark */ = 4F35078411554DA500644F02 /* PBXTextBookmark */;
-			4F93D0C011580582001E9154 /* PlistBookmark */ = 4F93D0C011580582001E9154 /* PlistBookmark */;
-			4F93D0C111580582001E9154 /* XCBuildMessageTextBookmark */ = 4F93D0C111580582001E9154 /* XCBuildMessageTextBookmark */;
-			4F93D0C211580582001E9154 /* PBXTextBookmark */ = 4F93D0C211580582001E9154 /* PBXTextBookmark */;
+			4F93D10D11580D11001E9154 /* PBXTextBookmark */ = 4F93D10D11580D11001E9154 /* PBXTextBookmark */;
+			4F93D10E11580D11001E9154 /* PBXTextBookmark */ = 4F93D10E11580D11001E9154 /* PBXTextBookmark */;
+			4F93D10F11580D11001E9154 /* PlistBookmark */ = 4F93D10F11580D11001E9154 /* PlistBookmark */;
+			4F93D11011580D11001E9154 /* PlistBookmark */ = 4F93D11011580D11001E9154 /* PlistBookmark */;
 			4F9D10EF114EC8BB00CB443E /* PBXTextBookmark */ = 4F9D10EF114EC8BB00CB443E /* PBXTextBookmark */;
 			4F9D10F0114EC8BB00CB443E /* PBXBookmark */ = 4F9D10F0114EC8BB00CB443E /* PBXBookmark */;
 			4F9D10F1114EC8BB00CB443E /* PBXBookmark */ = 4F9D10F1114EC8BB00CB443E /* PBXBookmark */;
 			4F9D10F2114EC8BB00CB443E /* PBXBookmark */ = 4F9D10F2114EC8BB00CB443E /* PBXBookmark */;
 			4F9D10F3114EC8BB00CB443E /* PBXBookmark */ = 4F9D10F3114EC8BB00CB443E /* PBXBookmark */;
 			4F9D10F4114EC8BB00CB443E /* PBXTextBookmark */ = 4F9D10F4114EC8BB00CB443E /* PBXTextBookmark */;
-			4F9D10F5114EC8BB00CB443E /* PBXTextBookmark */ = 4F9D10F5114EC8BB00CB443E /* PBXTextBookmark */;
 			4FA408A21154EDA800241C47 /* PBXTextBookmark */ = 4FA408A21154EDA800241C47 /* PBXTextBookmark */;
 			4FA408BE1154FD0700241C47 /* PBXTextBookmark */ = 4FA408BE1154FD0700241C47 /* PBXTextBookmark */;
 			4FA4092911551E2400241C47 /* PBXTextBookmark */ = 4FA4092911551E2400241C47 /* PBXTextBookmark */;
@@ -210,9 +210,9 @@
 	};
 	4F3CDE051140DF670061E70B /* RootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {894, 5785}}";
-			sepNavSelRange = "{12617, 0}";
-			sepNavVisRange = "{12183, 826}";
+			sepNavIntBoundsRect = "{{0, 0}, {852, 5603}}";
+			sepNavSelRange = "{11880, 0}";
+			sepNavVisRange = "{11283, 946}";
 		};
 	};
 	4F5B7FA4114D667A0032F806 /* Miro Video Converter */ = {
@@ -268,7 +268,39 @@
 			sepNavVisRange = "{0, 1178}";
 		};
 	};
-	4F93D0C011580582001E9154 /* PlistBookmark */ = {
+	4F93D10D11580D11001E9154 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F3CDE051140DF670061E70B /* RootViewController.m */;
+		name = "RootViewController.m: 311";
+		rLen = 0;
+		rLoc = 11880;
+		rType = 0;
+		vrLen = 946;
+		vrLoc = 11283;
+	};
+	4F93D10E11580D11001E9154 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 089C165DFE840E0CC02AAC07 /* English */;
+		name = "InfoPlist.strings: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 45;
+		vrLoc = 0;
+	};
+	4F93D10F11580D11001E9154 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			NSMainNibFile,
+		);
+		name = "/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro_Video_Converter-Info.plist";
+		rLen = 8;
+		rLoc = 0;
+	};
+	4F93D11011580D11001E9154 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */;
 		fallbackIsa = PBXBookmark;
@@ -279,25 +311,6 @@
 		name = "/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro_Video_Converter-Info.plist";
 		rLen = 0;
 		rLoc = 9223372036854775807;
-	};
-	4F93D0C111580582001E9154 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Initialization discards qualifiers from pointer target type";
-		fRef = 4F3CDE051140DF670061E70B /* RootViewController.m */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 338;
-		rType = 1;
-	};
-	4F93D0C211580582001E9154 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4F3CDE051140DF670061E70B /* RootViewController.m */;
-		name = "RootViewController.m: 339";
-		rLen = 0;
-		rLoc = 12617;
-		rType = 0;
-		vrLen = 826;
-		vrLoc = 12183;
 	};
 	4F9D10EF114EC8BB00CB443E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -333,16 +346,6 @@
 		rLoc = 0;
 		rType = 0;
 		vrLen = 297;
-		vrLoc = 0;
-	};
-	4F9D10F5114EC8BB00CB443E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 089C165DFE840E0CC02AAC07 /* English */;
-		name = "InfoPlist.strings: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 45;
 		vrLoc = 0;
 	};
 	4FA408911154EBD500241C47 /* VideoConversionCommands.h */ = {
