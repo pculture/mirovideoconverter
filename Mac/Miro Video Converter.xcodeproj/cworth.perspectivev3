@@ -327,7 +327,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F0E4542115BC8260072E53E</string>
+										<string>4F75D6CC115BCAC200DFF886</string>
 										<key>history</key>
 										<array>
 											<string>4F9D10EF114EC8BB00CB443E</string>
@@ -345,7 +345,7 @@
 											<string>4F0E4525115BC5D60072E53E</string>
 											<string>4F0E453F115BC8260072E53E</string>
 											<string>4F0E4540115BC8260072E53E</string>
-											<string>4F0E4541115BC8260072E53E</string>
+											<string>4F0E4542115BC8260072E53E</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -359,18 +359,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {810, 331}}</string>
+								<string>{{0, 0}, {810, 320}}</string>
 								<key>RubberWindowFrame</key>
 								<string>554 267 1017 724 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>331pt</string>
+							<string>320pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>347pt</string>
+							<string>358pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -384,7 +384,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {810, 320}}</string>
+										<string>{{10, 27}, {810, 331}}</string>
+										<key>RubberWindowFrame</key>
+										<string>554 267 1017 724 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -439,8 +441,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {810, 320}}</string>
-										<key>RubberWindowFrame</key>
-										<string>554 267 1017 724 0 0 1680 1028 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -468,11 +468,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>4F0E44AF115BA61C0072E53E</string>
+				<string>4F75D6C9115BCAC200DFF886</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>4F0E44B0115BA61C0072E53E</string>
+				<string>4F75D6CA115BCAC200DFF886</string>
 				<string>4F5B7FB5114D66950032F806</string>
-				<string>4F0E44B1115BA61C0072E53E</string>
+				<string>4F75D6CB115BCAC200DFF886</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -662,8 +662,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>4F0E44BF115BA63A0072E53E</string>
-		<string>4F0E44C0115BA63A0072E53E</string>
 		<string>/Users/cworth/CocoaApps/MiroVideoConverter/Windows-FFMPEG-Wrapper/Mac/Miro Video Converter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
