@@ -25,9 +25,8 @@
 @synthesize finishedConverting,showFile;      
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
-@synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
+@synthesize formatQueryActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
 @synthesize video,ffmpegFinishedOkayBeforeError;
-
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -245,13 +244,23 @@
       break;
     }
 }
-
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
-  // this is a separate fn in case we want to launch an initial run first
-  // prev ran speedtest
   self.videoLength = 0;
-  [self doConversion];
+  [self doFormatQuery];
+}
+-(void) doFormatQuery {
+  self.formatQueryActive = YES;
+  video.screenSize = CGSizeMake(0,0);
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Initializing..."];
+  [cancelButton setEnabled:NO];
+  [self startAConversion:filePath forDevice:nil];
+}
+-(void) finishUpFormatQuery {
+  self.formatQueryActive = NO;
 }
 -(void) doConversion {
   self.previousPercentDone = 0;
@@ -312,25 +321,11 @@
     break;
   }
 }
--(void) doSpeedTest {
-  self.speedTestActive = YES;
-  self.previousPercentDone = 0;
-  [progressIndicator startAnimation:self];
-  [progressIndicator setIndeterminate:YES];
-  [percentDone setStringValue:@"Initializing..."];
-  [cancelButton setEnabled:NO];
-  [self startAConversion:filePath forDevice:@" Playstation Portable (PSP)"];
-}
--(void) finishUpSpeedTest {
-  self.speedTestActive = NO;
-}
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
-  if(self.speedTestActive){
-    [self finishUpSpeedTest];
-    if(status == EndStatusOK){
-      [self doConversion];
-      return;
-    }
+  if(self.formatQueryActive){
+    [self finishUpFormatQuery];
+    [self doConversion];
+    return;
   }
   [self convertingDone:status];
 }
@@ -400,9 +395,9 @@
         self.videoLength = dur;
       }
       aboutToReadDuration = NO;
-      if(self.speedTestActive)
-	[conversionWatcher requestFinishWithStatus:EndStatusOK];
-      return;
+      //      if(self.formatQueryActive)
+      //	[conversionWatcher requestFinishWithStatus:EndStatusOK];
+      //      return;
     } else {
       // if duration info was not in this block, see if durStr was
       // (this often happens for ffmpeg)
@@ -419,7 +414,7 @@
   if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
     sscanf(p+strlen("\"position\":"),"%f", &curTime);
   // update percent done
-  if(self.videoLength && !self.speedTestActive){
+  if(self.videoLength && !self.formatQueryActive){
     if(curTime) {
       float percent = curTime / self.videoLength * 100;
       if(previousPercentDone && percent - previousPercentDone > 50)
@@ -431,6 +426,47 @@
       [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
     }
   }
+
+  // video resolution:
+  if(self.formatQueryActive){
+    int width=0,height=0;
+    char *buf2 = malloc(strlen(buf));
+    memcpy(buf2,buf,strlen(buf));
+    int number = 0, gotFirstNumber = 0, numStart =-1, num2Start = -1;
+    for(int i=0; i < strlen(buf); i++)
+      if(buf[i] >= '0' && buf[i] <= '9'){
+        
+      } else {
+        if(gotFirstNumber && num2Start != -1){
+          buf2[i] = 0;
+          sscanf(buf2,"%i",&height);
+          break;
+        } else if(gotFirstNumber) {
+          width=height=0;
+          break;
+        } else if(number && buf[i]='x') {
+          buf2[i] = 0;
+          sscanf(buf2[numStart],"%i",&width);
+          gotFirstNumber = 1;
+        } else if(number) {
+          width=height=0;
+          break;
+        }
+      }
+
+if(gotFirstNumber && bu) {
+        if(!
+        
+      if(!gotFirstNumber && number && buf[i]='x')
+        gotFirstNumber = 1;
+      if(buf[i] >= '0' && buf[i] <= '9')
+        number = 1;
+    
+    
+    if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
+      sscanf(p+strlen("time="),"%f", &curTime);
+  }
+
 
   // Check for libxvid malloc error at end, may have completed successfully
   if(strlen(buf) > strlen("muxing overhead") && (p=strstr(buf,"muxing overhead")))

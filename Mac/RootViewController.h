@@ -49,7 +49,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   float elapsedTime;
   int fileSize;
   float percentPerOutputByte;
-  BOOL speedTestActive;
+  BOOL formatQueryActive;
   float videoLength;
   float previousPercentDone;
 }
@@ -78,7 +78,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,retain) CWTaskWatcher *conversionWatcher;
 @property(nonatomic,retain) NSString *speedFile;
 @property(nonatomic,retain) VideoConversionCommands *video;
-@property(nonatomic,assign) BOOL speedTestActive;
+@property(nonatomic,assign) BOOL formatQueryActive;
 @property(nonatomic,assign) int fileSize;
 @property(nonatomic,assign) float elapsedTime;
 @property(nonatomic,assign) float percentPerOutputByte;
@@ -102,8 +102,8 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 -(void) doFFMPEGConversion;
 -(void) doConversion;
 -(void) convertingDone:(TaskEndStatus)status;
--(void) doSpeedTest;
--(void) finishUpSpeedTest;
+-(void) doFormatQuery;
+-(void) finishUpFormatQuery;
 -(void) startAConversion:(NSString *)file forDevice:(NSString *)device;
 
 @end

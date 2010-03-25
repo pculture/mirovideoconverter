@@ -11,11 +11,13 @@
 #import <Cocoa/Cocoa.h>
 
 @implementation VideoConversionCommands
+@synthesize screenSize;
 
 char *deviceNames[] = { "Android Devices", " Nexus One", " Dream / G1", " Magic / myTouch", " Droid", " Eris / Desire", " Hero", " Cliq / DEXT", " Behold II", nil, "Apple Devices", " iPhone", " iPod Touch", " iPod Nano", " iPod Classic", nil, "Other Devices and Formats", " Playstation Portable (PSP)", " Theora", " MP4", " MP3 (Audio only)", nil, nil };
 char *selectors[] = { "Android Devices", "nexus", "dream", "magic", "droid", "eris", "hero", "cliq", "behold", nil, "Apple Devices", "ipod", "ipod", "ipod", "ipod", nil, "Other Devices", "playstation", "theora", "mp4", "mp3", nil, nil };
 char *fileExtensions[] = { "Android Devices", "nexus.mp4", "dream.mp4", "magic.mp4", "droid.mp4", "eris.mp4", "hero.mp4", "cliq.mp4", "behold.mp4", nil, "Apple Devices", "iphone.mp4", "ipod.mp4", "ipod.mp4", "ipod.mp4", nil, "Other Devices", "psp.mp4", "theora.ogv", "mp4", "mp3", nil, nil };
 char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Apple Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Other Devices", "ffmpeg", "ffmpeg2theora", "ffmpeg", "ffmpeg", nil, nil };
+CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,480 }, { 480,320 }, { 480,320 }, { 480,320 }, { 480,320 }, { 0,0 }, { 0,0 }, { 480,320 },  { 480,320 }, { 480,320 }, { 480,320 }, { 0,0 }, { 0,0 }, { 480,320 },  { 1024,768 }, { 1024,768 }, { 1024,768 }, { 0,0 }, { 0,0 } };
 
 -(int) deviceIndex:(NSString *)device {
   int i; BOOL lastNull;
@@ -35,8 +37,26 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   return i;
 }
 
+-(NSString *) outputVideoSizeForDevice:(NSString *)device {
+  int index;
+  CGSize size;
+  if(device==nil)
+    return nil;
+  index = [self deviceIndex:device];
+  if(screenSize.width == 0 || screenSize.height == 0)
+    size = screenSizes[index];
+  else
+    size = screenSize;
+  return [NSString stringWithFormat:@"%ix%i",(int)size.width,(int)size.height];
+}
+
 -(NSString *) fFMPEGLaunchPathForDevice:(NSString *)device {
-  int index = [self deviceIndex:device];
+  int index;
+  //format query
+  if(device == nil)
+    index = 1;
+  else
+    index = [self deviceIndex:device];
   if(index==-1)
     return nil;
   else {
@@ -47,7 +67,12 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
 }
 
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device {
-  int index = [self deviceIndex:device];
+  int index;
+  // format query
+  if(device==nil)
+    return nil;
+  else
+    index = [self deviceIndex:device];
   if(index==-1)
     return nil;
   else {
@@ -63,7 +88,12 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
 }
 
 -(NSArray *) fFMPEGArgumentsForFile:(NSString *)file andDevice:(NSString *)device {
-  int index = [self deviceIndex:device];
+  int index;
+  //format query
+  if(device==nil)
+    return [self formatQueryArgsForFile:(NSString *)file];
+  else
+    index = [self deviceIndex:device];
   if(index==-1)
     return nil;
   else {
@@ -76,6 +106,13 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   }
 }
 
+-(NSArray *)formatQueryArgsForFile:(NSString *)file {
+  NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
+  [args addObject:@"-i"];
+  [args addObject:file];
+  return [NSArray arrayWithArray:args];
+}
+
 -(NSArray *) nexusArgsForFile:(NSString *)file andDevice:(NSString *)device {
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
@@ -84,123 +121,52 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   [args addObject:@"-f"];
   [args addObject:@"mp4"];
   [args addObject:@"-vcodec"];
-  [args addObject:@"libxvid"];
-  [args addObject:@"-maxrate"];
-  [args addObject:@"1000k"];
-  [args addObject:@"-b"];
-  [args addObject:@"700k"];
-  [args addObject:@"-qmin"];
-  [args addObject:@"3"];
-  [args addObject:@"-qmax"];
-  [args addObject:@"5"];
-  [args addObject:@"-bufsize"];
-  [args addObject:@"4096"];
-  [args addObject:@"-g"];
-  [args addObject:@"300"];
-  [args addObject:@"-aspect"];
-  [args addObject:@"1.6666"];
-  [args addObject:@"-s"];
-  [args addObject:@"800x480"];
+  [args addObject:@"mpeg4"];
+  [args addObject:@"-sameq"];
   [args addObject:@"-acodec"];
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
-  [args addObject:@"96000"];
+  [args addObject:@"48000"];
+  [args addObject:@"-r"];
+  [args addObject:@"18"];
+  [args addObject:@"-s"];
+  [args addObject:[self outputVideoSizeForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
 
 -(NSArray *) dreamArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
-  [args addObject:@"-i"];
-  [args addObject:file];
-  [args addObject:@"-y"];
-  [args addObject:@"-f"];
-  [args addObject:@"mp4"];
-  [args addObject:@"-vcodec"];
-  [args addObject:@"libxvid"];
-  [args addObject:@"-maxrate"];
-  [args addObject:@"1000k"];
-  [args addObject:@"-b"];
-  [args addObject:@"700k"];
-  [args addObject:@"-qmin"];
-  [args addObject:@"3"];
-  [args addObject:@"-qmax"];
-  [args addObject:@"5"];
-  [args addObject:@"-bufsize"];
-  [args addObject:@"4096"];
-  [args addObject:@"-g"];
-  [args addObject:@"300"];
-  [args addObject:@"-aspect"];
-  [args addObject:@"3:2"];
-  [args addObject:@"-s"];
-  [args addObject:@"480x320"];
-  [args addObject:@"-acodec"];
-  [args addObject:@"aac"];
-  [args addObject:@"-ab"];
-  [args addObject:@"96000"];
-  [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
-  return [NSArray arrayWithArray:args];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) magicArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  return [self dreamArgsForFile:file andDevice:device];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) droidArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
-  [args addObject:@"-i"];
-  [args addObject:file];
-  [args addObject:@"-y"];
-  [args addObject:@"-f"];
-  [args addObject:@"mp4"];
-  [args addObject:@"-vcodec"];
-  [args addObject:@"libxvid"];
-  [args addObject:@"-maxrate"];
-  [args addObject:@"1000k"];
-  [args addObject:@"-b"];
-  [args addObject:@"700k"];
-  [args addObject:@"-qmin"];
-  [args addObject:@"3"];
-  [args addObject:@"-qmax"];
-  [args addObject:@"5"];
-  [args addObject:@"-bufsize"];
-  [args addObject:@"4096"];
-  [args addObject:@"-g"];
-  [args addObject:@"300"];
-  [args addObject:@"-acodec"];
-  [args addObject:@"aac"];
-  [args addObject:@"-ab"];
-  [args addObject:@"96000"];
-  [args addObject:@"-s"];
-  [args addObject:@"848x480"];
-  [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
-  return [NSArray arrayWithArray:args];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) erisArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  return [self dreamArgsForFile:file andDevice:device];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) heroArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  return [self dreamArgsForFile:file andDevice:device];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) cliqArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  return [self dreamArgsForFile:file andDevice:device];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) beholdArgsForFile:(NSString *)file andDevice:(NSString *)device {
-  return [self dreamArgsForFile:file andDevice:device];
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) iPhoneArgsForFile:(NSString *)file andDevice:(NSString *)device {
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
-  [args addObject:@"-acodec"];
-  [args addObject:@"aac"];
-  [args addObject:@"-ab"];
-  [args addObject:@"96000"];
   [args addObject:@"-vcodec"];
   [args addObject:@"mpeg4"];
   [args addObject:@"-b"];
@@ -211,10 +177,14 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   [args addObject:@"2"];
   [args addObject:@"-subcmp"];
   [args addObject:@"2"];
-  [args addObject:@"-s"];
-  [args addObject:@"640x480"];
   [args addObject:@"-r"];
   [args addObject:@"20"];
+  [args addObject:@"-acodec"];
+  [args addObject:@"aac"];
+  [args addObject:@"-ab"];
+  [args addObject:@"96000"];
+  [args addObject:@"-s"];
+  [args addObject:[self outputVideoSizeForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -227,20 +197,18 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
-  [args addObject:@"-y"];
-  [args addObject:@"-aspect"];
-  [args addObject:@"4:3"];
-  [args addObject:@"-s"];
-  [args addObject:@"480x272"];
-  [args addObject:@"-vcodec"];
-  [args addObject:@"libxvid"];
-  [args addObject:@"-sameq"];
-  [args addObject:@"-ab"];
-  [args addObject:@"32000"];
+  [args addObject:@"-b"];
+  [args addObject:@"512000"];
   [args addObject:@"-ar"];
   [args addObject:@"24000"];
-  [args addObject:@"-acodec"];
-  [args addObject:@"aac"];
+  [args addObject:@"-ab"];
+  [args addObject:@"64000"];
+  [args addObject:@"-f"];
+  [args addObject:@"psp"];
+  [args addObject:@"-r"];
+  [args addObject:@"29.97"];
+  [args addObject:@"-s"];
+  [args addObject:[self outputVideoSizeForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -248,13 +216,13 @@ char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg"
 -(NSArray *) theoraArgsForFile:(NSString *)file andDevice:(NSString *)device {
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:file];
-  [args addObject:@"-o"];
-  [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   [args addObject:@"--videoquality"];
   [args addObject:@"8"];
   [args addObject:@"--audioquality"];
   [args addObject:@"6"];
   [args addObject:@"--frontend"];
+  [args addObject:@"-o"];
+  [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
 
