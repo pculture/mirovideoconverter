@@ -17,7 +17,7 @@
 #define DROPBOX_MAX_FILE_LENGTH 32
 #define CONVERTING_MAX_FILE_LENGTH 45
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
-
+#define FORMAT_QUERY_SYNCHRONOUS 1
 @implementation RootViewController
 @synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
@@ -257,7 +257,7 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Initializing..."];
   [cancelButton setEnabled:NO];
-  [self startAConversion:filePath forDevice:nil];
+  [self startAConversion:filePath forDevice:nil synchronous:FORMAT_QUERY_SYNCHRONOUS];
 }
 -(void) finishUpFormatQuery {
   self.formatQueryActive = NO;
@@ -268,9 +268,9 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Converting..."];
   [cancelButton setEnabled:YES];
-  [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem]];
+  [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem] synchronous:NO];
 }
--(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device synchronous:(BOOL)sync {
   self.ffmpegFinishedOkayBeforeError = NO;
   // initialize textbox for FFMPEG output window
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
@@ -280,15 +280,22 @@
                                [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
   [storage setAttributedString:string];
   [string release];
-  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
-  self.conversionWatcher = aWatcher;
-  [aWatcher release];
-  conversionWatcher.delegate = self;
-  conversionWatcher.textStorage = storage;
-  [conversionWatcher startTask:
-                       [video fFMPEGLaunchPathForDevice:device]
-                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
-                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+  NSString *path = [video fFMPEGLaunchPathForDevice:device];
+  NSArray *args = [video fFMPEGArgumentsForFile:file andDevice:device];
+  if(!sync) {
+    CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
+    self.conversionWatcher = aWatcher;
+    [aWatcher release];
+    conversionWatcher.delegate = self;
+    conversionWatcher.textStorage = storage;
+    [conversionWatcher startTask:path withArgs:args 
+                       andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+  } else {
+    int status;
+    NSString *output = [CWTask performSynchronousTask:path withArgs:args andReturnStatus:&status];
+    [self cwTaskWatcher:nil updateString:output];
+    [self cwTaskWatcher:nil ended:status];
+  }
 }
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
@@ -334,7 +341,7 @@
   self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
 }
 - (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
-  char *p = [input UTF8String], *q;
+  char *p = (char *)[input UTF8String], *q;
   char *str = malloc([input length] + 10);
   strncpy(str,p,[input length]);
   if(strlen(str) > strlen("pointer being freed was not allocated"))
@@ -348,6 +355,47 @@
   NSString *output = [NSString stringWithFormat:@"%s",str];
   free(str);
   return output;
+}
+
+- (int)getNumber:(float *)number fromBuffer:(char *)buf withError:(BOOL *)error {
+  if(strlen(buf) == 0) {
+    *error = YES;
+    return 0;
+  }
+  char *buf2 = malloc(strlen(buf)+1);
+  memcpy(buf2,buf,strlen(buf));
+  int numStart = -1;
+  for(int i=0; i<strlen(buf); i++)
+    if(numStart == -1){
+      if(buf[i] >= '0' && buf[i] <= '9')
+        numStart = i;
+    } else {
+      if(!(buf[i] >= '0' && buf[i] <= '9')){
+        buf2[i] = 0;
+        sscanf(buf2+numStart,"%f",number);
+        *error = NO;
+        return i;
+      }
+    }
+  *error = YES;
+  return 0;
+}
+
+- (CGSize)getScreenSizeFromBuffer:(char *)buf {
+  CGSize size = CGSizeMake(0,0); 
+  int i = 0; float number; BOOL error = NO;
+  while(!error && i < strlen(buf)){
+    i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+    if( ! (error || i > strlen(buf) - 2 || buf[i] != 'x') ){
+      size.width = number;
+      i++;
+      i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+      if(!error){
+        size.height = number;
+      }
+    }
+  }
+  return size;
 }
 
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
@@ -395,12 +443,8 @@
         self.videoLength = dur;
       }
       aboutToReadDuration = NO;
-      //      if(self.formatQueryActive)
-      //	[conversionWatcher requestFinishWithStatus:EndStatusOK];
-      //      return;
     } else {
       // if duration info was not in this block, see if durStr was
-      // (this often happens for ffmpeg)
       if(strlen(buf) >= strlen(durStr) && strstr(buf,durStr))
 	aboutToReadDuration = YES;
     }
@@ -413,7 +457,7 @@
   // "position": for ffpeg2theora
   if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
     sscanf(p+strlen("\"position\":"),"%f", &curTime);
-  // update percent done
+  // now update percent done
   if(self.videoLength && !self.formatQueryActive){
     if(curTime) {
       float percent = curTime / self.videoLength * 100;
@@ -429,44 +473,13 @@
 
   // video resolution:
   if(self.formatQueryActive){
-    int width=0,height=0;
-    char *buf2 = malloc(strlen(buf));
-    memcpy(buf2,buf,strlen(buf));
-    int number = 0, gotFirstNumber = 0, numStart =-1, num2Start = -1;
-    for(int i=0; i < strlen(buf); i++)
-      if(buf[i] >= '0' && buf[i] <= '9'){
-        
-      } else {
-        if(gotFirstNumber && num2Start != -1){
-          buf2[i] = 0;
-          sscanf(buf2,"%i",&height);
-          break;
-        } else if(gotFirstNumber) {
-          width=height=0;
-          break;
-        } else if(number && buf[i]='x') {
-          buf2[i] = 0;
-          sscanf(buf2[numStart],"%i",&width);
-          gotFirstNumber = 1;
-        } else if(number) {
-          width=height=0;
-          break;
-        }
-      }
-
-if(gotFirstNumber && bu) {
-        if(!
-        
-      if(!gotFirstNumber && number && buf[i]='x')
-        gotFirstNumber = 1;
-      if(buf[i] >= '0' && buf[i] <= '9')
-        number = 1;
-    
-    
-    if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
-      sscanf(p+strlen("time="),"%f", &curTime);
+    CGSize size = [self getScreenSizeFromBuffer:buf];
+    if(size.width > 0 && size.height > 0) {
+      size = [video fitScreenSize:size toDevice:[devicePicker titleOfSelectedItem]];
+      if(size.width > 0 && size.height > 0)
+        video.screenSize = size;
+    }
   }
-
 
   // Check for libxvid malloc error at end, may have completed successfully
   if(strlen(buf) > strlen("muxing overhead") && (p=strstr(buf,"muxing overhead")))

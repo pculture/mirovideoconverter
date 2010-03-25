@@ -21,7 +21,7 @@ extern CGSize screenSizes[];
 @property(assign) CGSize screenSize;
 
 -(int) deviceIndex:(NSString *)device;
--(NSString *) outputVideoSizeForDevice:(NSString *)device;
+-(NSString *) outputVideoSizeStringForDevice:(NSString *)device;
 -(NSString *) fFMPEGLaunchPathForDevice:(NSString *)device;
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device;
 -(NSArray *) fFMPEGArgumentsForFile:(NSString *)file andDevice:(NSString *)device;
@@ -40,4 +40,5 @@ extern CGSize screenSizes[];
 -(NSArray *) theoraArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) mp4ArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) mp3ArgsForFile:(NSString *)file andDevice:(NSString *)device;
+-(CGSize) fitScreenSize:(CGSize)size toDevice:(NSString *)device;
 @end

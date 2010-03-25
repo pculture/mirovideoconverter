@@ -17,12 +17,8 @@
 @property(retain) NSTimer *tellDelegateTaskEndedDelayTimer;
 
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args;
-- (void) taskUpdateStdOut:(NSNotification *)note;
-- (void) taskUpdateStdErr:(NSNotification *)note;
-- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note;
-- (void) taskEnded:(NSNotification *)note;
-- (void) tellDelegateTaskEnded:(NSTimer *)timer;
 - (void) endTask;
++ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status;
 @end
 
 @protocol CWTaskDelegate

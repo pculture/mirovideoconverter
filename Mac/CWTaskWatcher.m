@@ -7,6 +7,8 @@
 #import "CWTaskWatcher.h"
 #import <Cocoa/Cocoa.h>
 
+#define WATCH_INTERVAL 0.3
+
 @implementation CWTaskWatcher
 @synthesize task,pid,delegate,textStorage,loopTimer,progressFile,taskStartDate,taskEndRequestDate;
 
@@ -32,12 +34,31 @@
     self.pid = [task startTask:path withArgs:args];
     self.taskStartDate = [NSDate date];
     self.loopTimer = 
-      [NSTimer scheduledTimerWithTimeInterval:0.3 target:self
+      [NSTimer scheduledTimerWithTimeInterval:WATCH_INTERVAL target:self
                selector:@selector(watchTask:)
                userInfo:nil
                repeats:YES];
   }
 }
+
+- (void) requestFinishWithStatus:(TaskEndStatus)status {
+  if(runStatus == RunStatusRunning){
+    runStatus = RunStatusEndRequested;
+    endStatus = status;
+    self.taskEndRequestDate = [NSDate date];
+    [task endTask];
+  }
+}
+-(void) killProcess {
+  CWTask *killTask = [[CWTask alloc] init];
+  [task startTask:@"/bin/sh"
+        withArgs:[NSArray arrayWithObjects:
+                            @"-c",
+                          [NSString stringWithFormat:@"kill -9 %i", pid],
+                          nil]];
+  [killTask release];
+}
+
 - (void) finish {
   if([loopTimer isValid])
     [loopTimer invalidate];
@@ -49,7 +70,6 @@
   self.taskEndRequestDate = 0;
 }
 -(void) watchTask:(NSTimer *)timer {
-  int i=1; i=2;
   switch(runStatus){
   case RunStatusNone:
     break;
@@ -94,14 +114,6 @@
                                @"elapsedTime",@"filesize",nil]];
   [delegate cwTaskWatcher:self updateFileInfo:dict];
 }
-- (void) requestFinishWithStatus:(TaskEndStatus)status {
-  if(runStatus == RunStatusRunning){
-    runStatus = RunStatusEndRequested;
-    endStatus = status;
-    [task endTask];
-    self.taskEndRequestDate = [NSDate date];
-  }
-}
 - (void)cwTask:(CWTask *)cwtask ended:(int)returnValue{
   switch(runStatus) {
   case RunStatusNone:
@@ -129,7 +141,7 @@
         if([delegate respondsToSelector:@selector(cwTaskWatcher:censorOutput:)])
           newOutput = [delegate cwTaskWatcher:self censorOutput:tmpOutput];
         else
-          newOutput = [NSString stringWithString:tmpOutput];
+          newOutput = tmpOutput;
         if(newOutput){
           if(textStorage)
             [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
@@ -140,16 +152,6 @@
     }
   }
 }
--(void) killProcess {
-  CWTask *killTask = [[CWTask alloc] init];
-  [task startTask:@"/bin/sh"
-        withArgs:[NSArray arrayWithObjects:
-                            @"-c",
-                          [NSString stringWithFormat:@"kill -9 %i", pid],
-                          nil]];
-  [killTask release];
-}
-
 @end
 
 //                       withString:[NSString stringWithFormat:@"%@:%@",

@@ -37,17 +37,48 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   return i;
 }
 
--(NSString *) outputVideoSizeForDevice:(NSString *)device {
+-(CGSize) screenSizeForDevice:(NSString *)device {
   int index;
-  CGSize size;
   if(device==nil)
-    return nil;
+    return CGSizeMake(0,0);
   index = [self deviceIndex:device];
+  return screenSizes[index];
+}
+
+-(NSString *) outputVideoSizeStringForDevice:(NSString *)device {
+  CGSize size;
   if(screenSize.width == 0 || screenSize.height == 0)
-    size = screenSizes[index];
+    size = [self screenSizeForDevice:device];
   else
     size = screenSize;
   return [NSString stringWithFormat:@"%ix%i",(int)size.width,(int)size.height];
+}
+
+/**
+   Return something shaped like content sized inside canvas
+*/
+- (CGSize) fit:(CGSize)content to:(CGSize)canvas {
+  CGSize size = content;
+  if(content.width/canvas.width > content.height/canvas.height) {
+    if(content.width > canvas.width) {
+      size.width = canvas.width;
+      size.height = canvas.width / content.width * content.height;
+    }
+  } else {
+    if(content.height > canvas.height) {
+      size.width = canvas.height / content.height * content.width;
+      size.height = canvas.height;
+    }
+  }
+  return CGSizeMake(size.width,size.height);
+}
+
+- (CGSize) fitScreenSize:(CGSize)size toDevice:(NSString *)device {
+  CGSize deviceSize = [self screenSizeForDevice:device];
+  if(deviceSize.width > 0 && deviceSize.height > 0)
+    return [self fit:size to:deviceSize];
+  else
+    return size;
 }
 
 -(NSString *) fFMPEGLaunchPathForDevice:(NSString *)device {
@@ -130,7 +161,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-r"];
   [args addObject:@"18"];
   [args addObject:@"-s"];
-  [args addObject:[self outputVideoSizeForDevice:device]];
+  [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -184,7 +215,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-ab"];
   [args addObject:@"96000"];
   [args addObject:@"-s"];
-  [args addObject:[self outputVideoSizeForDevice:device]];
+  [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -208,7 +239,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-r"];
   [args addObject:@"29.97"];
   [args addObject:@"-s"];
-  [args addObject:[self outputVideoSizeForDevice:device]];
+  [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
