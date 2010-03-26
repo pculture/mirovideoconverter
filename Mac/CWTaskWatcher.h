@@ -11,7 +11,7 @@
 typedef enum { RunStatusNone, RunStatusRunning, RunStatusEndRequested, RunStatusKillRequested, RunStatusTaskEnded } TaskRunStatus;
 typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } TaskEndStatus;
 
-@interface CWTaskWatcher : NSObject <CWTaskDelegate>{
+@interface CWTaskWatcher : NSObject <CWTaskDelegate> {
   TaskRunStatus runStatus;
   TaskEndStatus endStatus;
   CWTask *task;
@@ -35,11 +35,12 @@ typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } Tas
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
    andProgressFile:(NSString *)file;
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args;
+- (void) requestFinishWithStatus:(TaskEndStatus)status;
+- (void) killProcess;
 - (void) finish;
 - (void) watchTask:(NSTimer *)timer;
 - (void) updateFileInfo;
-- (void) requestFinishWithStatus:(TaskEndStatus)status;
-- (void) killProcess;
+
 @end
 
 @protocol CWTaskWatcherDelegate

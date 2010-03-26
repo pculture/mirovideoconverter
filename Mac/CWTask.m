@@ -7,13 +7,11 @@
 #import "CWTask.h"
 #import <Cocoa/Cocoa.h>
 
+#define DELAY_BEFORE_NOTIFY_ENDED 0.4
+
 @implementation CWTask
 @synthesize task,delegate,tellDelegateTaskEndedDelayTimer;
 
-- (id)init {
-  self = [super init];
-  return self;
-}
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args {
   task = [[NSTask alloc] init];
 
@@ -24,6 +22,7 @@
     addObserver:self selector:@selector(taskEnded:)
     name:NSTaskDidTerminateNotification object:task];
 
+  [task setStandardInput:[NSPipe pipe]];
   [task setStandardOutput:[NSPipe pipe]];
   [task setStandardError: [NSPipe pipe]];
 
@@ -43,6 +42,44 @@
 
   return [task processIdentifier];
 }
+
+- (void) endTask {
+  if([task isRunning])
+    [task terminate];
+}
+
++ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status{
+  NSTask *aTask = [[NSTask alloc] init];
+
+  [aTask setLaunchPath:path];
+  [aTask setArguments:args];
+
+  [aTask setStandardInput:[NSPipe pipe]];
+  [aTask setStandardOutput:[NSPipe pipe]];
+  [aTask setStandardError: [aTask standardOutput]];
+
+  [aTask launch];
+  [aTask waitUntilExit];
+
+  *status = [aTask terminationStatus];
+  NSData *data = [[[aTask standardOutput] fileHandleForReading] readDataToEndOfFile];
+  [aTask release];
+  return [[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding];
+}
+
+@end
+
+/////////////////////////////////
+@interface CWTask (Private)
+- (void) taskUpdateStdOut:(NSNotification *)note;
+- (void) taskUpdateStdErr:(NSNotification *)note;
+- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note;
+- (void) taskEnded:(NSNotification *)note;
+- (void) tellDelegateTaskEnded:(NSTimer *)timer;
+@end
+/////////////////////////////////
+
+@implementation CWTask (Private)
 - (void) taskUpdateStdOut:(NSNotification *)note {
   [self taskUpdateStream:@"stdout" withNote:note];
 }
@@ -67,7 +104,7 @@
                                         name:NSTaskDidTerminateNotification object:nil];
   taskReturnValue = [[note object] terminationStatus];
   self.tellDelegateTaskEndedDelayTimer = 
-    [NSTimer scheduledTimerWithTimeInterval:0.4 target:self
+    [NSTimer scheduledTimerWithTimeInterval:DELAY_BEFORE_NOTIFY_ENDED target:self
              selector:@selector(tellDelegateTaskEnded:)
              userInfo:nil
              repeats:NO];
@@ -76,11 +113,6 @@
 - (void) tellDelegateTaskEnded:(NSTimer *)timer {
   self.tellDelegateTaskEndedDelayTimer = nil;
   [delegate cwTask:self ended:taskReturnValue];
-}
-
-- (void) endTask {
-  if([task isRunning])
-    [task terminate];
 }
 
 @end

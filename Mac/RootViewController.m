@@ -17,7 +17,7 @@
 #define DROPBOX_MAX_FILE_LENGTH 32
 #define CONVERTING_MAX_FILE_LENGTH 45
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
-
+#define FORMAT_QUERY_SYNCHRONOUS 1
 @implementation RootViewController
 @synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
@@ -25,9 +25,8 @@
 @synthesize finishedConverting,showFile;      
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
-@synthesize speedTestActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
+@synthesize formatQueryActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
 @synthesize video,ffmpegFinishedOkayBeforeError;
-
 
 -(void) awakeFromNib {
   static BOOL firstTime = YES;
@@ -245,13 +244,23 @@
       break;
     }
 }
-
 // Functions for ffmpeg conversion handling
 -(void) doFFMPEGConversion {
-  // this is a separate fn in case we want to launch an initial run first
-  // prev ran speedtest
   self.videoLength = 0;
-  [self doConversion];
+  [self doFormatQuery];
+}
+-(void) doFormatQuery {
+  self.formatQueryActive = YES;
+  video.screenSize = CGSizeMake(0,0);
+  self.previousPercentDone = 0;
+  [progressIndicator startAnimation:self];
+  [progressIndicator setIndeterminate:YES];
+  [percentDone setStringValue:@"Initializing..."];
+  [cancelButton setEnabled:NO];
+  [self startAConversion:filePath forDevice:nil synchronous:FORMAT_QUERY_SYNCHRONOUS];
+}
+-(void) finishUpFormatQuery {
+  self.formatQueryActive = NO;
 }
 -(void) doConversion {
   self.previousPercentDone = 0;
@@ -259,9 +268,9 @@
   [progressIndicator setIndeterminate:YES];
   [percentDone setStringValue:@"Converting..."];
   [cancelButton setEnabled:YES];
-  [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem]];
+  [self startAConversion:filePath forDevice:[devicePicker titleOfSelectedItem] synchronous:NO];
 }
--(void) startAConversion:(NSString *)file forDevice:(NSString *)device {
+-(void) startAConversion:(NSString *)file forDevice:(NSString *)device synchronous:(BOOL)sync {
   self.ffmpegFinishedOkayBeforeError = NO;
   // initialize textbox for FFMPEG output window
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
@@ -271,15 +280,22 @@
                                [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
   [storage setAttributedString:string];
   [string release];
-  CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
-  self.conversionWatcher = aWatcher;
-  [aWatcher release];
-  conversionWatcher.delegate = self;
-  conversionWatcher.textStorage = storage;
-  [conversionWatcher startTask:
-                       [video fFMPEGLaunchPathForDevice:device]
-                     withArgs:[video fFMPEGArgumentsForFile:file andDevice:device]
-                     andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+  NSString *path = [video fFMPEGLaunchPathForDevice:device];
+  NSArray *args = [video fFMPEGArgumentsForFile:file andDevice:device];
+  if(!sync) {
+    CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
+    self.conversionWatcher = aWatcher;
+    [aWatcher release];
+    conversionWatcher.delegate = self;
+    conversionWatcher.textStorage = storage;
+    [conversionWatcher startTask:path withArgs:args 
+                       andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+  } else {
+    int status;
+    NSString *output = [CWTask performSynchronousTask:path withArgs:args andReturnStatus:&status];
+    [self cwTaskWatcher:nil updateString:output];
+    [self cwTaskWatcher:nil ended:status];
+  }
 }
 -(void) convertingDone:(TaskEndStatus)status {
   [progressIndicator stopAnimation:self];
@@ -312,25 +328,11 @@
     break;
   }
 }
--(void) doSpeedTest {
-  self.speedTestActive = YES;
-  self.previousPercentDone = 0;
-  [progressIndicator startAnimation:self];
-  [progressIndicator setIndeterminate:YES];
-  [percentDone setStringValue:@"Initializing..."];
-  [cancelButton setEnabled:NO];
-  [self startAConversion:filePath forDevice:@" Playstation Portable (PSP)"];
-}
--(void) finishUpSpeedTest {
-  self.speedTestActive = NO;
-}
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status {
-  if(self.speedTestActive){
-    [self finishUpSpeedTest];
-    if(status == EndStatusOK){
-      [self doConversion];
-      return;
-    }
+  if(self.formatQueryActive){
+    [self finishUpFormatQuery];
+    [self doConversion];
+    return;
   }
   [self convertingDone:status];
 }
@@ -339,7 +341,7 @@
   self.elapsedTime = [[dict objectForKey:@"elapsedTime"] floatValue];
 }
 - (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input {
-  char *p = [input UTF8String], *q;
+  char *p = (char *)[input UTF8String], *q;
   char *str = malloc([input length] + 10);
   strncpy(str,p,[input length]);
   if(strlen(str) > strlen("pointer being freed was not allocated"))
@@ -353,6 +355,47 @@
   NSString *output = [NSString stringWithFormat:@"%s",str];
   free(str);
   return output;
+}
+
+- (int)getNumber:(float *)number fromBuffer:(char *)buf withError:(BOOL *)error {
+  if(strlen(buf) == 0) {
+    *error = YES;
+    return 0;
+  }
+  char *buf2 = malloc(strlen(buf)+1);
+  memcpy(buf2,buf,strlen(buf));
+  int numStart = -1;
+  for(int i=0; i<strlen(buf); i++)
+    if(numStart == -1){
+      if(buf[i] >= '0' && buf[i] <= '9')
+        numStart = i;
+    } else {
+      if(!(buf[i] >= '0' && buf[i] <= '9')){
+        buf2[i] = 0;
+        sscanf(buf2+numStart,"%f",number);
+        *error = NO;
+        return i;
+      }
+    }
+  *error = YES;
+  return 0;
+}
+
+- (CGSize)getScreenSizeFromBuffer:(char *)buf {
+  CGSize size = CGSizeMake(0,0); 
+  int i = 0; float number; BOOL error = NO;
+  while(!error && i < strlen(buf)){
+    i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+    if( ! (error || i > strlen(buf) - 2 || buf[i] != 'x') ){
+      size.width = number;
+      i++;
+      i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+      if(!error){
+        size.height = number;
+      }
+    }
+  }
+  return size;
 }
 
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
@@ -400,12 +443,8 @@
         self.videoLength = dur;
       }
       aboutToReadDuration = NO;
-      if(self.speedTestActive)
-	[conversionWatcher requestFinishWithStatus:EndStatusOK];
-      return;
     } else {
       // if duration info was not in this block, see if durStr was
-      // (this often happens for ffmpeg)
       if(strlen(buf) >= strlen(durStr) && strstr(buf,durStr))
 	aboutToReadDuration = YES;
     }
@@ -418,8 +457,8 @@
   // "position": for ffpeg2theora
   if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
     sscanf(p+strlen("\"position\":"),"%f", &curTime);
-  // update percent done
-  if(self.videoLength && !self.speedTestActive){
+  // now update percent done
+  if(self.videoLength && !self.formatQueryActive){
     if(curTime) {
       float percent = curTime / self.videoLength * 100;
       if(previousPercentDone && percent - previousPercentDone > 50)
@@ -429,6 +468,16 @@
       [progressIndicator setIndeterminate:NO];
       [progressIndicator setDoubleValue:percent];
       [percentDone setStringValue:[NSString stringWithFormat:@"%i%% done",(int)percent]];
+    }
+  }
+
+  // video resolution:
+  if(self.formatQueryActive){
+    CGSize size = [self getScreenSizeFromBuffer:buf];
+    if(size.width > 0 && size.height > 0) {
+      size = [video fitScreenSize:size toDevice:[devicePicker titleOfSelectedItem]];
+      if(size.width > 0 && size.height > 0)
+        video.screenSize = size;
     }
   }
 

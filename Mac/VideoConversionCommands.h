@@ -13,14 +13,19 @@ extern char *deviceNames[];
 extern char *selectors[];
 extern char *fileExtensions[];
 extern char *converterExecutables[];
+extern CGSize screenSizes[];
 
 @interface VideoConversionCommands : NSObject {
+  CGSize screenSize;
 }
+@property(assign) CGSize screenSize;
 
 -(int) deviceIndex:(NSString *)device;
+-(NSString *) outputVideoSizeStringForDevice:(NSString *)device;
 -(NSString *) fFMPEGLaunchPathForDevice:(NSString *)device;
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device;
 -(NSArray *) fFMPEGArgumentsForFile:(NSString *)file andDevice:(NSString *)device;
+-(NSArray *) formatQueryArgsForFile:(NSString *)file;
 -(NSArray *) nexusArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) dreamArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) magicArgsForFile:(NSString *)file andDevice:(NSString *)device;
@@ -35,5 +40,5 @@ extern char *converterExecutables[];
 -(NSArray *) theoraArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) mp4ArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) mp3ArgsForFile:(NSString *)file andDevice:(NSString *)device;
-
+-(CGSize) fitScreenSize:(CGSize)size toDevice:(NSString *)device;
 @end
