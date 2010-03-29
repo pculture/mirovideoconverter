@@ -403,15 +403,27 @@
 
 - (CGSize)getScreenSizeFromBuffer:(char *)buf {
   CGSize size = CGSizeMake(0,0); 
-  int i = 0; float number; BOOL error = NO;
-  while(!error && i < strlen(buf)){
-    i += [self getNumber:&number fromBuffer:buf+i withError:&error];
-    if( ! (error || i > strlen(buf) - 2 || buf[i] != 'x') ){
-      size.width = number;
-      i++;
-      i += [self getNumber:&number fromBuffer:buf+i withError:&error];
-      if(!error){
-        size.height = number;
+  // Look for length after "Duration:" string
+  char durStr[256],*p; strcpy(durStr,"Duration:");
+  if(strlen(buf) >= strlen(durStr)) {
+    p = strstr(buf,durStr);
+    if(p && strlen(p) >= strlen(durStr) + 9) {
+      p += strlen(durStr) + 1;
+      int i = (int)(p-buf); float number; BOOL error = NO;
+      while(!error && i < strlen(buf)){
+        i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+        if( ! (error || i > strlen(buf) - 2 || buf[i] != 'x') ){
+          float width = number;
+          i++;
+          if(buf[i] >='0' && buf[i]<='9'){
+            i += [self getNumber:&number fromBuffer:buf+i withError:&error];
+            if(!error){
+              size.width = width;
+              size.height = number;
+              return size;
+            }
+          }
+        }
       }
     }
   }
@@ -419,7 +431,6 @@
 }
 
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output {
-  static BOOL aboutToReadDuration = NO;
 
   [progressIndicator startAnimation:self];
   
@@ -430,6 +441,7 @@
   if(usedLength == 0)
     return;
   buf[usedLength] = 0;
+
   char *p = 0;
   if(self.videoLength == 0) {
     char durStr[256];
@@ -437,36 +449,25 @@
       strcpy(durStr,"\"duration\":");
     else
       strcpy(durStr,"Duration:");
-    // see if durStr string is in this input block, and if so, if
-    // duration info is as well
+    // see if durStr string is in this input block
     if(strlen(buf) >= strlen(durStr)) {
       p = strstr(buf,durStr);
       if(p && strlen(p) >= strlen(durStr) + 9) {
         p += strlen(durStr) + 1;
-        aboutToReadDuration = YES;
+        self.videoLength = 0;
+        if(![[devicePicker titleOfSelectedItem] compare:@" Theora"]) {
+          //theora
+          float dur;
+          sscanf(p,"%f",&dur);
+          self.videoLength = dur;
+        } else {
+          //ffmpeg
+          float components[3];
+          sscanf(p,"%f:%f:%f",components,components+1, components+2);
+          for(int i=2, mult=1; i>=0; i--, mult *= 60)
+            self.videoLength += components[i]  * mult;
+        }
       }
-    }
-    if(p==0)
-      p = buf;
-    if(aboutToReadDuration){
-      self.videoLength = 0;
-      if(strstr(durStr,"Dur")){
-        //ffmpeg
-        float components[3];
-        sscanf(p,"%f:%f:%f",components,components+1, components+2);
-        for(int i=2, mult=1; i>=0; i--, mult *= 60)
-          self.videoLength += components[i]  * mult;
-      } else {
-        //theora
-        float dur;
-        sscanf(p,"%f",&dur);
-        self.videoLength = dur;
-      }
-      aboutToReadDuration = NO;
-    } else {
-      // if duration info was not in this block, see if durStr was
-      if(strlen(buf) >= strlen(durStr) && strstr(buf,durStr))
-	aboutToReadDuration = YES;
     }
   }
 
@@ -491,8 +492,8 @@
     }
   }
 
-  // video resolution:
-  if(self.formatQueryActive){
+  // video resolution, appears shortly after Duration string in ffmpeg output:
+  if(self.formatQueryActive && video.screenSize.width == 0){
     CGSize size = [self getScreenSizeFromBuffer:buf];
     if(size.width > 0 && size.height > 0) {
       size = [video fitScreenSize:size toDevice:[devicePicker titleOfSelectedItem]];
