@@ -38,6 +38,7 @@ iPhone 	320x480 	ffmpeg -i INPUT -acodec aac -ab 96000 -vcodec mpeg4 -b 1200kb -
 ipod touch 	same as iphone 	same as iphone
 ipod nano 	same as iphone 	same as iphone
 ipod classic 	same as iphone 	same as iphone
+iPad 	768x1024 	ffmpeg -i INPUT -acodec aac -ab 96000 -vcodec mpeg4 -b 1200kb -mbd 2 -cmp 2 -subcmp 2 -s 1024x768 -r 20 OUTPUT
 PSP ¶
 PSP 	320x480 	ffmpeg -i INPUT -s 320x240 -b 512000 -ar 24000 -ab 64000 -f psp -r 29.97 OUTPUT
 Output Formats ¶
