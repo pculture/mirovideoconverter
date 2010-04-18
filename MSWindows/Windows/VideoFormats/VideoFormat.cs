@@ -38,6 +38,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
             AndroidVideoFormat.CliqDEXT, 
             AndroidVideoFormat.BeholdII, 
             AppleVideoFormat.iPhone, 
+            AppleVideoFormat.iPad,
             AppleVideoFormat.iPodTouch, 
             AppleVideoFormat.iPodNano, 
             AppleVideoFormat.iPodClassic
@@ -68,6 +69,31 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         }
         public override string ToString() {
             return displayName;
+        }
+        /// <summary>
+        /// Obtain size argument for FFMPEG, in -s WIDTHxHEIGHT format.
+        /// If either dimension of the input video is larger than target 
+        /// size, this will resize it to fit into the target size. 
+        /// Otherwise will return a blank string.
+        /// </summary>
+        /// <param name="inputFileName"></param>
+        /// <param name="targetSize"></param>
+        /// <returns></returns>
+        protected string GetSizeArgument(string inputFileName, 
+                                         VideoSize targetSize) {
+            VideoParameters parms =
+                VideoParameterOracle.GetParameters(inputFileName);
+            VideoSize size = parms == null ? null : parms.VideoSize;
+            string sizeArg = "";
+            if (size != null && size.CompareTo(targetSize) > 0) {
+                float widthRatio = (float)size.Width / targetSize.Width;
+                float heightRatio = (float)size.Height / targetSize.Height;
+                float ratio = Math.Max(widthRatio, heightRatio);
+                sizeArg = string.Format("-s {0}x{1}",
+                    (int)(size.Width / ratio),
+                    (int)(size.Height / ratio));
+            }
+            return sizeArg;
         }
         public string OutputFileExtension {
             get {

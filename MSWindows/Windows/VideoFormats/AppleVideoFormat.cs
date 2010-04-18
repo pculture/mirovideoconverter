@@ -26,8 +26,15 @@ using Mirosubs.Converter.Windows.Process;
 
 namespace Mirosubs.Converter.Windows.VideoFormats {
     class AppleVideoFormat : VideoFormat {
+        private static readonly VideoSize DEFAULT_DIM =
+            new VideoSize() { Width = 480, Height = 320 };
+        private static readonly VideoSize IPAD_DIM =
+            new VideoSize() { Width = 1024, Height = 768 };
+
         public readonly static VideoFormat iPhone =
             new AppleVideoFormat("iPhone", "iphone");
+        public readonly static VideoFormat iPad =
+            new AppleVideoFormat("iPad", "ipad", IPAD_DIM);
         public readonly static VideoFormat iPodTouch =
             new AppleVideoFormat("iPod Touch", "ipodtouch");
         public readonly static VideoFormat iPodNano =
@@ -35,14 +42,24 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         public readonly static VideoFormat iPodClassic =
             new AppleVideoFormat("iPod Classic", "ipodclassic");
 
+        // TODO: Some petit duplication has arisen between this class 
+        // and AndroidVideoFormat. Maybe fix that.
+
+        private VideoSize size;
+
         private AppleVideoFormat(string displayName, string filePart)
+            : this(displayName, filePart, DEFAULT_DIM) {
+        }
+        private AppleVideoFormat(string displayName, string filePart, VideoSize size)
             : base(displayName, filePart, "mp4", VideoFormatGroup.Apple) {
+            this.size = size;
         }
         public override string GetArguments(string inputFileName, string outputFileName) {
+            string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
                 "-i \"{0}\"  -acodec aac -ab 96000 -vcodec mpeg4 -b 1200kb " +
-                "-mbd 2 -cmp 2 -subcmp 2 -s 480x320 -r 20 \"{1}\"",
-                inputFileName, outputFileName);
+                "-mbd 2 -cmp 2 -subcmp 2 {1} -r 20 \"{2}\"",
+                inputFileName, sizeArg, outputFileName);
         }
         public override VideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);

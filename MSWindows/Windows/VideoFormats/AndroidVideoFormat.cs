@@ -66,18 +66,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         }
 
         public override string GetArguments(string inputFileName, string outputFileName) {
-            VideoParameters parms =
-                VideoParameterOracle.GetParameters(inputFileName);
-            VideoSize size = parms == null ? null : parms.VideoSize;
-            string sizeArg = "";
-            if (size != null && size.CompareTo(this.size) > 0) {
-                float widthRatio = (float)size.Width / this.size.Width;
-                float heightRatio = (float)size.Height / this.size.Height;
-                float ratio = Math.Max(widthRatio, heightRatio);
-                sizeArg = string.Format("-s {0}x{1}",
-                    (int)(size.Width / ratio), 
-                    (int)(size.Height / ratio));
-            }
+            string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
                 "-i \"{0}\" -y -f mp4 -vcodec mpeg4 -sameq {1} " +
                 "-acodec aac -ab 48000 -r 18 \"{2}\"",
