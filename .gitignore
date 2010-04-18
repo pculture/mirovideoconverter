@@ -9,3 +9,5 @@ Mac/build/
 pcfpfxpassword.yaml
 Mac/DMG/*.dmg
 
+/Mac/Miro Video Converter.xcodeproj/cworth.pbxuser
+/Mac/Miro Video Converter.xcodeproj/cworth.perspectivev3
