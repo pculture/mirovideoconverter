@@ -1,3 +1,4 @@
+/* -*- mode: objc -*- */
 //  MiroVideoConverter -- a super simple way to convert almost any video to MP4, 
 //  Ogg Theora, or a specific phone or iPod.
 //
@@ -17,19 +18,24 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with MiroVideoConverter.  If not, see http://www.gnu.org/licenses/.
-
 //
-//  Miro_Video_ConverterAppDelegate.m
+//  RootViewController.h
 //  Miro Video Converter
 //
 //  Created by C Worth on 2/18/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "Miro_Video_ConverterAppDelegate.h"
-#import "RootViewController.h"
+#import <Cocoa/Cocoa.h>
 
-@implementation Miro_Video_ConverterAppDelegate
-@synthesize window,rootViewController;
-
+@interface DropBoxView : NSView {
+  id delegate;
+}
+@property(nonatomic,retain) id delegate;
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
 @end
+
+@protocol DropBoxViewDelegate
+- (void)dropBoxView:(DropBoxView *)dropBoxView fileDropped:(NSString *)aFilename;
+@end
+

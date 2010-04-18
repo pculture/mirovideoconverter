@@ -8,12 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		4F3CDE061140DF670061E70B /* ClickableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDDFB1140DF670061E70B /* ClickableText.m */; };
-		4F3CDE071140DF670061E70B /* CWTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDDFD1140DF670061E70B /* CWTask.m */; };
-		4F3CDE081140DF670061E70B /* CWTaskWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDDFF1140DF670061E70B /* CWTaskWatcher.m */; };
-		4F3CDE091140DF670061E70B /* DropBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE011140DF670061E70B /* DropBoxView.m */; };
-		4F3CDE0A1140DF670061E70B /* Miro_Video_ConverterAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE031140DF670061E70B /* Miro_Video_ConverterAppDelegate.m */; };
-		4F3CDE0B1140DF670061E70B /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CDE051140DF670061E70B /* RootViewController.m */; };
 		4F43CB60112DEAB900E4B728 /* device.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5B112DEAB900E4B728 /* device.png */; };
 		4F43CB61112DEAB900E4B728 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5C112DEAB900E4B728 /* video.png */; };
 		4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4F6948B3114A9985001514E5 /* dsa_pub.pem */; };
@@ -24,7 +18,6 @@
 		4F9D117111418B2D00839BBE /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F9D116311418B1500839BBE /* Sparkle.framework */; };
 		4F9F62D01135B1B40040352C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62CF1135B1B40040352C /* bg.jpg */; };
 		4F9F62D81135B2970040352C /* Converting.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62D61135B2970040352C /* Converting.xib */; };
-		4FA408931154EBD500241C47 /* VideoConversionCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA408921154EBD500241C47 /* VideoConversionCommands.m */; };
 		4FA4090A11550D4900241C47 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4090911550D4900241C47 /* ffmpeg */; };
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
@@ -55,18 +48,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		4F3CDDFA1140DF670061E70B /* ClickableText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickableText.h; sourceTree = "<group>"; };
-		4F3CDDFB1140DF670061E70B /* ClickableText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickableText.m; sourceTree = "<group>"; };
-		4F3CDDFC1140DF670061E70B /* CWTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWTask.h; sourceTree = "<group>"; };
-		4F3CDDFD1140DF670061E70B /* CWTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWTask.m; sourceTree = "<group>"; };
-		4F3CDDFE1140DF670061E70B /* CWTaskWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWTaskWatcher.h; sourceTree = "<group>"; };
-		4F3CDDFF1140DF670061E70B /* CWTaskWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWTaskWatcher.m; sourceTree = "<group>"; };
-		4F3CDE001140DF670061E70B /* DropBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxView.h; sourceTree = "<group>"; };
-		4F3CDE011140DF670061E70B /* DropBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxView.m; sourceTree = "<group>"; };
-		4F3CDE021140DF670061E70B /* Miro_Video_ConverterAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Miro_Video_ConverterAppDelegate.h; sourceTree = "<group>"; };
-		4F3CDE031140DF670061E70B /* Miro_Video_ConverterAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Miro_Video_ConverterAppDelegate.m; sourceTree = "<group>"; };
-		4F3CDE041140DF670061E70B /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		4F3CDE051140DF670061E70B /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		4F43CB5B112DEAB900E4B728 /* device.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = device.png; path = ../MSWindows/Windows/resources/device.png; sourceTree = SOURCE_ROOT; };
 		4F43CB5C112DEAB900E4B728 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = video.png; path = ../MSWindows/Windows/resources/video.png; sourceTree = SOURCE_ROOT; };
 		4F6948B3114A9985001514E5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -76,8 +57,6 @@
 		4F9D116311418B1500839BBE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4F9F62CF1135B1B40040352C /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bg.jpg; path = ../MSWindows/Windows/resources/bg.jpg; sourceTree = SOURCE_ROOT; };
 		4F9F62D71135B2970040352C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Converting.xib; sourceTree = "<group>"; };
-		4FA408911154EBD500241C47 /* VideoConversionCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoConversionCommands.h; sourceTree = "<group>"; };
-		4FA408921154EBD500241C47 /* VideoConversionCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoConversionCommands.m; sourceTree = "<group>"; };
 		4FA4090911550D4900241C47 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
@@ -179,20 +158,6 @@
 		4F3CDDF91140DF3D0061E70B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4FA408911154EBD500241C47 /* VideoConversionCommands.h */,
-				4FA408921154EBD500241C47 /* VideoConversionCommands.m */,
-				4F3CDDFA1140DF670061E70B /* ClickableText.h */,
-				4F3CDDFB1140DF670061E70B /* ClickableText.m */,
-				4F3CDDFC1140DF670061E70B /* CWTask.h */,
-				4F3CDDFD1140DF670061E70B /* CWTask.m */,
-				4F3CDDFE1140DF670061E70B /* CWTaskWatcher.h */,
-				4F3CDDFF1140DF670061E70B /* CWTaskWatcher.m */,
-				4F3CDE001140DF670061E70B /* DropBoxView.h */,
-				4F3CDE011140DF670061E70B /* DropBoxView.m */,
-				4F3CDE021140DF670061E70B /* Miro_Video_ConverterAppDelegate.h */,
-				4F3CDE031140DF670061E70B /* Miro_Video_ConverterAppDelegate.m */,
-				4F3CDE041140DF670061E70B /* RootViewController.h */,
-				4F3CDE051140DF670061E70B /* RootViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -285,13 +250,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				4F3CDE061140DF670061E70B /* ClickableText.m in Sources */,
-				4F3CDE071140DF670061E70B /* CWTask.m in Sources */,
-				4F3CDE081140DF670061E70B /* CWTaskWatcher.m in Sources */,
-				4F3CDE091140DF670061E70B /* DropBoxView.m in Sources */,
-				4F3CDE0A1140DF670061E70B /* Miro_Video_ConverterAppDelegate.m in Sources */,
-				4F3CDE0B1140DF670061E70B /* RootViewController.m in Sources */,
-				4FA408931154EBD500241C47 /* VideoConversionCommands.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

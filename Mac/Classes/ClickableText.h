@@ -1,3 +1,4 @@
+/* -*- mode: objc -*- */
 //  MiroVideoConverter -- a super simple way to convert almost any video to MP4, 
 //  Ogg Theora, or a specific phone or iPod.
 //
@@ -17,31 +18,30 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with MiroVideoConverter.  If not, see http://www.gnu.org/licenses/.
-
-/* -*- mode: objc -*- */
 //
-//  Created by C Worth on 2/18/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  ClickableText.h
+//
+//  Created by Ben Haller on Tue Jul 15 2003.
+//
+//  This code is hereby released into the public domain.  Do with it as you wish.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 
-@interface CWTask : NSObject {
-  NSTask *task;
-  id delegate;
-  int taskReturnValue;
-  NSTimer *tellDelegateTaskEndedDelayTimer;
-}
-@property(assign) NSTask *task;
-@property(assign) id delegate;
-@property(retain) NSTimer *tellDelegateTaskEndedDelayTimer;
 
-- (int) startTask:(NSString *)path withArgs:(NSArray *)args;
-- (void) endTask;
-+ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status;
+@interface NSColor (ClickableTextColors)
+
++ (NSColor *)basicClickableTextColor;
++ (NSColor *)trackingClickableTextColor;
++ (NSColor *)visitedClickableTextColor;
+
 @end
 
-@protocol CWTaskDelegate
-- (void) cwTask:(CWTask *)cwtask update:(NSDictionary *)info;
-- (void) cwTask:(CWTask *)cwtask ended:(int)returnValue;
+@interface ClickableText : NSTextField
+{
+	BOOL beingClicked, beenClicked;
+}
+
+- (id)initWithFrame:(NSRect)frame;
+
 @end

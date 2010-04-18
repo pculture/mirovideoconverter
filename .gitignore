@@ -7,3 +7,4 @@ Mac/build/
 *.pyc
 *.pfx
 pcfpfxpassword.yaml
+/Mac/*.dmg

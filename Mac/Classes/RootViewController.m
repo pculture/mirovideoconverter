@@ -17,14 +17,11 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with MiroVideoConverter.  If not, see http://www.gnu.org/licenses/.
-
-/* -*- mode: objc -*- */
 //
 //  RootViewController.m
 //  Miro Video Converter
 //
 //  Created by C Worth on 2/18/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import "RootViewController.h"

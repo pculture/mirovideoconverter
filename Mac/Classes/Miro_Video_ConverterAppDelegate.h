@@ -1,3 +1,4 @@
+/* -*- mode: objc -*- */
 //  MiroVideoConverter -- a super simple way to convert almost any video to MP4, 
 //  Ogg Theora, or a specific phone or iPod.
 //
@@ -19,29 +20,22 @@
 //  along with MiroVideoConverter.  If not, see http://www.gnu.org/licenses/.
 
 //
-//  ClickableText.h
+//  Miro_Video_ConverterAppDelegate.h
+//  Miro Video Converter
 //
-//  Created by Ben Haller on Tue Jul 15 2003.
-//
-//  This code is hereby released into the public domain.  Do with it as you wish.
+//  Created by C Worth on 2/18/10.
 //
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
+@class RootViewController;
 
-
-@interface NSColor (ClickableTextColors)
-
-+ (NSColor *)basicClickableTextColor;
-+ (NSColor *)trackingClickableTextColor;
-+ (NSColor *)visitedClickableTextColor;
-
-@end
-
-@interface ClickableText : NSTextField
-{
-	BOOL beingClicked, beenClicked;
+//@interface Miro_Video_ConverterAppDelegate : NSObject <NSApplicationDelegate> {  // 10.6
+@interface Miro_Video_ConverterAppDelegate : NSObject {  // 10.5
+    NSWindow *window;
+	RootViewController *rootViewController;
 }
 
-- (id)initWithFrame:(NSRect)frame;
+@property (assign) IBOutlet NSWindow *window;
+@property (retain) IBOutlet RootViewController *rootViewController;
 
 @end
