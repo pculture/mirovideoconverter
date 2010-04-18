@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using SProcess = System.Diagnostics.Process;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Mirosubs.Converter.Windows.Process {
     class VideoParameterOracle {
@@ -71,10 +72,14 @@ namespace Mirosubs.Converter.Windows.Process {
                 height = int.Parse(HeightRegex.Match(output).Groups[1].Value);
             float? audioBitrate = null;
             if (AudioBitrateRegex.IsMatch(output))
-                audioBitrate = float.Parse(AudioBitrateRegex.Match(output).Groups[1].Value);
+                audioBitrate = float.Parse(
+                    AudioBitrateRegex.Match(output).Groups[1].Value,
+                    NumberFormatInfo.InvariantInfo);
             float? videoBitrate = null;
             if (VideoBitrateRegex.IsMatch(output))
-                videoBitrate = float.Parse(VideoBitrateRegex.Match(output).Groups[1].Value);
+                videoBitrate = float.Parse(
+                    VideoBitrateRegex.Match(output).Groups[1].Value,
+                    NumberFormatInfo.InvariantInfo);
             return new VideoParameters() {
                 Width = width,
                 Height = height,

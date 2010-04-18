@@ -26,6 +26,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Mirosubs.Converter.Windows.VideoFormats;
+using System.Globalization;
 
 namespace Mirosubs.Converter.Windows.Process {
     class F2TVideoConverter : VideoConverter {
@@ -68,8 +69,10 @@ namespace Mirosubs.Converter.Windows.Process {
             IssueOutputEvent(line);
             if (updateRegex.IsMatch(line)) {
                 Match m = updateRegex.Match(line);
-                float duration = float.Parse(m.Groups[1].Value);
-                float position = float.Parse(m.Groups[2].Value);
+                float duration = float.Parse(m.Groups[1].Value, 
+                    NumberFormatInfo.InvariantInfo);
+                float position = float.Parse(m.Groups[2].Value, 
+                    NumberFormatInfo.InvariantInfo);
                 IssueConvertProgressEvent((int)(100 * position / duration));
             }
             else if (finishedRegex.IsMatch(line))
