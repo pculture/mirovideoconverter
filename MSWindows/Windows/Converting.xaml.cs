@@ -36,6 +36,7 @@ using IOPath = System.IO.Path;
 using System.Threading;
 using Mirosubs.Converter.Windows.VideoFormats;
 using Mirosubs.Converter.Windows.Process;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace Mirosubs.Converter.Windows {
     /// <summary>
@@ -86,14 +87,25 @@ namespace Mirosubs.Converter.Windows {
                 if (Finished != null)
                     Finished(this, new VideoConvertFinishedArgs(
                         this.converter.OutputFileName));
+                setTaskbarManagerNoProgress();
             }
             else
                 this.Dispatcher.Invoke((Action)(() => this.converter_Finished(sender, e)));
+        }
+        private void setTaskbarManagerNoProgress() {
+            if (TaskbarManager.IsPlatformSupported)
+                TaskbarManager.Instance.SetProgressState(
+                    TaskbarProgressBarState.NoProgress);
         }
         private void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
             if (this.Dispatcher.CheckAccess()) {
                 progressLabel.Content = string.Format("{0}% done", e.Progress);
                 progressBar.Value = e.Progress;
+                if (TaskbarManager.IsPlatformSupported) {
+                    TaskbarManager.Instance.SetProgressState(
+                        TaskbarProgressBarState.Normal);
+                    TaskbarManager.Instance.SetProgressValue(e.Progress, 100);
+                }
             }
             else
                 this.Dispatcher.Invoke((Action)(() => this.converter_ConvertProgress(sender, e)));
@@ -107,6 +119,7 @@ namespace Mirosubs.Converter.Windows {
                 "Cancel?", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes) {
                 converter.Cancel();
+                setTaskbarManagerNoProgress();
                 if (Cancelled != null)
                     Cancelled(this, new EventArgs());
             }
