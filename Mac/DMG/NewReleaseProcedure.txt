@@ -1,0 +1,13 @@
+1) raise version number in plist
+2) make sure building Release
+3) make clean, build, watch for build errors warnings
+4) build and run to make sure installed in directory
+5) ./DmgBuildScript.sh {version}
+6) ./addAndUploadVersion.sh {version}, in the middle of the script:
+ a) Insert newCast.xml into SparkleAppCast.xml
+ b) Make sure new <item> is right below the <language> line
+ c) Edit date of new item
+ d) Copy {versionold}.html to {version}.html and change version number and information
+ e) press return on script and let it do its thing
+7) Run /Applications version of app and download and install update
+8) Test new behavior

@@ -16,7 +16,7 @@ disk=`hdid "$targetWritable"`
 pushd "/Volumes/$app"
 ln -s /Applications .
 popd
-cp -r "build/Release/$app.app" "/Volumes/$app"
+cp -r "../build/Release/$app.app" "/Volumes/$app"
 mkdir "/Volumes/$app/.background"
 cp dmg-background.png "/Volumes/$app/.background/."
 open "/Volumes/$app"
