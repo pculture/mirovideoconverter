@@ -69,7 +69,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
             string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
                 "-i \"{0}\" -y -f mp4 -vcodec mpeg4 -sameq {1} " +
-                "-acodec aac -ab 48000 -r 18 \"{2}\"",
+                "-acodec aac -ab 160000 -r 18 \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
 

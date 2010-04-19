@@ -35,9 +35,8 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
 
         public override string GetArguments(string inputFileName, string outputFileName) {
             return string.Format(
-                "-i \"{0}\" -y -aspect 4:3 -s 480x272 -vcodec libxvid -sameq " +
-                "-ab 32000 -ar 24000 -acodec aac \"{1}\"", inputFileName,
-                outputFileName);
+                "-i \"{0}\" -s 320x240 -b 512000 -ar 24000 -ab 64000 " +
+                "-f psp -r 29.97 \"{1}\"", inputFileName, outputFileName);
         }
         public override VideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
