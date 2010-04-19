@@ -78,10 +78,10 @@ namespace Mirosubs.Converter.Windows {
         private void VideoFileSelected(object sender, VideoSelectedEventArgs e) {
             this.mainGrid.Children.Remove(fileSelect);
             fileSelect.FileSelected -= new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
-            ShowConvertingView(e.FileName, e.Format);
+            ShowConvertingView(e.FileName, e.Format, e.SendToITunesSelected);
         }
-        private void ShowConvertingView(string fileName, VideoFormat format) {
-            Converting convertingView = new Converting(fileName, format);
+        private void ShowConvertingView(string fileName, VideoFormat format, bool sendToITunesSelected) {
+            Converting convertingView = new Converting(fileName, format, sendToITunesSelected);
             this.mainGrid.Children.Add(convertingView);
             convertingView.Margin = new Thickness(0);
             convertingView.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -115,7 +115,7 @@ namespace Mirosubs.Converter.Windows {
             FileSelect finishedView = (FileSelect)sender;
             this.mainGrid.Children.Remove(finishedView);
             finishedView.FileSelected -= new EventHandler<VideoSelectedEventArgs>(FinishedViewFileSelected);
-            ShowConvertingView(e.FileName, e.Format);
+            ShowConvertingView(e.FileName, e.Format, e.SendToITunesSelected);
         }
         private void RemoveConvertingView(Converting convertingView) {
             this.mainGrid.Children.Remove(convertingView);

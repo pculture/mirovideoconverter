@@ -93,11 +93,21 @@ namespace Mirosubs.Converter.Windows {
             if (FileSelected != null)
                 FileSelected(this, new VideoSelectedEventArgs(
                     selectedFileName, 
-                    (VideoFormat)videoFormatCombo.SelectedValue));
+                    (VideoFormat)videoFormatCombo.SelectedValue,
+                    (sendToITunes.IsChecked.HasValue && 
+                    sendToITunes.IsChecked.Value)));
         }
 
         private void ShowFinishedFile(object sender, RoutedEventArgs e) {
             System.Diagnostics.Process.Start(IOPath.GetDirectoryName(FinishedFileName));
+        }
+
+        private void videoFormatCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            VideoFormat selectedValue = 
+                (VideoFormat)videoFormatCombo.SelectedValue;
+            sendToITunes.Visibility =
+                (selectedValue.Group == VideoFormatGroup.Apple ?
+                Visibility.Visible : Visibility.Hidden);
         }
     }
 }

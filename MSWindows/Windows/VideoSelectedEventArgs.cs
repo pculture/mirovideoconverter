@@ -28,10 +28,12 @@ namespace Mirosubs.Converter.Windows {
     class VideoSelectedEventArgs : EventArgs {
         public readonly string FileName;
         public readonly VideoFormat Format;
+        public readonly bool SendToITunesSelected;
 
-        public VideoSelectedEventArgs(string fileName, VideoFormat format) {
+        public VideoSelectedEventArgs(string fileName, VideoFormat format, bool sendToITunesSelected) {
             this.FileName = fileName;
             this.Format = format;
+            this.SendToITunesSelected = sendToITunesSelected;
         }
     }
 }
