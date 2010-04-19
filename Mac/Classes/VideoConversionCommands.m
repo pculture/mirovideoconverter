@@ -54,6 +54,29 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   return i;
 }
 
+-(BOOL) is:(NSString *)device ofDeviceType:(NSString *)type {
+  int i; BOOL lastNull, inCatagory, isIt = NO;
+  inCatagory = ![type compare:[NSString stringWithFormat:@"%s",deviceNames[0]]];
+  for(i=0,lastNull=0;;i++){
+    if(lastNull && !deviceNames[i]){
+      isIt = NO;
+      break;
+    } else if(lastNull) {
+      lastNull = 0;
+      inCatagory = ![type compare:[NSString stringWithFormat:@"%s",deviceNames[i]]];
+    } else if(!deviceNames[i])
+      lastNull = 1;
+    else {
+      lastNull = 0;
+      if(![device compare:[NSString stringWithFormat:@"%s",deviceNames[i]]]) {
+        isIt = inCatagory;
+        break;
+      }
+    }
+  }
+  return isIt;
+}
+
 -(CGSize) screenSizeForDevice:(NSString *)device {
   int index;
   if(device==nil)

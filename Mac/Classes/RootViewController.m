@@ -38,7 +38,7 @@
 @implementation RootViewController
 @synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
-@synthesize filePath,devicePicker,convertButton,filename,dropBox,window;
+@synthesize filePath,devicePicker,sendToITunes,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
@@ -90,8 +90,8 @@
   case ViewModeInitial:
     [self showView:ViewRoot];
     [convertAVideo setStringValue:@"Convert a Video"];
-    [self revealViewControls:viewMode];
     [devicePicker selectItemAtIndex:0];
+    [self revealViewControls:viewMode];
     break;
   case ViewModeWithFile:
     [self showView:ViewRoot];
@@ -108,7 +108,6 @@
   case ViewModeFinished:
     [self showView:ViewRoot];
     [self revealViewControls:viewMode];
-    [devicePicker selectItemAtIndex:0];
     break;
   default:
     break;
@@ -148,6 +147,8 @@
     [rootView addSubview:subview];
 }
 -(void) revealViewControls:(ViewMode)viewMode{
+  BOOL isAppleDevice =
+    [video is:[devicePicker titleOfSelectedItem] ofDeviceType:@"Apple Devices"];
   switch(viewMode) {
   case ViewModeInitial:
     [self revealSubview:convertAVideo      show:YES];
@@ -156,6 +157,7 @@
     [self revealSubview:toSelectADifferent show:NO];
     [self revealSubview:chooseAFile2       show:NO];
     [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:sendToITunes       show:isAppleDevice];
     [self revealSubview:convertButton      show:YES];
     [self revealSubview:filename           show:NO];
     [self revealSubview:finishedConverting show:NO];
@@ -168,6 +170,7 @@
     [self revealSubview:toSelectADifferent show:YES];
     [self revealSubview:chooseAFile2       show:YES];
     [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:sendToITunes       show:isAppleDevice];
     [self revealSubview:convertButton      show:YES];
     [self revealSubview:filename           show:YES];
     [self revealSubview:finishedConverting show:NO];
@@ -182,6 +185,7 @@
     [self revealSubview:toSelectADifferent show:NO];
     [self revealSubview:chooseAFile2       show:NO];
     [self revealSubview:devicePicker       show:YES];
+    [self revealSubview:sendToITunes       show:isAppleDevice];
     [self revealSubview:convertButton      show:YES];
     [self revealSubview:filename           show:NO];
     [self revealSubview:finishedConverting show:YES];
@@ -227,6 +231,9 @@
   }
 }
 -(IBAction) selectADevice:(id)sender {
+  BOOL isAppleDevice =
+    [video is:[devicePicker titleOfSelectedItem] ofDeviceType:@"Apple Devices"];
+  [self revealSubview:sendToITunes show:isAppleDevice];
   [self maybeEnableConvertButton];
 }
 -(void) maybeEnableConvertButton {
@@ -293,8 +300,10 @@
   NSTextStorage *storage = [[[fFMPEGOutputTextView textContainer] textView] textStorage];
   NSAttributedString *string =
     [[NSAttributedString alloc]
-      initWithString:[NSString stringWithFormat:@"%@ %@\n",[[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
-                               [[video fFMPEGArgumentsForFile:file andDevice:device] componentsJoinedByString:@" "]]];
+      initWithString:[NSString stringWithFormat:@"%@ %@\n",
+                               [[video fFMPEGLaunchPathForDevice:device] lastPathComponent],
+                               [[video fFMPEGArgumentsForFile:file andDevice:device]
+                                 componentsJoinedByString:@" "]]];
   [storage setAttributedString:string];
   [string release];
   NSString *path = [video fFMPEGLaunchPathForDevice:device];

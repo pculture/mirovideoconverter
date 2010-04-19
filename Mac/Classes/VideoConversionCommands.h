@@ -39,6 +39,7 @@ extern CGSize screenSizes[];
 @property(assign) CGSize screenSize;
 
 -(int) deviceIndex:(NSString *)device;
+-(BOOL) is:(NSString *)device ofDeviceType:(NSString *)type;
 -(NSString *) outputVideoSizeStringForDevice:(NSString *)device;
 -(NSString *) fFMPEGLaunchPathForDevice:(NSString *)device;
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device;

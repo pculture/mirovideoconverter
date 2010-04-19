@@ -49,6 +49,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   NSTextField *finishedConverting;
   NSTextField *showFile;      
   NSPopUpButton *devicePicker;
+  NSButton *sendToITunes;
   NSButton *convertButton;
   NSTextField *filename;
   DropBoxView *dropBox;
@@ -82,6 +83,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,retain) IBOutlet NSTextField *finishedConverting;
 @property(nonatomic,retain) IBOutlet NSTextField *showFile;      
 @property(nonatomic,retain) IBOutlet NSPopUpButton *devicePicker;
+@property(nonatomic,retain) IBOutlet NSButton *sendToITunes;
 @property(nonatomic,retain) IBOutlet NSButton *convertButton;
 @property(nonatomic,retain) IBOutlet NSTextField *filename;
 @property(nonatomic,retain) IBOutlet DropBoxView *dropBox;
