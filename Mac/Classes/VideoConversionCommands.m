@@ -174,7 +174,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-acodec"];
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
-  [args addObject:@"48000"];
+  [args addObject:@"160000"];
   [args addObject:@"-r"];
   [args addObject:@"18"];
   [args addObject:@"-s"];
@@ -230,7 +230,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-acodec"];
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
-  [args addObject:@"96000"];
+  [args addObject:@"160000"];
   [args addObject:@"-s"];
   [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
