@@ -22,7 +22,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 
 namespace Mirosubs.Converter.Windows.Process {
     class VideoParameters {

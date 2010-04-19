@@ -25,7 +25,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 
 namespace Mirosubs.Converter.Windows.Process {
     class FFMPEGVideoConverter : VideoConverter {
@@ -39,7 +39,7 @@ namespace Mirosubs.Converter.Windows.Process {
         private long lengthMs = -1;
         private string outputFileName;
 
-        internal FFMPEGVideoConverter(string fileName, VideoFormat format) {
+        internal FFMPEGVideoConverter(string fileName, ConversionFormat format) {
             args = format.GetArguments(fileName,
                 outputFileName = Path.ChangeExtension(fileName,
                     format.OutputFileExtension));

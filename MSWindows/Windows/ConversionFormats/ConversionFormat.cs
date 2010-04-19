@@ -24,12 +24,14 @@ using System.Linq;
 using System.Text;
 using Mirosubs.Converter.Windows.Process;
 
-namespace Mirosubs.Converter.Windows.VideoFormats {
-    abstract class VideoFormat {
-        public static readonly VideoFormat[] All = new VideoFormat[] { 
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    abstract class ConversionFormat {
+        public static readonly ConversionFormat[] All = new ConversionFormat[] { 
             AndroidVideoFormat.G1, 
             PSPVideoFormat.PSP, 
             TheoraVideoFormat.Theora, 
+            MP3Format.MP3,
+            MP4Format.MP4,
             AndroidVideoFormat.NexusOne, 
             AndroidVideoFormat.MagicMyTouch, 
             AndroidVideoFormat.Droid, 
@@ -49,7 +51,7 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         private string fileExtension;
         private VideoFormatGroup group;
 
-        protected VideoFormat(string displayName, string filePart, string fileExtension, VideoFormatGroup group) {
+        protected ConversionFormat(string displayName, string filePart, string fileExtension, VideoFormatGroup group) {
             this.displayName = displayName;
             this.filePart = filePart;
             this.fileExtension = fileExtension;
@@ -100,6 +102,9 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
                 return string.Format(".{0}.{1}",
                     filePart, fileExtension);
             }
+        }
+        public virtual int Order {
+            get { return 0; }
         }
         public abstract string GetArguments(string inputFileName, string outputFileName);
         public abstract VideoConverter MakeConverter(string fileName);

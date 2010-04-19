@@ -24,8 +24,8 @@ using System.Linq;
 using System.Text;
 using Mirosubs.Converter.Windows.Process;
 
-namespace Mirosubs.Converter.Windows.VideoFormats {
-    class AndroidVideoFormat : VideoFormat {
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    class AndroidVideoFormat : ConversionFormat {
 
         private static readonly VideoSize DEFAULT_DIM = 
             new VideoSize() { Width = 480, Height = 320 };
@@ -34,23 +34,23 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         private static readonly VideoSize DROID_DIM =
             new VideoSize() { Width = 854, Height = 480 };
 
-        public readonly static VideoFormat G1 =
+        public readonly static ConversionFormat G1 =
             new AndroidVideoFormat("G1", "g1");
-        public readonly static VideoFormat NexusOne =
+        public readonly static ConversionFormat NexusOne =
             new AndroidVideoFormat("Nexus One", "nexusone",
                 NEXUS_DIM);
-        public readonly static VideoFormat MagicMyTouch =
+        public readonly static ConversionFormat MagicMyTouch =
             new AndroidVideoFormat("Magic / myTouch", "magic");
-        public readonly static VideoFormat Droid =
+        public readonly static ConversionFormat Droid =
             new AndroidVideoFormat("Droid", "droid", 
                 DROID_DIM);
-        public readonly static VideoFormat ErisDesire =
+        public readonly static ConversionFormat ErisDesire =
             new AndroidVideoFormat("Eris / Desire", "eris");
-        public readonly static VideoFormat Hero =
+        public readonly static ConversionFormat Hero =
             new AndroidVideoFormat("Hero", "hero");
-        public readonly static VideoFormat CliqDEXT =
+        public readonly static ConversionFormat CliqDEXT =
             new AndroidVideoFormat("Cliq / DEXT", "cliq");
-        public readonly static VideoFormat BeholdII =
+        public readonly static ConversionFormat BeholdII =
             new AndroidVideoFormat("Behold II", "behold");
 
         private VideoSize size;

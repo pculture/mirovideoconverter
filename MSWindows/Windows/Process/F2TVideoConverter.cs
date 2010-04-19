@@ -25,7 +25,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 using System.Globalization;
 
 namespace Mirosubs.Converter.Windows.Process {

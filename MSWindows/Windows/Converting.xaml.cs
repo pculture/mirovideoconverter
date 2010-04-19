@@ -34,7 +34,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using IOPath = System.IO.Path;
 using System.Threading;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 using Mirosubs.Converter.Windows.Process;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using iTunesLib;
@@ -51,12 +51,12 @@ namespace Mirosubs.Converter.Windows {
         private VideoConverter converter;
         private List<string> ffmpegOutput;
         private FFMPEGOutputViewer ffmpegOutputViewer = null;
-        private VideoFormat videoFormat;
+        private ConversionFormat conversionFormat;
         private bool sendToITunesSelected;
 
-        internal Converting(string fileName, VideoFormat format, bool sendToITunesSelected) {
+        internal Converting(string fileName, ConversionFormat format, bool sendToITunesSelected) {
             InitializeComponent();
-            this.videoFormat = format;
+            this.conversionFormat = format;
             this.sendToITunesSelected = sendToITunesSelected;
             this.ffmpegOutput = new List<string>();
             fileNameLabel.Content = IOPath.GetFileName(fileName);
@@ -89,7 +89,7 @@ namespace Mirosubs.Converter.Windows {
         }
         private void converter_Finished(object sender, EventArgs e) {
             if (this.Dispatcher.CheckAccess()) {
-                if (this.videoFormat.Group == VideoFormatGroup.Apple &&
+                if (this.conversionFormat.Group == VideoFormatGroup.Apple &&
                     this.sendToITunesSelected) {
                     TryToSendToITunes();
                 }

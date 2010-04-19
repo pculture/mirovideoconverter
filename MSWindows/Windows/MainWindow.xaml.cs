@@ -32,7 +32,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 using Mirosubs.Converter.Windows.Process;
 
 namespace Mirosubs.Converter.Windows {
@@ -80,7 +80,7 @@ namespace Mirosubs.Converter.Windows {
             fileSelect.FileSelected -= new EventHandler<VideoSelectedEventArgs>(VideoFileSelected);
             ShowConvertingView(e.FileName, e.Format, e.SendToITunesSelected);
         }
-        private void ShowConvertingView(string fileName, VideoFormat format, bool sendToITunesSelected) {
+        private void ShowConvertingView(string fileName, ConversionFormat format, bool sendToITunesSelected) {
             Converting convertingView = new Converting(fileName, format, sendToITunesSelected);
             this.mainGrid.Children.Add(convertingView);
             convertingView.Margin = new Thickness(0);

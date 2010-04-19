@@ -24,22 +24,22 @@ using System.Linq;
 using System.Text;
 using Mirosubs.Converter.Windows.Process;
 
-namespace Mirosubs.Converter.Windows.VideoFormats {
-    class AppleVideoFormat : VideoFormat {
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    class AppleVideoFormat : ConversionFormat {
         private static readonly VideoSize DEFAULT_DIM =
             new VideoSize() { Width = 480, Height = 320 };
         private static readonly VideoSize IPAD_DIM =
             new VideoSize() { Width = 1024, Height = 768 };
 
-        public readonly static VideoFormat iPhone =
+        public readonly static ConversionFormat iPhone =
             new AppleVideoFormat("iPhone", "iphone");
-        public readonly static VideoFormat iPad =
+        public readonly static ConversionFormat iPad =
             new AppleVideoFormat("iPad", "ipad", IPAD_DIM);
-        public readonly static VideoFormat iPodTouch =
+        public readonly static ConversionFormat iPodTouch =
             new AppleVideoFormat("iPod Touch", "ipodtouch");
-        public readonly static VideoFormat iPodNano =
+        public readonly static ConversionFormat iPodNano =
             new AppleVideoFormat("iPod Nano", "ipodnano");
-        public readonly static VideoFormat iPodClassic =
+        public readonly static ConversionFormat iPodClassic =
             new AppleVideoFormat("iPod Classic", "ipodclassic");
 
         // TODO: Some petit duplication has arisen between this class 

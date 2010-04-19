@@ -116,6 +116,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConversionFormats\MP3Format.cs" />
+    <Compile Include="ConversionFormats\MP4Format.cs" />
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
     </Compile>
@@ -150,13 +152,13 @@
     <Compile Include="Process\VideoConverter.cs" />
     <Compile Include="Process\VideoConvertFinishedArgs.cs" />
     <Compile Include="Process\VideoConvertProgressArgs.cs" />
-    <Compile Include="VideoFormats\AndroidVideoFormat.cs" />
-    <Compile Include="VideoFormats\AppleVideoFormat.cs" />
-    <Compile Include="VideoFormats\PSPVideoFormat.cs" />
-    <Compile Include="VideoFormats\TheoraVideoFormat.cs" />
-    <Compile Include="VideoFormats\VideoFormat.cs" />
-    <Compile Include="VideoFormats\VideoFormatGroup.cs" />
-    <Compile Include="VideoFormats\VideoSize.cs" />
+    <Compile Include="ConversionFormats\AndroidVideoFormat.cs" />
+    <Compile Include="ConversionFormats\AppleVideoFormat.cs" />
+    <Compile Include="ConversionFormats\PSPVideoFormat.cs" />
+    <Compile Include="ConversionFormats\TheoraVideoFormat.cs" />
+    <Compile Include="ConversionFormats\ConversionFormat.cs" />
+    <Compile Include="ConversionFormats\VideoFormatGroup.cs" />
+    <Compile Include="ConversionFormats\VideoSize.cs" />
     <Compile Include="VideoSelectedEventArgs.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

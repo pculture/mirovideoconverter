@@ -25,9 +25,9 @@ using System.Text;
 using Mirosubs.Converter.Windows.Process;
 using System.IO;
 
-namespace Mirosubs.Converter.Windows.VideoFormats {
-    class TheoraVideoFormat : VideoFormat {
-        public readonly static VideoFormat Theora =
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    class TheoraVideoFormat : ConversionFormat {
+        public readonly static ConversionFormat Theora =
             new TheoraVideoFormat("Theora", "theora");
         private TheoraVideoFormat(string displayName, string filePart)
             : base(displayName, filePart, "ogv", VideoFormatGroup.Formats) { 
@@ -58,6 +58,11 @@ namespace Mirosubs.Converter.Windows.VideoFormats {
         }
         public override VideoConverter MakeConverter(string fileName) {
             return new F2TVideoConverter(fileName);
+        }
+        public override int Order {
+            get {
+                return 0;
+            }
         }
     }
 }

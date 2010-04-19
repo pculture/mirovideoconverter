@@ -33,7 +33,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using IOPath = System.IO.Path;
-using Mirosubs.Converter.Windows.VideoFormats;
+using Mirosubs.Converter.Windows.ConversionFormats;
 
 namespace Mirosubs.Converter.Windows {
     public partial class FileSelect : UserControl {
@@ -43,7 +43,7 @@ namespace Mirosubs.Converter.Windows {
 
         public FileSelect() {
             InitializeComponent();
-            ((CollectionViewSource)this.Resources["GroupedVideoFormats"]).Source = VideoFormat.All;
+            ((CollectionViewSource)this.Resources["GroupedVideoFormats"]).Source = ConversionFormat.All;
         }
         public string FinishedFileName { get; set; }
         private void WasLoaded(object sender, RoutedEventArgs e) {
@@ -93,7 +93,7 @@ namespace Mirosubs.Converter.Windows {
             if (FileSelected != null)
                 FileSelected(this, new VideoSelectedEventArgs(
                     selectedFileName, 
-                    (VideoFormat)videoFormatCombo.SelectedValue,
+                    (ConversionFormat)videoFormatCombo.SelectedValue,
                     (sendToITunes.IsChecked.HasValue && 
                     sendToITunes.IsChecked.Value)));
         }
@@ -103,8 +103,8 @@ namespace Mirosubs.Converter.Windows {
         }
 
         private void videoFormatCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            VideoFormat selectedValue = 
-                (VideoFormat)videoFormatCombo.SelectedValue;
+            ConversionFormat selectedValue = 
+                (ConversionFormat)videoFormatCombo.SelectedValue;
             sendToITunes.Visibility =
                 (selectedValue.Group == VideoFormatGroup.Apple ?
                 Visibility.Visible : Visibility.Hidden);

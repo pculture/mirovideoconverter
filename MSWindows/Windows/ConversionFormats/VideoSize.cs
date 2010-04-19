@@ -22,24 +22,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Mirosubs.Converter.Windows.Process;
 
-namespace Mirosubs.Converter.Windows.VideoFormats {
-    class PSPVideoFormat  : VideoFormat {
-        public readonly static VideoFormat PSP =
-            new PSPVideoFormat("PSP", "psp");
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    class VideoSize : IComparable {
+        public int Width { get; set; }
+        public int Height { get; set; }
 
-        private PSPVideoFormat(string displayName, string filePart)
-            : base(displayName, filePart, "mp4", VideoFormatGroup.Other) { 
-        }
-
-        public override string GetArguments(string inputFileName, string outputFileName) {
-            return string.Format(
-                "-i \"{0}\" -s 320x240 -b 512000 -ar 24000 -ab 64000 " +
-                "-f psp -r 29.97 \"{1}\"", inputFileName, outputFileName);
-        }
-        public override VideoConverter MakeConverter(string fileName) {
-            return new FFMPEGVideoConverter(fileName, this);
+        public int CompareTo(object obj) {
+            VideoSize other = (VideoSize)obj;
+            if (Width > other.Width ||
+                Height > other.Height)
+                return 1;
+            else if (Width < other.Width &&
+                Height < other.Height)
+                return -1;
+            else
+                return 0;
         }
     }
 }

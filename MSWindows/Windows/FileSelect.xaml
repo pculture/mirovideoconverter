@@ -11,6 +11,7 @@
             </CollectionViewSource.GroupDescriptions>
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="GroupOrder" Direction="Ascending"/>
+                <scm:SortDescription PropertyName="Order" Direction="Ascending"/>
                 <scm:SortDescription PropertyName="DisplayName" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
