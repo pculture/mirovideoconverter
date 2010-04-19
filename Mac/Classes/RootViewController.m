@@ -335,6 +335,9 @@
   int iResponse;
   switch(status) {
   case EndStatusOK:
+    if([video is:[devicePicker titleOfSelectedItem] ofDeviceType:@"Apple Devices"] &&
+       sendToITunes.state == NSOnState)
+      [self sendFileToITunes:file];
     [finishedConverting setStringValue:
 			  [NSString stringWithFormat:@"Finished converting %@",
 				    [self formatFilename:file maxLength:CONVERTING_DONE_MAX_FILE_LENGTH]]];
@@ -513,5 +516,10 @@
     self.ffmpegFinishedOkayBeforeError = YES;
   return;
 }
+-(void)sendFileToITunes {
+  
+
+}
+
 @end
 
