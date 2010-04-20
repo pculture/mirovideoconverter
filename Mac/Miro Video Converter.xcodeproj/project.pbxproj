@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		4F0DCCBF117DB2EA00A27EB7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0DCCBE117DB2EA00A27EB7 /* ScriptingBridge.framework */; };
 		4F43CB60112DEAB900E4B728 /* device.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5B112DEAB900E4B728 /* device.png */; };
 		4F43CB61112DEAB900E4B728 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CB5C112DEAB900E4B728 /* video.png */; };
 		4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 4F6948B3114A9985001514E5 /* dsa_pub.pem */; };
@@ -54,6 +55,7 @@
 		256AC3F00F4B6AF500CF3369 /* Miro_Video_Converter_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Miro_Video_Converter_Prefix.pch; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4F0DCCBE117DB2EA00A27EB7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		4F43CB5B112DEAB900E4B728 /* device.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = device.png; path = ../MSWindows/Windows/resources/device.png; sourceTree = SOURCE_ROOT; };
 		4F43CB5C112DEAB900E4B728 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = video.png; path = ../MSWindows/Windows/resources/video.png; sourceTree = SOURCE_ROOT; };
 		4F6948B3114A9985001514E5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4F9D116411418B1500839BBE /* Sparkle.framework in Frameworks */,
+				4F0DCCBF117DB2EA00A27EB7 /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +116,7 @@
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				4F0DCCBE117DB2EA00A27EB7 /* ScriptingBridge.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";

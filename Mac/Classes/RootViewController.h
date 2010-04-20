@@ -125,6 +125,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 -(void) doFormatQuery;
 -(void) finishUpFormatQuery;
 -(void) startAConversion:(NSString *)file forDevice:(NSString *)device synchronous:(BOOL)sync;
--(void)sendFileToITunes;
+-(void)sendFileToITunes:(NSString *)file;
 
 @end
