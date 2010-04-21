@@ -69,11 +69,12 @@ def upload_to_server(testing_only):
             "pculture@ftp-osl.osuosl.org ./run-trigger")).readlines():
             print line
 
-opts, args = getopt.getopt(sys.argv[1:], "r", ["release"])
-testing_only = (len(opts) == 0 or opts[0][0] not in ("-r", "--release"))
+
 
 def main(argv):
-    print "You are running {0} deployment.\n".format(
+    opts, args = getopt.getopt(argv, "r", ["release"])
+    testing_only = (len(opts) == 0 or opts[0][0] not in ("-r", "--release"))
+    print "You are running the {0} deployment.\n".format(
         "testing" if testing_only else "production")
     update_msi_version()
     build()
