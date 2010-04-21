@@ -98,6 +98,11 @@ namespace Mirosubs.Converter.Windows {
                     sendToITunes.IsChecked.Value)));
         }
 
+        private void AboutHelpClicked(object sender, RoutedEventArgs e) {
+            AboutHelp aboutHelp = new AboutHelp();
+            aboutHelp.ShowDialog();
+        }
+
         private void ShowFinishedFile(object sender, RoutedEventArgs e) {
             System.Diagnostics.Process.Start(IOPath.GetDirectoryName(FinishedFileName));
         }

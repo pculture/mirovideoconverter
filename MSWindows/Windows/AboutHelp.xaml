@@ -1,0 +1,81 @@
+﻿<Window x:Class="Mirosubs.Converter.Windows.AboutHelp"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="About/Help" Height="270" Width="322" ResizeMode="NoResize" Icon="/MiroConverter;component/resources/converter3.ico" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Height="28" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" FontWeight="Bold">Getting Help</Label>
+        <Label Height="28" Margin="12,46,0,0" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="92">Please visit our</Label>
+        <Button Cursor="Hand" Margin="100,51,0,0" Content="Get Satisfaction page" Click="GetSatisfactionClicked" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label FontWeight="Bold" Height="28" Margin="12,88,0,0" Name="label3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175">About Miro Video Converter</Label>
+        <Label Margin="12,122,0,0" Name="label4" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81">Version 1.1</Label>
+        <Button Cursor="Hand" Margin="87,127,0,0" HorizontalAlignment="Left" Content="source code" Click="ViewSourceCode" Width="86" Height="23" VerticalAlignment="Top">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label Margin="12,156,0,0" Name="label5" HorizontalAlignment="Left" Width="103" Height="28" VerticalAlignment="Top">A project of the</Label>
+        <Button Cursor="Hand" Margin="104,161,0,0" Content="Participatory Culture Foundation" Click="ViewPCF" HorizontalAlignment="Left" Width="178" Height="23" VerticalAlignment="Top">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label Margin="12,190,139,0" Name="label6" Height="28" VerticalAlignment="Top">Built in collaboration with</Label>
+        <Button Cursor="Hand" Margin="157,195,0,0" Content="8 Planes" Click="View8Planes" HorizontalAlignment="Left" Width="57" Height="23" VerticalAlignment="Top">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</Window>
