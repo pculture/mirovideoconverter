@@ -34,6 +34,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using IOPath = System.IO.Path;
 using Mirosubs.Converter.Windows.ConversionFormats;
+using Mirosubs.Converter.Windows.Properties;
 
 namespace Mirosubs.Converter.Windows {
     public partial class FileSelect : UserControl {
@@ -47,6 +48,12 @@ namespace Mirosubs.Converter.Windows {
         }
         public string FinishedFileName { get; set; }
         private void WasLoaded(object sender, RoutedEventArgs e) {
+            ConversionFormat format = 
+                ConversionFormat.FindByDisplayName(
+                    Settings.Default.LastFormatDisplayName);
+            if (format == null)
+                format = TheoraVideoFormat.Theora;
+            videoFormatCombo.SelectedValue = format;
             if (FinishedFileName != null) {
                 topLabel.Visibility = Visibility.Hidden;
                 finishedGrid.Visibility = Visibility.Visible;
@@ -90,10 +97,15 @@ namespace Mirosubs.Converter.Windows {
                 MessageBox.Show("You must select a format first.");
                 return;
             }
+            ConversionFormat selectedFormat = 
+                (ConversionFormat)videoFormatCombo.SelectedValue;
+            Settings.Default.LastFormatDisplayName =
+                selectedFormat.DisplayName;
+            Settings.Default.Save();
             if (FileSelected != null)
                 FileSelected(this, new VideoSelectedEventArgs(
                     selectedFileName, 
-                    (ConversionFormat)videoFormatCombo.SelectedValue,
+                    selectedFormat,
                     (sendToITunes.IsChecked.HasValue && 
                     sendToITunes.IsChecked.Value)));
         }

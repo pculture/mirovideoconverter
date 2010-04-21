@@ -46,6 +46,10 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             AppleVideoFormat.iPodClassic
         };
 
+        public static ConversionFormat FindByDisplayName(string displayName) {
+            return All.FirstOrDefault(cf => cf.DisplayName == displayName);
+        }
+
         private string displayName;
         private string filePart;
         private string fileExtension;
