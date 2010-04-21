@@ -143,6 +143,10 @@ namespace Mirosubs.Converter.Windows {
                     Cancelled(this, new EventArgs());
             }
         }
+        private void AboutHelpClicked(object sender, RoutedEventArgs e) {
+            AboutHelp aboutHelp = new AboutHelp();
+            aboutHelp.ShowDialog();
+        }
         private void ShowFFMPEGOutput(object sender, RoutedEventArgs e) {
             ffmpegOutputViewer = new FFMPEGOutputViewer();
             ffmpegOutput.ForEach(str => ffmpegOutputViewer.AddOutput(str));

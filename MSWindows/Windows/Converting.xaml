@@ -9,6 +9,23 @@
         <Label Margin="23,134,99,0" Name="progressLabel" Height="27" VerticalAlignment="Top" Foreground="White"></Label>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="97" Click="ShowFFMPEGOutput">FFMPEG Output</Button>
         <Label Height="28" Margin="0,63,12,0" Name="fileNameLabel" VerticalAlignment="Top" HorizontalAlignment="Right" Width="341" Foreground="White" HorizontalContentAlignment="Center">Label</Label>
+        <Button Cursor="Hand" Margin="18,0,0,7" Content="About/Help" Width="73" Click="AboutHelpClicked" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Red" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="White" />
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </UserControl>
 <!--

@@ -86,6 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AboutHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Converting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -116,6 +120,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutHelp.xaml.cs">
+      <DependentUpon>AboutHelp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConversionFormats\MP3Format.cs" />
     <Compile Include="ConversionFormats\MP4Format.cs" />
     <Compile Include="Converting.xaml.cs">
