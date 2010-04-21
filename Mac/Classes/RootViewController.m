@@ -38,7 +38,6 @@
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
 #define FORMAT_QUERY_SYNCHRONOUS 1
 @implementation RootViewController
-@synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,sendToITunes,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      
@@ -541,6 +540,9 @@
 
   [iTunes add:urlArray to:libraryPlaylist];
 }
-
+-(IBAction) helpClicked:(id)sender {
+  NSWorkspace * ws = [NSWorkspace sharedWorkspace];
+  [ws openURL: [NSURL URLWithString:@"http://getsatisfaction.com/participatoryculturefoundation/products/participatoryculturefoundation_miro_video_converter"]];
+}
 @end
 

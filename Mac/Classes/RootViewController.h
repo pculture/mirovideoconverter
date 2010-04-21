@@ -37,7 +37,6 @@ extern char *deviceNames[];
 typedef enum { ViewRoot, ViewConverting } Views;
 typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFinished } ViewMode;
 @interface RootViewController : NSObject <DropBoxViewDelegate,CWTaskWatcherDelegate>{
-  NSMenuItem *checkForUpdates;
   NSView *rootView;
   ViewMode currentViewMode;
   NSTextField *convertAVideo;
@@ -72,7 +71,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   float videoLength;
   float previousPercentDone;
 }
-@property(nonatomic,retain) IBOutlet NSMenuItem *checkForUpdates;
 @property(nonatomic,retain) IBOutlet NSView *rootView;
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
 @property(nonatomic,retain) IBOutlet NSTextField *dragAVideo;
@@ -125,6 +123,6 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 -(void) doFormatQuery;
 -(void) finishUpFormatQuery;
 -(void) startAConversion:(NSString *)file forDevice:(NSString *)device synchronous:(BOOL)sync;
--(void)sendFileToITunes:(NSString *)file;
-
+-(void) sendFileToITunes:(NSString *)file;
+-(IBAction) helpClicked:(id)sender;
 @end
