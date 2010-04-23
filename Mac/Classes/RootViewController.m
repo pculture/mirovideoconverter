@@ -30,13 +30,14 @@
 #import "DropBoxView.h"
 #import "CWTaskWatcher.h"
 #import "VideoConversionCommands.h"
+#import <ScriptingBridge/SBApplication.h>
+#import "iTunes.h"
 
 #define DROPBOX_MAX_FILE_LENGTH 32
 #define CONVERTING_MAX_FILE_LENGTH 45
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
 #define FORMAT_QUERY_SYNCHRONOUS 1
 @implementation RootViewController
-@synthesize checkForUpdates;
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,sendToITunes,convertButton,filename,dropBox,window;
 @synthesize finishedConverting,showFile;      
@@ -516,10 +517,32 @@
     self.ffmpegFinishedOkayBeforeError = YES;
   return;
 }
--(void)sendFileToITunes {
-  
+-(void)sendFileToITunes:(NSString *)file {
+  iTunesApplication* iTunes = [SBApplication
+                                applicationWithBundleIdentifier:@"com.apple.iTunes"];
+  SBElementArray* sources = [iTunes sources];
+  iTunesSource* librarySource = nil;
+  for (int i=0; i<[sources count]; i++)
+    {
+      iTunesSource* source = [sources objectAtIndex:i];
+      if ([source kind] == iTunesESrcLibrary)
+        {
+          librarySource = source;
+          break;
+        }
+    }
 
+  SBElementArray* libPlaylists = [librarySource libraryPlaylists];
+  iTunesLibraryPlaylist* libraryPlaylist = [libPlaylists objectAtIndex:0];
+
+  NSURL* url = [NSURL fileURLWithPath:file];
+  NSArray* urlArray = [NSArray arrayWithObject:url];
+
+  [iTunes add:urlArray to:libraryPlaylist];
 }
-
+-(IBAction) helpClicked:(id)sender {
+  NSWorkspace * ws = [NSWorkspace sharedWorkspace];
+  [ws openURL: [NSURL URLWithString:@"http://getsatisfaction.com/participatoryculturefoundation/products/participatoryculturefoundation_miro_video_converter"]];
+}
 @end
 

@@ -20,7 +20,6 @@ cp -r "../build/Release/$app.app" "/Volumes/$app"
 mkdir "/Volumes/$app/.background"
 cp dmg-background.png "/Volumes/$app/.background/."
 open "/Volumes/$app"
-open .
 open "/Volumes/$app/.background"
 echo "Drag app around... and press Return"
 read
