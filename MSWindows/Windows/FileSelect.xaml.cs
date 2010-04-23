@@ -72,7 +72,7 @@ namespace Mirosubs.Converter.Windows {
                 DisplayFile(droppedFilePaths[0]);
             }
         }
-        private void ChooseFileClicked(object sender, RoutedEventArgs e) {
+        private void ChooseFileClicked(object sender, EventArgs e) {
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == true)
                 DisplayFile(dlg.FileName);
@@ -110,12 +110,12 @@ namespace Mirosubs.Converter.Windows {
                     sendToITunes.IsChecked.Value)));
         }
 
-        private void AboutHelpClicked(object sender, RoutedEventArgs e) {
+        private void AboutHelpClicked(object sender, EventArgs e) {
             AboutHelp aboutHelp = new AboutHelp();
             aboutHelp.ShowDialog();
         }
 
-        private void ShowFinishedFile(object sender, RoutedEventArgs e) {
+        private void ShowFinishedFile(object sender, EventArgs e) {
             System.Diagnostics.Process.Start(IOPath.GetDirectoryName(FinishedFileName));
         }
 

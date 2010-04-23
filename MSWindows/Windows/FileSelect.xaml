@@ -2,8 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:miro="clr-namespace:Mirosubs.Converter.Windows"
     Height="404" Width="365">
-    
+
     <UserControl.Resources>
         <CollectionViewSource x:Key="GroupedVideoFormats">
             <CollectionViewSource.GroupDescriptions>
@@ -27,23 +28,7 @@
         <Label Height="28" Margin="12,39,12,0" Name="topLabel" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Foreground="White" HorizontalContentAlignment="Center">Convert a Video</Label>
         <Grid Name="finishedGrid" Height="82" Margin="12,12,12,0" VerticalAlignment="Top" Visibility="Hidden">
             <TextBlock Margin="6,6,6,0" Name="finishedTextBlock" TextWrapping="Wrap" Foreground="White" TextAlignment="Center" Height="45" VerticalAlignment="Top" />
-            <Button Cursor="Hand" FontWeight="Bold" Height="21" Margin="143,0,145,4" Name="showFileButton" VerticalAlignment="Bottom" Click="ShowFinishedFile">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="Red" />
-                            </Trigger>
-                        </Style.Triggers>
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </Button.Style> Show File
-            </Button>
+            <miro:LinkButton Margin="143,0,145,4" VerticalAlignment="Bottom" x:Name="showFileButton" ButtonText="Show File" ForegroundColor="White" MouseOverForegroundColor="Red" Clicked="ShowFinishedFile"/>
         </Grid>
         <Grid Name="middleGrid" AllowDrop="True" Drop="FilesDropped" Margin="12,100,12,157">
             <Grid.Background>
@@ -51,23 +36,7 @@
             </Grid.Background>
             <Grid Margin="0" Name="convertGrid" Height="26" VerticalAlignment="Center">
                 <Label Name="convertLabel" HorizontalContentAlignment="Right" Margin="6,0,107,0" Foreground="White">To convert, drag a video file here or</Label>
-                <Button Cursor="Hand" Margin="0,5,35,0" Content="choose a file" HorizontalAlignment="Right" Width="73" Click="ChooseFileClicked">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
-                        </ControlTemplate>
-                    </Button.Template>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Foreground" Value="Red" />
-                                </Trigger>
-                            </Style.Triggers>
-                            <Setter Property="Foreground" Value="White" />
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <miro:LinkButton Margin="0,5,35,0" ButtonText="choose a file" HorizontalAlignment="Right" Width="73" ForegroundColor="White" MouseOverForegroundColor="Red" Clicked="ChooseFileClicked"/>
             </Grid>
             <TextBlock Margin="6,42,6,38" Name="fileNameTextBlock" Visibility="Hidden" TextWrapping="Wrap" FontWeight="Bold" Foreground="White" FontSize="14" TextAlignment="Center" />
         </Grid>
@@ -84,23 +53,7 @@
         </ComboBox>
         <CheckBox Height="16" Margin="0,0,15,71" Name="sendToITunes" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="107" Visibility="Hidden" Foreground="White">Send to iTunes</CheckBox>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button1" VerticalAlignment="Bottom" Width="75" Click="ConvertClicked">Convert!</Button>
-        <Button Cursor="Hand" Margin="18,0,0,7" Content="About/Help" Width="73" Click="AboutHelpClicked" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <TextBlock TextDecorations="Underline"><ContentPresenter /></TextBlock>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="Red" />
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Foreground" Value="White" />
-                </Style>
-            </Button.Style>
-        </Button>
+        <miro:LinkButton Margin="10,0,0,7" ButtonText="About/Help" Width="73" Clicked="AboutHelpClicked" HorizontalAlignment="Left" Height="25" ForegroundColor="White" MouseOverForegroundColor="Red"  VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>
 <!--

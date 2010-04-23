@@ -20,16 +20,16 @@ namespace Mirosubs.Converter.Windows {
         public AboutHelp() {
             InitializeComponent();
         }
-        private void GetSatisfactionClicked(object sender, RoutedEventArgs e) {
+        private void GetSatisfactionClicked(object sender, EventArgs e) {
             SProcess.Start(@"http://getsatisfaction.com/participatoryculturefoundation/products/participatoryculturefoundation_miro_video_converter");
         }
-        private void ViewSourceCode(object sender, RoutedEventArgs e) {
+        private void ViewSourceCode(object sender, EventArgs e) {
             SProcess.Start(@"https://github.com/8planes/mirovideoconverter");
         }
-        private void ViewPCF(object sender, RoutedEventArgs e) {
+        private void ViewPCF(object sender, EventArgs e) {
             SProcess.Start(@"http://pculture.org/");
         }
-        private void View8Planes(object sender, RoutedEventArgs e) {
+        private void View8Planes(object sender, EventArgs e) {
             SProcess.Start(@"http://8planes.com/");
         }
     }

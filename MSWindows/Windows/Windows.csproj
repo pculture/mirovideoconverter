@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LinkButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,6 +131,9 @@
     <Compile Include="ConversionFormats\MP4Format.cs" />
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LinkButton.xaml.cs">
+      <DependentUpon>LinkButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Process\F2TVideoConverter.cs" />
     <Compile Include="Process\ProcessOutputArgs.cs" />
