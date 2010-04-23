@@ -57,7 +57,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
         public override string GetArguments(string inputFileName, string outputFileName) {
             string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
-                "-i \"{0}\"  -acodec aac -ab 160000 -vcodec mpeg4 -b 1200kb " +
+                "-i \"{0}\" -y -acodec aac -ab 160000 -vcodec mpeg4 -b 1200kb " +
                 "-mbd 2 -cmp 2 -subcmp 2 {1} -r 20 \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
