@@ -61,7 +61,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                 "-mbd 2 -cmp 2 -subcmp 2 {1} -r 20 \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
     }

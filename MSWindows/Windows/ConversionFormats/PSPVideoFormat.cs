@@ -38,7 +38,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                 "-i \"{0}\" -s 320x240 -b 512000 -ar 24000 -ab 64000 " +
                 "-f psp -r 29.97 \"{1}\"", inputFileName, outputFileName);
         }
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
     }

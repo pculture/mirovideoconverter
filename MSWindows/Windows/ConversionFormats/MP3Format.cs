@@ -36,7 +36,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             return string.Format("-i \"{0}\" -f mp3 -y -acodec ac3 \"{1}\"",
                 inputFileName, outputFileName);
         }
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
         public override int Order {

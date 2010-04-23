@@ -35,7 +35,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             return string.Format("-i \"{0}\" -f mp4 -y -vcodec mpeg4 -sameq -r 20 \"{1}\"",
                 inputFileName, outputFileName);
         }
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
         public override int Order {

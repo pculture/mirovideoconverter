@@ -73,7 +73,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                 inputFileName, sizeArg, outputFileName);
         }
 
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
     }

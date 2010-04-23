@@ -56,7 +56,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                         inputFileName, outputFileName, paramsBuilder.ToString());
             }
         }
-        public override VideoConverter MakeConverter(string fileName) {
+        public override IVideoConverter MakeConverter(string fileName) {
             return new F2TVideoConverter(fileName);
         }
         public override int Order {

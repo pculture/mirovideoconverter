@@ -48,7 +48,7 @@ namespace Mirosubs.Converter.Windows {
         internal event EventHandler<VideoConvertFinishedArgs> Finished;
         internal event EventHandler<EventArgs> UnknownFormat;
 
-        private VideoConverter converter;
+        private IVideoConverter converter;
         private List<string> ffmpegOutput;
         private FFMPEGOutputViewer ffmpegOutputViewer = null;
         private ConversionFormat conversionFormat;

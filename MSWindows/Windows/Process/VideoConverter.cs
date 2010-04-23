@@ -31,11 +31,11 @@ namespace Mirosubs.Converter.Windows.Process {
     /// <summary>
     /// Encapsulates video conversion process.
     /// </summary>
-    abstract class VideoConverter : IDisposable {
-        internal event EventHandler<VideoConvertProgressArgs> ConvertProgress;
-        internal event EventHandler<EventArgs> UnknownFormat;
-        internal event EventHandler<ProcessOutputArgs> Output;
-        internal event EventHandler<EventArgs> Finished;
+    abstract class VideoConverter : IVideoConverter {
+        public event EventHandler<VideoConvertProgressArgs> ConvertProgress;
+        public event EventHandler<EventArgs> UnknownFormat;
+        public event EventHandler<ProcessOutputArgs> Output;
+        public event EventHandler<EventArgs> Finished;
 
         private SProcess process;
 

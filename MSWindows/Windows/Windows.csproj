@@ -136,6 +136,7 @@
       <DependentUpon>LinkButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Process\F2TVideoConverter.cs" />
+    <Compile Include="Process\IVideoConverter.cs" />
     <Compile Include="Process\ProcessOutputArgs.cs" />
     <Compile Include="FFMPEGOutputViewer.xaml.cs">
       <DependentUpon>FFMPEGOutputViewer.xaml</DependentUpon>

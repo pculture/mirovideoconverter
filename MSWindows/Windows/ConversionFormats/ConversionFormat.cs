@@ -111,6 +111,6 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             get { return 0; }
         }
         public abstract string GetArguments(string inputFileName, string outputFileName);
-        public abstract VideoConverter MakeConverter(string fileName);
+        public abstract IVideoConverter MakeConverter(string fileName);
     }
 }
