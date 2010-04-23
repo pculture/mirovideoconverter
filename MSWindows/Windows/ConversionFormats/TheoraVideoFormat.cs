@@ -27,7 +27,7 @@ using System.IO;
 
 namespace Mirosubs.Converter.Windows.ConversionFormats {
     class TheoraVideoFormat : ConversionFormat {
-        public readonly static ConversionFormat Theora =
+        public readonly static TheoraVideoFormat Theora =
             new TheoraVideoFormat("Theora", "theora");
         private TheoraVideoFormat(string displayName, string filePart)
             : base(displayName, filePart, "ogv", VideoFormatGroup.Formats) { 
@@ -36,17 +36,15 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             VideoParameters parms = 
                 VideoParameterOracle.GetParameters(inputFileName);
             if (parms == null)
-                return string.Format(
-                    "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",
-                    inputFileName, outputFileName);
+                return GetSimpleArguments(inputFileName, outputFileName);
             else {
                 StringBuilder paramsBuilder = new StringBuilder();
                 StringWriter paramsWriter = new StringWriter(paramsBuilder);
                 if (parms.Height.HasValue && parms.Width.HasValue)
-                    paramsWriter.Write("-x {0} -y {1} ", 
+                    paramsWriter.Write("-x {0} -y {1} ",
                         parms.Width, parms.Height);
                 if (parms.VideoBitrate.HasValue && parms.AudioBitrate.HasValue)
-                    paramsWriter.Write("-V {0} -A {1} --two-pass ", 
+                    paramsWriter.Write("-V {0} -A {1} --two-pass ",
                         parms.VideoBitrate, parms.AudioBitrate);
                 else
                     paramsWriter.Write("--videoquality 8 --audioquality 6 ");
@@ -55,6 +53,11 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                     "\"{0}\" -o \"{1}\" {2} --frontend",
                         inputFileName, outputFileName, paramsBuilder.ToString());
             }
+        }
+        public string GetSimpleArguments(string inputFileName, string outputFileName) {
+            return string.Format(
+                   "\"{0}\" -o \"{1}\" --videoquality 8 --audioquality 6 --frontend",
+                   inputFileName, outputFileName);
         }
         public override IVideoConverter MakeConverter(string fileName) {
             return new F2TVideoConverter(fileName);

@@ -1,90 +1,84 @@
-//  MiroVideoConverter -- a super simple way to convert almost any video to MP4, 
-//  Ogg Theora, or a specific phone or iPod.
-//
-//  Copyright 2010 Participatory Culture Foundation
-//
-//  This file is part of MiroVideoConverter.
-//
-//  MiroVideoConverter is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  MiroVideoConverter is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with MiroVideoConverter.  If not, see http://www.gnu.org/licenses/.
-
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Mirosubs.Converter.Windows.ConversionFormats;
-using System.Globalization;
 
 namespace Mirosubs.Converter.Windows.Process {
-    class F2TVideoConverter : VideoConverter {
-        private static Regex updateRegex = new Regex(
-            @"^\{\""duration\""\s*:\s*([\d\.]+),\s*\""position\""\s*:\s*([\d\.]+)");
-        private static Regex finishedRegex = new Regex(
-            @"\{\""result\""\s*:\s*\""ok\""\}");
-        private static Regex errorRegex = new Regex(
-            @"^\s*\""error\""\s*:\s*\""([^\""]+)");
+    class F2TVideoConverter : IVideoConverter {
+        private static Regex couldNotFindModeRegex = new Regex(
+            @"Vorbis encoder could not set up a mode");
+
+
+        public event EventHandler<VideoConvertProgressArgs> ConvertProgress;
+        public event EventHandler<EventArgs> UnknownFormat;
+        public event EventHandler<ProcessOutputArgs> Output;
+        public event EventHandler<EventArgs> Finished;
 
         private string fileName;
-        private string outputFileName;
-        private string args;
-        internal F2TVideoConverter(string fileName) {
+        private bool couldNotFindMode = false;
+        private F2TVideoConverterProcess process;
+
+        public F2TVideoConverter(string fileName) {
             this.fileName = fileName;
-            this.outputFileName =
-                Path.ChangeExtension(fileName, 
-                TheoraVideoFormat.Theora.OutputFileExtension);
-            args = TheoraVideoFormat.Theora.GetArguments(fileName, outputFileName);
         }
-        public override string OutputFileName {
-            get { return this.outputFileName; }
+
+        public void Start() {
+            process = new F2TVideoConverterProcess(this.fileName, false);
+            AddEventHandlersToProcess(process);
+            process.Start();
         }
-        protected override string ExeName {
-            get {
-                return @"ffmpeg-bin\ffmpeg2theora.exe";
-            }
+
+        private void AddEventHandlersToProcess(F2TVideoConverterProcess process) {
+            process.ConvertProgress += new EventHandler<VideoConvertProgressArgs>(process_ConvertProgress);
+            process.Finished += new EventHandler<EventArgs>(process_Finished);
+            process.Output += new EventHandler<ProcessOutputArgs>(process_Output);
+            process.UnknownFormat += new EventHandler<EventArgs>(process_UnknownFormat);
         }
-        protected override string Args {
-            get {
-                return args;
-            }
+
+        void process_UnknownFormat(object sender, EventArgs e) {
+            if (UnknownFormat != null)
+                UnknownFormat(this, e);
         }
-        protected override void process_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e) {
-            Debug.Print("Output");
-            Debug.Print(e.Data);
-            string line = e.Data;
-            if (line == null)
+
+        void process_Output(object sender, ProcessOutputArgs e) {
+            if (e.OutputLine == null)
                 return;
-            IssueOutputEvent(line);
-            if (updateRegex.IsMatch(line)) {
-                Match m = updateRegex.Match(line);
-                float duration = float.Parse(m.Groups[1].Value, 
-                    NumberFormatInfo.InvariantInfo);
-                float position = float.Parse(m.Groups[2].Value, 
-                    NumberFormatInfo.InvariantInfo);
-                IssueConvertProgressEvent((int)(100 * position / duration));
-            }
-            else if (finishedRegex.IsMatch(line))
-                IssueFinishedEvent();
-            else if (errorRegex.IsMatch(line)) {
-                IssueUnknownFormatEvent();
+            if (Output != null)
+                Output(this, e);
+            if (couldNotFindModeRegex.IsMatch(e.OutputLine) && !couldNotFindMode) {
+                couldNotFindMode = true;
+                if (Output != null)
+                    Output(this, new ProcessOutputArgs(
+                        "Could not find mode, so switching to simplified arguments."));
+                process.Cancel();
+                process.Dispose();
+                process = new F2TVideoConverterProcess(this.fileName, true);
+                AddEventHandlersToProcess(process);
+                process.Start();
             }
         }
 
-        protected override void process_ErrorDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e) {
-            Debug.Print("Error");
-            Debug.Print(e.Data);
+        void process_Finished(object sender, EventArgs e) {
+            if (Finished != null)
+                Finished(this, e);
+        }
+
+        void process_ConvertProgress(object sender, VideoConvertProgressArgs e) {
+            if (ConvertProgress != null)
+                ConvertProgress(this, e);
+        }
+
+        public void Cancel() {
+            process.Cancel();
+        }
+
+        public string OutputFileName {
+            get { return process.OutputFileName; }
+        }
+
+        public void Dispose() {
+            process.Dispose();
         }
     }
 }
