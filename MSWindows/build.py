@@ -53,11 +53,11 @@ def make_version_file():
 
 def upload_to_server(testing_only):
     print "Uploading to server\n"
-    target_folder = "/home/pculture/data/mirovideoconverter"
-        "/{0}MiroConverterSetup.msi".format("testing/" if testing_only else "")
+    target_folder = ("/home/pculture/data/mirovideoconverter"
+        "/{0}MiroConverterSetup.msi").format("testing/" if testing_only else "")
     for line in os.popen(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
         ".\\WindowsSetup\\Release\MiroConverterSetup.msi " 
-        "pculture@ftp-osl.osuosl.org:{0}".format(target_folder)).readlines():
+        "pculture@ftp-osl.osuosl.org:{0}").format(target_folder)).readlines():
         print line
     if not testing_only:
         for line in os.popen(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
@@ -78,7 +78,8 @@ def main(argv):
         "testing" if testing_only else "production")
     update_msi_version()
     build()
-    make_version_file()
+    if not testing_only:
+        make_version_file()
     upload_to_server(testing_only)
 
 main(sys.argv[1:])

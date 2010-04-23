@@ -15,6 +15,42 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0B995C8EAC960746DE9B7314DE985A91"
+        "OwnerKey" = "8:_A8112295D348ACFD8AC148AF6A16BB43"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_51898E4D051FD169778C45D419E47C2F"
+        "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_51898E4D051FD169778C45D419E47C2F"
+        "OwnerKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
+        "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A8112295D348ACFD8AC148AF6A16BB43"
+        "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C8E7E2AB01CF45779752C681C1DC7CC7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -29,6 +65,24 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A8112295D348ACFD8AC148AF6A16BB43"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_51898E4D051FD169778C45D419E47C2F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -136,6 +190,139 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B995C8EAC960746DE9B7314DE985A91"
+            {
+            "SourcePath" = "8:iTunes.exe"
+            "TargetName" = "8:iTunes.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_51898E4D051FD169778C45D419E47C2F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_51898E4D051FD169778C45D419E47C2F"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_595408A3CD368DD0832CEDC396BC3541"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_595408A3CD368DD0832CEDC396BC3541"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5DE60E7C72A94DF2AC670E3D2EE75431"
+            {
+            "SourcePath" = "8:..\\Windows\\resources\\500x70.jpg"
+            "TargetName" = "8:500x70.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A8112295D348ACFD8AC148AF6A16BB43"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.iTunesLib, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A8112295D348ACFD8AC148AF6A16BB43"
+                    {
+                    "Name" = "8:Interop.iTunesLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Interop.iTunesLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8E7E2AB01CF45779752C681C1DC7CC7"
             {
             "SourcePath" = "8:..\\Windows\\resources\\converter3.ico"
@@ -223,14 +410,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Miro Video Converter"
-        "ProductCode" = "8:{1013BBD9-890E-4762-A7FE-9B6E75D5FC45}"
-        "PackageCode" = "8:{5DDD2567-8A1F-4F85-8B60-52E819F0F608}"
+        "ProductCode" = "8:{FE10E3FE-799C-43A3-8A66-6031E69BC580}"
+        "PackageCode" = "8:{61467760-8213-4778-A6F3-18DDFB4E288A}"
         "UpgradeCode" = "8:{88A3135E-03D0-4D44-85E7-31F046510CA6}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.0"
+        "ProductVersion" = "8:1.3.1"
         "Manufacturer" = "8:Participatory Culture Foundation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -390,7 +577,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "ShowProgress"
@@ -434,7 +622,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "InstallAllUsersVisible"
@@ -469,7 +658,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "CopyrightWarning"
@@ -517,7 +707,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -548,7 +739,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "UpdateText"
@@ -592,7 +784,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "CopyrightWarning"
@@ -640,7 +833,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -662,7 +856,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -693,7 +888,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "ShowProgress"
@@ -743,7 +939,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_5DE60E7C72A94DF2AC670E3D2EE75431"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -786,7 +983,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E80BABA67A7C42DFBA275A918126C3AF"
             {
-            "SourcePath" = "8:..\\Windows\\obj\\Release\\MiroConverter.exe"
+            "SourcePath" = "8:..\\Windows\\obj\\Debug\\MiroConverter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
