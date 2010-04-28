@@ -25,10 +25,37 @@
 #import <Cocoa/Cocoa.h>
 
 #define WATCH_INTERVAL 0.3
+#define STARTUP_IDLE_TIME 4
+/**
+// CWTaskWatcher
+//
+// Call startTask to start an asynchronous command with arguments and
+// optionally specify a progress file whose size
+// is "watched" while the task runs. Set the delegate, optional textStorage
+// that holds stdout/stdin output, and optional endIdleInterval after which,
+// if the progress file is hung, the task will be cancelled.
+// Call requestFinishWithStatus to terminate task and return particular status
+// to delegate.
+// The optional delegate function cwTaskWatcher:updateString: relays output from
+// the task to the delegate.  If textStorage is non-nil, the output is also
+// appended to an NSTextStorage object.  Output can be modified before it is
+// processed by implementing the delegate function cwTask:censorOutput:.
+// CWTaskWatcher runs the function watchTask on a loop several times a second
+// that manages the runState of the task. This has several functions:
+// 1) When a cancel request is received, a request is made to the task. If the
+//    task does not respond after a specified time interval, a kill command is 
+//    run on the pid of the task.  If the task does not terminate after another
+//    interval, the state is set to done anyway.
+// 2) While the task is running and a cancel request has not been received, the optional
+      delegate function cwTaskWatcher:updateFileInfo: is called with a dictionary
+      containing the progress file size and the amount of time the task has been
+      running.  If endIdleInterval is set and the file size has remained constant
+      for more than the specified interval, the task sends itself a cancellation request.
+*/
 
 @implementation CWTaskWatcher
-@synthesize task,pid,delegate,textStorage,loopTimer,progressFile,taskStartDate,taskEndRequestDate;
-
+@synthesize delegate,textStorage,endIdleInterval,task,pid,loopTimer,progressFile,taskStartDate,taskEndRequestDate;
+@synthesize lastFileSizeTime;
 - (id)init {
   self = [super init];
   task = [[CWTask alloc] init];
@@ -46,7 +73,7 @@
     runStatus = RunStatusRunning;
     endStatus = EndStatusNone;
     self.progressFile = file;
-    if([[NSFileManager defaultManager] isReadableFileAtPath:file])
+    if(file && [[NSFileManager defaultManager] isReadableFileAtPath:file])
       [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
     self.pid = [task startTask:path withArgs:args];
     self.taskStartDate = [NSDate date];
@@ -115,21 +142,40 @@
   }
 }
 - (void) updateFileInfo {
-  int filesize = 0;
-  if(progressFile && ![[NSFileManager defaultManager] isReadableFileAtPath:progressFile])
-    filesize = (int) [[[NSFileManager defaultManager]
-                        attributesOfItemAtPath:progressFile error:nil]
-                       fileSize];
-  int time = [taskStartDate timeIntervalSinceNow] * -1;
-  NSDictionary *dict =
-    [NSDictionary dictionaryWithObjects:
-                    [NSArray arrayWithObjects:
-                               [NSNumber numberWithFloat:(float)time],
-                             [NSNumber numberWithInt:filesize],nil]
-                  forKeys:
-                    [NSArray arrayWithObjects:
-                               @"elapsedTime",@"filesize",nil]];
-  [delegate cwTaskWatcher:self updateFileInfo:dict];
+  if(runStatus == RunStatusRunning && progressFile &&
+     [[NSFileManager defaultManager] isReadableFileAtPath:progressFile]) {
+    int filesize = (int) [[[NSFileManager defaultManager]
+                          attributesOfItemAtPath:progressFile error:nil]
+                         fileSize];
+    int time = [taskStartDate timeIntervalSinceNow] * -1;
+    NSDictionary *dict =
+      [NSDictionary dictionaryWithObjects:
+                [NSArray arrayWithObjects:
+                           [NSNumber numberWithFloat:(float)time],
+                  [NSNumber numberWithInt:filesize],nil]
+                                  forKeys:
+                [NSArray arrayWithObjects:
+                           @"elapsedTime",@"filesize",nil]];
+    if([delegate respondsToSelector:@selector(cwTaskWatcher:updateFileInfo:)])
+      [delegate cwTaskWatcher:self updateFileInfo:dict];
+    // If endIdleInterval is set and file is hung, requestFinish with error
+    if(endIdleInterval && time > STARTUP_IDLE_TIME) {
+      if(!lastFileSizeTime) {
+        lastFileSize = filesize;
+        self.lastFileSizeTime = [NSDate date];
+      } else {
+        if(lastFileSize == filesize) {
+          if([lastFileSizeTime timeIntervalSinceNow]*(-1) > endIdleInterval)
+            [self requestFinishWithStatus:EndStatusError]; // changes runState so this
+        } else {                                           // won't get called again
+          lastFileSize = filesize;
+          self.lastFileSizeTime = [NSDate date];
+        }
+      }
+    } else {
+      lastFileSizeTime = nil;
+    }
+  }
 }
 - (void)cwTask:(CWTask *)cwtask ended:(int)returnValue{
   switch(runStatus) {
@@ -163,47 +209,11 @@
           if(textStorage)
             [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
                          withString:newOutput];
-          [delegate cwTaskWatcher:self updateString:newOutput];
+          if([delegate respondsToSelector:@selector(cwTaskWatcher:updateString:)])
+            [delegate cwTaskWatcher:self updateString:newOutput];
         }
       }
     }
   }
 }
 @end
-
-//                       withString:[NSString stringWithFormat:@"%@:%@",
-//                                            arg, newOutput]];
-
-//-(void) monitorSpeedTest:(NSTimer *)timer {
-//  static int oldSize = 0;
-//
-//  int fileSize = 0;
-//  EndSpeedTest endTest = WAITING;
-//  if(![conversionTask isRunning])
-//    endTest = TASKDONE;   // task ended
-//  else {
-//    NSString *outputFile = [self fFMPEGOutputFile:speedFile];
-//    if (![[NSFileManager defaultManager] isReadableFileAtPath:outputFile]) {
-//      if([conversionTime timeIntervalSinceNow]*(-1) > 3.0)
-//        endTest = ERROR; // file not created for 3 sec after start
-//    } else {
-//      fileSize = (int) [[[NSFileManager defaultManager]
-//                          attributesOfItemAtPath:outputFile error:nil]
-//                         fileSize];
-//      if(oldSize && fileSize == oldSize &&
-//         [conversionTime timeIntervalSinceNow]*(-1) > 3.0)
-//        endTest = ERROR; // file hung for 3 sec since last update
-//    }
-//  }
-//
-//  if(endTest == WAITING){
-//    if(oldSize != fileSize){
-//      oldSize = fileSize;
-//      self.conversionTime = [NSDate date];
-//    }
-//  } else {
-//    [timer invalidate];
-//    oldSize = 0;
-//    [self speedTestCompleted:endTest];
-//  }
-//  }

@@ -26,6 +26,19 @@
 
 #define DELAY_BEFORE_NOTIFY_ENDED 0.4
 
+/**
+// CWTask
+//
+// Call startTask to start an asynchronous command with arguments.
+// Call endTask to request task termination.  When task has data from
+// stdout or stderr, delegate's cwTask:update: is called with a dictionary
+// containing a key called either stdout or stderr containing test.  When
+// task ends, delgate's cwTask:ended: is called with task termination status.
+// Alternatively synchronous task can be performed using static function
+// performSynchronousTask:withArgs:endStatus:.  The function sets the status
+// variable and returns a string combining stdout and stderr output.
+*/
+
 @implementation CWTask
 @synthesize task,delegate,tellDelegateTaskEndedDelayTimer;
 
