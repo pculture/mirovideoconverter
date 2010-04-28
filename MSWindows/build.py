@@ -65,9 +65,9 @@ def upload_to_server(testing_only):
             "pculture@ftp-osl.osuosl.org:"
             "/home/pculture/data/mirovideoconverter/MiroConverterVersion.xml")).readlines():
             print line
-        for line in os.popen(("plink -ssh -i %USERPROFILE%\.ssh\osuosl.ppk "
-            "pculture@ftp-osl.osuosl.org ./run-trigger")).readlines():
-            print line
+    for line in os.popen(("plink -ssh -i %USERPROFILE%\.ssh\osuosl.ppk "
+        "pculture@ftp-osl.osuosl.org ./run-trigger")).readlines():
+        print line
 
 
 
