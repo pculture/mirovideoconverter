@@ -37,6 +37,8 @@
 #define CONVERTING_MAX_FILE_LENGTH 45
 #define CONVERTING_DONE_MAX_FILE_LENGTH 27
 #define FORMAT_QUERY_SYNCHRONOUS 1
+#define FILE_HUNG_IDLE_TIMEOUT 4
+
 @implementation RootViewController
 @synthesize rootView,convertAVideo,dragAVideo,chooseAFile1,toSelectADifferent,chooseAFile2;
 @synthesize filePath,devicePicker,sendToITunes,convertButton,filename,dropBox,window;
@@ -315,6 +317,7 @@
     [aWatcher release];
     conversionWatcher.delegate = self;
     conversionWatcher.textStorage = storage;
+    conversionWatcher.endIdleInterval = FILE_HUNG_IDLE_TIMEOUT;
     [conversionWatcher startTask:path withArgs:args 
                        andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
   } else {

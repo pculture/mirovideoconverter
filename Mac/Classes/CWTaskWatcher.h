@@ -30,26 +30,31 @@ typedef enum { RunStatusNone, RunStatusRunning, RunStatusEndRequested, RunStatus
 typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } TaskEndStatus;
 
 @interface CWTaskWatcher : NSObject <CWTaskDelegate> {
+  id delegate;
+  NSTextStorage *textStorage;
+  float endIdleInterval;
+
   TaskRunStatus runStatus;
   TaskEndStatus endStatus;
   CWTask *task;
   int pid;
-  id delegate;
-  NSTextStorage *textStorage;
   NSTimer *loopTimer;
   NSString *progressFile;
   NSDate *taskStartDate;
   NSDate *taskEndRequestDate;
+  int lastFileSize;
+  NSDate *lastFileSizeTime;
 }
-@property(retain) CWTask *task;
-@property(assign) int pid;
 @property(assign) id delegate;
 @property(assign) NSTextStorage *textStorage;
+@property(assign) float endIdleInterval;
+@property(retain) CWTask *task;
+@property(assign) int pid;
 @property(retain) NSTimer *loopTimer;
 @property(retain) NSString *progressFile;
 @property(retain) NSDate *taskStartDate;
 @property(retain) NSDate *taskEndRequestDate;
-
+@property(retain) NSDate *lastFileSizeTime;
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
    andProgressFile:(NSString *)file;
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args;
@@ -62,9 +67,9 @@ typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } Tas
 @end
 
 @protocol CWTaskWatcherDelegate
-- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output;
-- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict;
 - (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher ended:(TaskEndStatus)status;
 @optional
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateString:(NSString *)output;
 - (NSString *)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher censorOutput:(NSString *)input;
+- (void)cwTaskWatcher:(CWTaskWatcher *)cwTaskWatcher updateFileInfo:(NSDictionary *)dict;
 @end
