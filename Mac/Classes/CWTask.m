@@ -39,6 +39,65 @@
 // variable and returns a string combining stdout and stderr output.
 */
 
+/////////////////////////////////
+@interface CWTask (Private)
++ (NSString *) stringWithCleanedUpUTF8String:(char *)input length:(int)length;
+- (void) taskUpdateStdOut:(NSNotification *)note;
+- (void) taskUpdateStdErr:(NSNotification *)note;
+- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note;
+- (void) taskEnded:(NSNotification *)note;
+- (void) tellDelegateTaskEnded:(NSTimer *)timer;
+@end
+/////////////////////////////////
+
+@implementation CWTask (Private)
++ (NSString *) stringWithCleanedUpUTF8String:(char *)input length:(int)length{
+  char *buf = malloc(length+1);
+  strncpy(buf,input,length);
+  buf[length] = 0;
+  for(int i=0; i<length; i++)
+    if((unsigned char)buf[i] > 127) buf[i] = ' ';
+  NSString *output = [NSString stringWithUTF8String:(char *)buf];
+  free(buf);
+  return output;
+}
+- (void) taskUpdateStdOut:(NSNotification *)note {
+  [self taskUpdateStream:@"stdout" withNote:note];
+}
+- (void) taskUpdateStdErr:(NSNotification *)note {
+  [self taskUpdateStream:@"stderr" withNote:note];
+}
+- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note {
+  NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  if([data length] > 0) {
+    NSString *string = [CWTask stringWithCleanedUpUTF8String:(char *)[data bytes] length:[data length]];
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:string forKey:stream];
+    [delegate cwTask:self update:dict];
+    [(NSFileHandle *)[note object] readInBackgroundAndNotify];
+  } else
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                          name:NSFileHandleReadCompletionNotification
+                                          object:[note object]];
+}
+
+- (void) taskEnded:(NSNotification *)note {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                        name:NSTaskDidTerminateNotification object:nil];
+  taskReturnValue = [[note object] terminationStatus];
+  self.tellDelegateTaskEndedDelayTimer = 
+    [NSTimer scheduledTimerWithTimeInterval:DELAY_BEFORE_NOTIFY_ENDED target:self
+             selector:@selector(tellDelegateTaskEnded:)
+             userInfo:nil
+             repeats:NO];
+}
+
+- (void) tellDelegateTaskEnded:(NSTimer *)timer {
+  self.tellDelegateTaskEndedDelayTimer = nil;
+  [delegate cwTask:self ended:taskReturnValue];
+}
+
+@end
+
 @implementation CWTask
 @synthesize task,delegate,tellDelegateTaskEndedDelayTimer;
 
@@ -94,55 +153,9 @@
   *status = [aTask terminationStatus];
   NSData *data = [[[aTask standardOutput] fileHandleForReading] readDataToEndOfFile];
   [aTask release];
-  return [[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding];
-}
-
-@end
-
-/////////////////////////////////
-@interface CWTask (Private)
-- (void) taskUpdateStdOut:(NSNotification *)note;
-- (void) taskUpdateStdErr:(NSNotification *)note;
-- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note;
-- (void) taskEnded:(NSNotification *)note;
-- (void) tellDelegateTaskEnded:(NSTimer *)timer;
-@end
-/////////////////////////////////
-
-@implementation CWTask (Private)
-- (void) taskUpdateStdOut:(NSNotification *)note {
-  [self taskUpdateStream:@"stdout" withNote:note];
-}
-- (void) taskUpdateStdErr:(NSNotification *)note {
-  [self taskUpdateStream:@"stderr" withNote:note];
-}
-- (void) taskUpdateStream:(NSString *)stream withNote:(NSNotification *)note {
-  NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
-  if([data length] > 0) {
-    NSString *string = [NSString stringWithUTF8String:[data bytes]];
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:string forKey:stream];
-    [delegate cwTask:self update:dict];
-    [(NSFileHandle *)[note object] readInBackgroundAndNotify];
-  } else
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                          name:NSFileHandleReadCompletionNotification
-                                          object:[note object]];
-}
-
-- (void) taskEnded:(NSNotification *)note {
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                        name:NSTaskDidTerminateNotification object:nil];
-  taskReturnValue = [[note object] terminationStatus];
-  self.tellDelegateTaskEndedDelayTimer = 
-    [NSTimer scheduledTimerWithTimeInterval:DELAY_BEFORE_NOTIFY_ENDED target:self
-             selector:@selector(tellDelegateTaskEnded:)
-             userInfo:nil
-             repeats:NO];
-}
-
-- (void) tellDelegateTaskEnded:(NSTimer *)timer {
-  self.tellDelegateTaskEndedDelayTimer = nil;
-  [delegate cwTask:self ended:taskReturnValue];
+  NSString *output = [CWTask stringWithCleanedUpUTF8String:(char *)[data bytes] length:[data length]];
+  NSLog(@"%@",output);
+  return output;
 }
 
 @end
