@@ -1,0 +1,64 @@
+---------
+Intro
+---------
+Miro Video Converter converts almost any video to MP4, Ogg Theora, or a specific phone or iPod.
+
+Supported Devices
+Android Phones
+
+    * Droid / Milestone
+    * Nexus One
+    * G1
+    * Magic / myTouch
+    * Droid Eris
+    * HTC Hero
+    * Cliq
+    * Behold
+
+Apple Devices
+
+    * iPhone / iPod Touch
+    * iPod Classic
+    * iPod Nano
+
+Other
+
+    * PSP
+
+Miro Video Converter was written by 8planes (www.8planes.com), an enterprise and mobile device software development shop, for the Participatory Culture Foundation (pculture.org), a non-profit organization working to create a more democratic media space.  PCF is a member of the Open Video Alliance (www.openvideoalliance.org).
+
+---------
+Building
+---------
+
+1) Mac Version
+
+  The Mac version was developed using XCode 3.2.1, with SDK 10.5 for Leopard and Snow Leopard compatibility, as a universal binary compatible with i386, x86_64, and ppc architectures.  To build the Mac version, open the .xcodeproj file in the Mac/ directory and build.  That's it.  Aside form source and XCode project files, the Mac directory also contains a copy of the Sparkle Framework (see below), and a DMG subdirectory with scripts for building the OS X installer and deploying new releases.
+  
+2) Windows Version
+
+  The Windows version was built using Microsoft Visual Studio.  To build it, open the MVS project file and press build.  Scripts are also included to deploy new releases.
+
+---------
+Sparkle installation framework
+---------
+  The Mac version uses the Sparkle installation framework to automatically update the App when a new version is available on the server.  For licensing information, see LICENSE.sparkle.  For more information on Sparkle, go to http://sparkle.andymatuschak.org.
+
+---------
+FFMPEG and FFMPEG2Theora
+---------
+  Miro Video Converter uses precompiled FFMPEG and FFMPEG2Theora executables for all of its conversions.
+
+  The OS X version of FFMPEG was created by compiling recent (as of March, 2010) snapshots of the ffmpeg source code (from www.ffmpeg.org), and snapshots of various 3rd party libraries, for each Mac architecture type (x86_64, i386, ppc) and linking them together into three ffmpeg binaries, and finally combining the binaries to make a universal OS X executable.  
+
+  The Windows version is a statically compiled version of FFMPEG (from ffmpeg.arrozcru.org/builds).
+
+  FFMPEG2Theora, version 0.26 was obtained precompiled from xiph.org.
+
+  For licensing information on FFMPEG and FFMPEG2Theora, see the coresoponding LICENSE files in this directory.
+
+---------
+Bug Reporting:
+---------
+  To report a bug, please go to http://bugzilla.pculture.org, project name "Miro Video Converter."
+
