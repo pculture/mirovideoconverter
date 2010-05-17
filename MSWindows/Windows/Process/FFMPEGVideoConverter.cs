@@ -34,7 +34,10 @@ namespace Mirosubs.Converter.Windows.Process {
         private static Regex durationRegex = new Regex(@"^\s+Duration: (\d\d:\d\d:\d\d.\d\d)");
         private static Regex timeRegex = new Regex(@"time=([^\s]+)\u0020bitrate");
         private static Regex finishedRegex = new Regex(@"^video:");
-        private static Regex unknownFormatRegex = new Regex(@"Unknown format$");
+        private static Regex unknownFormatRegex = new Regex(
+            @"Unknown format$");
+        private static Regex couldNotWriteHeader = new Regex(
+            @"Could not write header.*incorrect codec parameters");
 
         private long lengthMs = -1;
         private string outputFileName;
@@ -90,6 +93,8 @@ namespace Mirosubs.Converter.Windows.Process {
             else if (finishedRegex.IsMatch(line))
                 IssueFinishedEvent();
             else if (unknownFormatRegex.IsMatch(line))
+                IssueUnknownFormatEvent();
+            else if (couldNotWriteHeader.IsMatch(line))
                 IssueUnknownFormatEvent();
         }
     }
