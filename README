@@ -37,7 +37,7 @@ Building
   
 2) Windows Version
 
-  The Windows version was built using Microsoft Visual Studio.  To build it, open the MVS project file and press build.  Scripts are also included to deploy new releases.
+  The Windows version was built using Microsoft Visual Studio.  To build it, open the MVS project file and press build.  Scripts are also included to build and deploy new releases.
 
 ---------
 Sparkle installation framework
