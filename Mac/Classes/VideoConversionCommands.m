@@ -319,8 +319,6 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-f"];
   [args addObject:@"mp3"];
   [args addObject:@"-y"];
-  [args addObject:@"-acodec"];
-  [args addObject:@"ac3"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
