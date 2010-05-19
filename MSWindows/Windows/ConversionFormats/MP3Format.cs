@@ -33,7 +33,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             : base("MP3 (Audio Only)", "audioonly", "mp3", VideoFormatGroup.Formats) { 
         }
         public override string GetArguments(string inputFileName, string outputFileName) {
-            return string.Format("-i \"{0}\" -f mp3 -y -acodec ac3 \"{1}\"",
+            return string.Format("-i \"{0}\" -f mp3 -y \"{1}\"",
                 inputFileName, outputFileName);
         }
         public override IVideoConverter MakeConverter(string fileName) {
