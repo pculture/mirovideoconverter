@@ -1,8 +1,14 @@
 #!/bin/bash
 if [ $# -lt 1 ]; then
-    echo Need version string
+    echo addAndUploadVersion.sh version [release]
 else
-    cd ~/CocoaApps/miro
+    if [ $# -lt 2 ] || ! [ $2 = release ]; then
+        echo '** Uploading to TESTING dir **'
+        testing=/testing
+    else 
+        echo '** Uploading to RELEASE dir **'
+        testing=
+    fi
     key=`ruby /Developer/Sparkle/Extras/Signing\ Tools/sign_update.rb Miro\ Video\ Converter-$1.dmg dsa_priv.pem`
     klen=`du -sk Miro\ Video\ Converter-$1.dmg`
     klen=${klen%%Miro*}
@@ -26,8 +32,8 @@ EOF
     echo add newCast.xml to SparkleAppCast.xml, create $1.html, then press return
     read
 #    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@192.168.0.2://var/www/MiroVideoConverter/mac/.
-    echo scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
-    scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter/mac/.
-    ssh pculture@ftp-osl.osuosl.org "cd data/mirovideoconverter/mac; unlink Miro\ Video\ Converter.dmg; ln -s Miro\ Video\ Converter-$1.dmg Miro\ Video\ Converter.dmg; cd ~; ./run-trigger"
+    echo scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter$testing/mac/.
+    scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter$testing/mac/.
+    ssh pculture@ftp-osl.osuosl.org "cd data/mirovideoconverter/$testing/mac; unlink Miro\ Video\ Converter.dmg; ln -s Miro\ Video\ Converter-$1.dmg Miro\ Video\ Converter.dmg; cd ~; ./run-trigger"
     rm newCast.xml
 fi
