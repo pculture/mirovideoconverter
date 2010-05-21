@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="ConversionFormats\MP3Format.cs" />
     <Compile Include="ConversionFormats\MP4Format.cs" />
+    <Compile Include="ConversionFormats\WebmFormat.cs" />
     <Compile Include="Converting.xaml.cs">
       <DependentUpon>Converting.xaml</DependentUpon>
     </Compile>
@@ -137,6 +138,7 @@
     </Compile>
     <Compile Include="Process\F2TVideoConverter.cs" />
     <Compile Include="Process\F2TVideoConverterProcess.cs" />
+    <Compile Include="Process\FFMPEGWebmVideoConverter.cs" />
     <Compile Include="Process\IVideoConverter.cs" />
     <Compile Include="Process\ProcessOutputArgs.cs" />
     <Compile Include="FFMPEGOutputViewer.xaml.cs">
@@ -198,6 +200,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ffmpeg-bin\ffmpeg2theora.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg-bin\ffmpeg_webm.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />

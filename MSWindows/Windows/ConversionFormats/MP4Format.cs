@@ -40,7 +40,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
         }
         public override int Order {
             get {
-                return 1;
+                return 2;
             }
         }
     }
