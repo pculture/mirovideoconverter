@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Windows\Windows.csproj", "{E6E9D2C4-D79B-404A-9D1B-6DAB443E13CF}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WindowsSetup", "WindowsSetup\WindowsSetup.vdproj", "{ED9E1DD8-4A44-4390-8D09-60D89132CB7F}"

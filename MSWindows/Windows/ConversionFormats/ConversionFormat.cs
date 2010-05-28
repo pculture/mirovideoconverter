@@ -32,6 +32,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             TheoraVideoFormat.Theora, 
             MP3Format.MP3,
             MP4Format.MP4,
+            WebmFormat.WEBM,
             AndroidVideoFormat.NexusOne, 
             AndroidVideoFormat.MagicMyTouch, 
             AndroidVideoFormat.Droid, 
