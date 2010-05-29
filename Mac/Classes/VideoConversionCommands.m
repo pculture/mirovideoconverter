@@ -30,7 +30,7 @@
 @implementation VideoConversionCommands
 @synthesize screenSize;
 
-char *deviceNames[] = { "Android Devices", " Nexus One", " Dream / G1", " Magic / myTouch", " Droid", " Eris / Desire", " Hero", " Cliq / DEXT", " Behold II", nil, "Apple Devices", " iPhone", " iPod Touch", " iPod Nano", " iPod Classic", " iPad", nil, "Other Devices and Formats", " Playstation Portable (PSP)", " Theora", " VP8", " MP4", " MP3 (Audio only)", nil, nil };
+char *deviceNames[] = { "Android Devices", " Nexus One", " Dream / G1", " Magic / myTouch", " Droid", " Eris / Desire", " Hero", " Cliq / DEXT", " Behold II", nil, "Apple Devices", " iPhone", " iPod Touch", " iPod Nano", " iPod Classic", " iPad", nil, "Other Devices and Formats", " Playstation Portable (PSP)", " Theora", " WebM (vp8)", " MP4", " MP3 (Audio only)", nil, nil };
 char *selectors[] = { "Android Devices", "nexus", "dream", "magic", "droid", "eris", "hero", "cliq", "behold", nil, "Apple Devices", "ipod", "ipod", "ipod", "ipod", "ipod", nil, "Other Devices", "playstation", "theora", "vp8", "mp4", "mp3", nil, nil };
 char *fileExtensions[] = { "Android Devices", "nexus.mp4", "dream.mp4", "magic.mp4", "droid.mp4", "eris.mp4", "hero.mp4", "cliq.mp4", "behold.mp4", nil, "Apple Devices", "iphone.mp4", "ipod.mp4", "ipod.mp4", "ipod.mp4", "ipad.mp4", nil, "Other Devices", "psp.mp4", "theora.ogv", "webm", "mp4", "mp3", nil, nil };
 char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Apple Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Other Devices", "ffmpeg", "ffmpeg2theora", "ffmpeg", "ffmpeg", "ffmpeg", nil, nil };
@@ -305,6 +305,10 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"webm"];
   [args addObject:@"-vcodec"];
   [args addObject:@"libvpx_vp8"];
+  [args addObject:@"-acodec"];
+  [args addObject:@"libvorbis"];
+  [args addObject:@"-ab"];
+  [args addObject:@"160000"];
   [args addObject:@"-sameq"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
