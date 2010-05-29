@@ -15,25 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0B995C8EAC960746DE9B7314DE985A91"
-        "OwnerKey" = "8:_CDB0FD0BDA7E9F227E35D5857D43E0F7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_51898E4D051FD169778C45D419E47C2F"
-        "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_51898E4D051FD169778C45D419E47C2F"
-        "OwnerKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
+        "MsmKey" = "8:_39AE4018A212A5B8ABCE1549EE55EB05"
         "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,14 +27,32 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C8E7E2AB01CF45779752C681C1DC7CC7"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_837278717C0262EE979244E7E80D6AA1"
+        "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CDB0FD0BDA7E9F227E35D5857D43E0F7"
+        "MsmKey" = "8:_837278717C0262EE979244E7E80D6AA1"
+        "OwnerKey" = "8:_39AE4018A212A5B8ABCE1549EE55EB05"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8B7378ECA140AE721F274CB3D48F4C9C"
+        "OwnerKey" = "8:_909673DB9A7936CC096BA19E094F6564"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_909673DB9A7936CC096BA19E094F6564"
         "OwnerKey" = "8:_E80BABA67A7C42DFBA275A918126C3AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8E7E2AB01CF45779752C681C1DC7CC7"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,19 +70,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_51898E4D051FD169778C45D419E47C2F"
+        "OwnerKey" = "8:_909673DB9A7936CC096BA19E094F6564"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_595408A3CD368DD0832CEDC396BC3541"
+        "OwnerKey" = "8:_39AE4018A212A5B8ABCE1549EE55EB05"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CDB0FD0BDA7E9F227E35D5857D43E0F7"
+        "OwnerKey" = "8:_837278717C0262EE979244E7E80D6AA1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -149,10 +149,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
                     {
-                    "Name" = "8:.NET Framework 3.5 SP1"
-                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -182,7 +182,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.0,Profile=Client"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -190,53 +190,7 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B995C8EAC960746DE9B7314DE985A91"
-            {
-            "SourcePath" = "8:iTunes.exe"
-            "TargetName" = "8:iTunes.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_51898E4D051FD169778C45D419E47C2F"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:Microsoft.WindowsAPICodePack.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_595408A3CD368DD0832CEDC396BC3541"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_39AE4018A212A5B8ABCE1549EE55EB05"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
@@ -282,10 +236,16 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8E7E2AB01CF45779752C681C1DC7CC7"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_837278717C0262EE979244E7E80D6AA1"
             {
-            "SourcePath" = "8:..\\Windows\\resources\\converter3.ico"
-            "TargetName" = "8:converter3.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
             "Condition" = "8:"
@@ -299,14 +259,34 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CDB0FD0BDA7E9F227E35D5857D43E0F7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B7378ECA140AE721F274CB3D48F4C9C"
+            {
+            "SourcePath" = "8:iTunes.exe"
+            "TargetName" = "8:iTunes.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_909673DB9A7936CC096BA19E094F6564"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Interop.iTunesLib, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Interop.iTunesLib, Version=1.13.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                 }
@@ -326,6 +306,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8E7E2AB01CF45779752C681C1DC7CC7"
+            {
+            "SourcePath" = "8:..\\Windows\\resources\\converter3.ico"
+            "TargetName" = "8:converter3.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -395,15 +395,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Miro Video Converter"
-        "ProductCode" = "8:{21E37357-9004-481C-AC61-215137E773A1}"
-        "PackageCode" = "8:{1DA6E124-504E-4B96-9673-8E3586A869E8}"
+        "ProductCode" = "8:{2B8671E3-15FA-4473-A42D-0C299EC84EAF}"
+        "PackageCode" = "8:{38EC4793-E70C-41BA-B983-73884207476E}"
         "UpgradeCode" = "8:{88A3135E-03D0-4D44-85E7-31F046510CA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.6"
+        "ProductVersion" = "8:1.5.0"
         "Manufacturer" = "8:Participatory Culture Foundation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -969,7 +969,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E80BABA67A7C42DFBA275A918126C3AF"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\Windows\\obj\\Release\\MiroConverter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8F592F4D934842CFB9107E4BD595154F"

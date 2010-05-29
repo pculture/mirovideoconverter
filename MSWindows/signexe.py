@@ -24,4 +24,4 @@ else:
 command = ("signtool sign /f {0} /p {1} {2} {3}").format(
     pfx_file, password, description_option, target_file)
 for line in os.popen(command).readlines():
-    print line
+    print(line)
