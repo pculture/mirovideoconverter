@@ -70,7 +70,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_909673DB9A7936CC096BA19E094F6564"
+        "OwnerKey" = "8:_837278717C0262EE979244E7E80D6AA1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,7 +82,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_837278717C0262EE979244E7E80D6AA1"
+        "OwnerKey" = "8:_909673DB9A7936CC096BA19E094F6564"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -395,15 +395,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Miro Video Converter"
-        "ProductCode" = "8:{2B8671E3-15FA-4473-A42D-0C299EC84EAF}"
-        "PackageCode" = "8:{38EC4793-E70C-41BA-B983-73884207476E}"
+        "ProductCode" = "8:{21E37357-9004-481C-AC61-215137E773A1}"
+        "PackageCode" = "8:{96402506-D415-465A-81C5-1B967C7C4425}"
         "UpgradeCode" = "8:{88A3135E-03D0-4D44-85E7-31F046510CA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.5.0"
+        "ProductVersion" = "8:1.5.1"
         "Manufacturer" = "8:Participatory Culture Foundation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
