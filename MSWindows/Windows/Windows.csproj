@@ -206,6 +206,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="ffmpeg-bin\ffmpeg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ffmpeg-bin\libx264hq.ffpreset">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -219,13 +222,7 @@
   <ItemGroup>
     <Resource Include="resources\converter3.ico" />
     <Resource Include="resources\device.png" />
-    <Content Include="ffmpeg-bin\ffmpeg.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="ffmpeg-bin\ffmpeg2theora.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ffmpeg-bin\ffmpeg_webm.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />

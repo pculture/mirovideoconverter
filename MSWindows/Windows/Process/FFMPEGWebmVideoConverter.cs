@@ -30,7 +30,7 @@ namespace Mirosubs.Converter.Windows.Process {
             base(fileName, WebmFormat.WEBM) { }
         protected override string ExeName {
             get {
-                return @"ffmpeg-bin\ffmpeg_webm.exe";
+                return @"ffmpeg-bin\ffmpeg.exe";
             }
         }
     }

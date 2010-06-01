@@ -33,7 +33,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             : base("WebM (vp8)", "webmvp8", "webm", VideoFormatGroup.Formats) { }
 
         public override string GetArguments(string inputFileName, string outputFileName) {
-            return string.Format("-y -i \"{0}\" -f webm -vcodec libvpx_vp8 -acodec libvorbis -ab 160000 -sameq \"{1}\"",
+            return string.Format(
+                "-y -i \"{0}\" -f webm -vcodec libvpx -acodec libvorbis -ab 160000 -sameq \"{1}\"",
                 inputFileName, outputFileName);
         }
 
