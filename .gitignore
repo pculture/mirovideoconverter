@@ -8,6 +8,5 @@ Mac/build/
 *.pfx
 pcfpfxpassword.yaml
 Mac/DMG/*.dmg
-
-/Mac/Miro Video Converter.xcodeproj/cworth.pbxuser
-/Mac/Miro Video Converter.xcodeproj/cworth.perspectivev3
+/Mac/Miro Video Converter.xcodeproj/*.pbxuser
+/Mac/Miro Video Converter.xcodeproj/*.perspectivev3
