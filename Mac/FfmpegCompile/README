@@ -1,0 +1,52 @@
+// FFMPEG build for OS X
+// performed by: Colin Worth
+// Latest build: 11/8/2010
+//
+
+Source code tarballs and build procedure:
+This directory contains the ffmpeg source code and third party library source code used to compile a statically linked universal version of ffmpeg for OS X, including i386, x86_64, and ppc (32 bit) architectures.  Each source project has a corresponding build file and tarball.  Consult the build file for OS X specific changes to the build process used to compile that library.
+The script mainbuild.sh compiles each of the source libraries in the proper order and creates the final universal binary.
+
+Patches and diffs:
+The script ffmpegdiffsforvpx8.sh applies a set of diffs to ffmpeg from the mplayer-vp8-encdec-support in order to enable vpx8 support.  One or two small changes were made, and included in the tarballs, to fix recognized build problems with recent snapshots.  No other code was altered, except for changes to build-related files described in the each build.sh file.
+
+Play by play of the build process:
+Each library was compiled separately for the three architectures: i386, x86_64, and ppc(32) using the directory structure shown below.  The build.sh file each library directory stepped through the three arch subfolders passing in (more or less forcefully) the appropriate C, CPP, and LD flags to the configure scripts.  In some cases (see individual build files for details and diffs), Makefiles or other build-related files had to be edited manually.
+
+After building, the libraries installed their targets into the appropriate subfolder of a folder called local (see below).  The ffmpeg source created the final static binaries in each of the bin directories, and finally, mainbuild.sh merged them to create a universal binary in local/universal/bin.
+
+In the root dir | subfolder  |  second-level subfolder
+                  
+- mainbuild.sh    
+                  
+                  build.sh      
+                  i386       -- source code tree
+- ffmpeg    --    ppc        -- source code tree
+                  x86_64     -- source code tree
+                  
+                  build.sh
+                  i386     
+- libvorbis --    ppc
+                  x86_64
+                  
+                  build.sh
+                  i386     
+- libogg    --    ppc
+                  x86_64
+                  
+.. etc            
+                  
+                  
+                                -- lib            --- library files .a
+                  i386          -- include        --- include files, .h
+                                -- bin            --- ffmpeg static binary for i386 arch
+                  
+                                -- lib
+- local     --    ppc           -- include
+                                -- bin
+                  
+                                -- lib
+                  x86_64        -- include
+                                -- bin
+
+                 universal     --bin
