@@ -30,6 +30,7 @@
 		4FA4090A11550D4900241C47 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4090911550D4900241C47 /* ffmpeg */; };
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
+		6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -83,6 +84,7 @@
 		4FA4090911550D4900241C47 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
+		6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ffmpeg_presets; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -144,6 +146,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */,
 				4FA4090911550D4900241C47 /* ffmpeg */,
 				4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */,
 				4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */,
@@ -269,6 +272,7 @@
 				4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */,
 				4F9D10EA114EBE9F00CB443E /* icon.icns in Resources */,
 				4FA4090A11550D4900241C47 /* ffmpeg in Resources */,
+				6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

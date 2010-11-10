@@ -102,10 +102,21 @@
 @synthesize task,delegate,tellDelegateTaskEndedDelayTimer;
 
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args {
+  return [self startTask:path withArgs:args addToEnvironment:nil];
+}
+
+- (int) startTask:(NSString *)path withArgs:(NSArray *)args
+ addToEnvironment:(NSDictionary *)addedEnv {
   task = [[NSTask alloc] init];
 
   [task setLaunchPath:path];
   [task setArguments:args];
+  if(addedEnv) {
+    NSMutableDictionary *env =
+      [NSMutableDictionary dictionaryWithDictionary:task.environment];
+    [env addEntriesFromDictionary:addedEnv];
+    task.environment = env;
+  }
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self selector:@selector(taskEnded:)

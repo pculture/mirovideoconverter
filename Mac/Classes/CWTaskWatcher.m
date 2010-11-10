@@ -65,17 +65,26 @@
   return self;
 }
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args {
-  [self startTask:path withArgs:args andProgressFile:nil];
+  [self startTask:path withArgs:args andProgressFile:nil addToEnvironment:nil];
 }
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
     andProgressFile:(NSString *)file {
+  [self startTask:path withArgs:args andProgressFile:file addToEnvironment:nil];
+}
+- (void) startTask:(NSString *)path withArgs:(NSArray *)args
+  addToEnvironment:(NSDictionary *)addedEnv {
+  [self startTask:path withArgs:args andProgressFile:nil addToEnvironment:addedEnv];
+}
+- (void) startTask:(NSString *)path withArgs:(NSArray *)args
+    andProgressFile:(NSString *)file
+  addToEnvironment:(NSDictionary *)addedEnv {
   if(runStatus == RunStatusNone){
     runStatus = RunStatusRunning;
     endStatus = EndStatusNone;
     self.progressFile = file;
     if(file && [[NSFileManager defaultManager] isReadableFileAtPath:file])
       [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
-    self.pid = [task startTask:path withArgs:args];
+    self.pid = [task startTask:path withArgs:args addToEnvironment:addedEnv];
     self.taskStartDate = [NSDate date];
     self.loopTimer = 
       [NSTimer scheduledTimerWithTimeInterval:WATCH_INTERVAL target:self

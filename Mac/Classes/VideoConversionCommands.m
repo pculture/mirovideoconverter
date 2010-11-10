@@ -137,6 +137,11 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   }
 }
 
+-(NSString *) fFMPEGFFPresetsDirectory {
+    return [[NSBundle mainBundle]
+             pathForResource:@"ffmpeg_presets" ofType:@""];
+}
+
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device {
   int index;
   // format query

@@ -35,6 +35,8 @@
 @property(retain) NSTimer *tellDelegateTaskEndedDelayTimer;
 
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args;
+- (int) startTask:(NSString *)path withArgs:(NSArray *)args
+ addToEnvironment:(NSDictionary *)addedEnv;
 - (void) endTask;
 + (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status;
 @end

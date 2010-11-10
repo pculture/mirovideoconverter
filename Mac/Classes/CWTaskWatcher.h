@@ -55,9 +55,14 @@ typedef enum { EndStatusNone, EndStatusOK, EndStatusError, EndStatusCancel } Tas
 @property(retain) NSDate *taskStartDate;
 @property(retain) NSDate *taskEndRequestDate;
 @property(retain) NSDate *lastFileSizeTime;
+- (void) startTask:(NSString *)path withArgs:(NSArray *)args;
 - (void) startTask:(NSString *)path withArgs:(NSArray *)args
    andProgressFile:(NSString *)file;
-- (void) startTask:(NSString *)path withArgs:(NSArray *)args;
+- (void) startTask:(NSString *)path withArgs:(NSArray *)args
+  addToEnvironment:(NSDictionary *)addedEnv;
+- (void) startTask:(NSString *)path withArgs:(NSArray *)args
+    andProgressFile:(NSString *)file
+  addToEnvironment:(NSDictionary *)addedEnv;
 - (void) requestFinishWithStatus:(TaskEndStatus)status;
 - (void) killProcess;
 - (void) finish;

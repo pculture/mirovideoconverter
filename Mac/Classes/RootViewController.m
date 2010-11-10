@@ -311,6 +311,8 @@
   [string release];
   NSString *path = [video fFMPEGLaunchPathForDevice:device];
   NSArray *args = [video fFMPEGArgumentsForFile:file andDevice:device];
+  NSString *ffpresetsDir = [video fFMPEGFFPresetsDirectory];
+  NSLog(@"Presets dir:%@", ffpresetsDir);
   if(!sync) {
     CWTaskWatcher *aWatcher = [[CWTaskWatcher alloc] init];
     self.conversionWatcher = aWatcher;
@@ -319,7 +321,9 @@
     conversionWatcher.textStorage = storage;
     conversionWatcher.endIdleInterval = FILE_HUNG_IDLE_TIMEOUT;
     [conversionWatcher startTask:path withArgs:args 
-                       andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]];
+                       andProgressFile:[video fFMPEGOutputFileForFile:file andDevice:device]
+                       addToEnvironment:[NSDictionary dictionaryWithObject:ffpresetsDir
+                                                      forKey:@"FFMPEG_DATADIR"]];
   } else {
     int status;
     NSString *output = [CWTask performSynchronousTask:path withArgs:args andReturnStatus:&status];
