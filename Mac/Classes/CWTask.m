@@ -72,7 +72,8 @@
   if([data length] > 0) {
     NSString *string = [CWTask stringWithCleanedUpUTF8String:(char *)[data bytes] length:[data length]];
     NSDictionary *dict = [NSDictionary dictionaryWithObject:string forKey:stream];
-    [delegate cwTask:self update:dict];
+    if(delegate && [delegate respondsToSelector:@selector(cwTask:update:)])
+      [delegate cwTask:self update:dict];
     [(NSFileHandle *)[note object] readInBackgroundAndNotify];
   } else
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -93,28 +94,35 @@
 
 - (void) tellDelegateTaskEnded:(NSTimer *)timer {
   self.tellDelegateTaskEndedDelayTimer = nil;
-  [delegate cwTask:self ended:taskReturnValue];
+  if(delegate && [delegate respondsToSelector:@selector(cwTask:ended:)])
+    [delegate cwTask:self ended:taskReturnValue];
 }
 
 @end
 
 @implementation CWTask
-@synthesize task,delegate,tellDelegateTaskEndedDelayTimer;
+@synthesize task,workingDirectory,addedEnvironment,delegate,tellDelegateTaskEndedDelayTimer;
 
-- (int) startTask:(NSString *)path withArgs:(NSArray *)args {
-  return [self startTask:path withArgs:args addToEnvironment:nil];
+- (void) dealloc {
+  [workingDirectory release];
+  [addedEnvironment release];
+  if(tellDelegateTaskEndedDelayTimer)
+    [tellDelegateTaskEndedDelayTimer invalidate];
+  tellDelegateTaskEndedDelayTimer = nil;
+  [super dealloc];
 }
 
-- (int) startTask:(NSString *)path withArgs:(NSArray *)args
- addToEnvironment:(NSDictionary *)addedEnv {
+- (int) startTask:(NSString *)path withArgs:(NSArray *)args {
   task = [[NSTask alloc] init];
 
   [task setLaunchPath:path];
   [task setArguments:args];
-  if(addedEnv) {
+  if(workingDirectory)
+    task.currentDirectoryPath = workingDirectory;
+  if(addedEnvironment) {
     NSMutableDictionary *env =
       [NSMutableDictionary dictionaryWithDictionary:task.environment];
-    [env addEntriesFromDictionary:addedEnv];
+    [env addEntriesFromDictionary:addedEnvironment];
     task.environment = env;
   }
 
@@ -148,11 +156,19 @@
     [task terminate];
 }
 
-+ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status{
++ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args workingDirectory:(NSString *)workingDirectory addedEnvironment:(NSDictionary *)addedEnvironment andReturnStatus:(int *)status{
   NSTask *aTask = [[NSTask alloc] init];
 
   [aTask setLaunchPath:path];
   [aTask setArguments:args];
+  if(workingDirectory)
+    aTask.currentDirectoryPath = workingDirectory;
+  if(addedEnvironment) {
+    NSMutableDictionary *env =
+      [NSMutableDictionary dictionaryWithDictionary:aTask.environment];
+    [env addEntriesFromDictionary:addedEnvironment];
+    aTask.environment = env;
+  }
 
   [aTask setStandardInput:[NSPipe pipe]];
   [aTask setStandardOutput:[NSPipe pipe]];

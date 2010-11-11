@@ -23,25 +23,30 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class CWTask;
+
+@protocol CWTaskDelegate
+@optional
+- (void) cwTask:(CWTask *)cwtask update:(NSDictionary *)info;
+- (void) cwTask:(CWTask *)cwtask ended:(int)returnValue;
+@end
 
 @interface CWTask : NSObject {
   NSTask *task;
+  NSString *workingDirectory;
+  NSDictionary *addedEnvironment;
   id delegate;
   int taskReturnValue;
   NSTimer *tellDelegateTaskEndedDelayTimer;
 }
 @property(assign) NSTask *task;
+@property(copy) NSString *workingDirectory;
+@property(copy) NSDictionary *addedEnvironment;
 @property(assign) id delegate;
 @property(retain) NSTimer *tellDelegateTaskEndedDelayTimer;
 
 - (int) startTask:(NSString *)path withArgs:(NSArray *)args;
-- (int) startTask:(NSString *)path withArgs:(NSArray *)args
- addToEnvironment:(NSDictionary *)addedEnv;
+- (int) startTask:(NSString *)path withArgs:(NSArray *)args;
 - (void) endTask;
-+ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args andReturnStatus:(int *)status;
-@end
-
-@protocol CWTaskDelegate
-- (void) cwTask:(CWTask *)cwtask update:(NSDictionary *)info;
-- (void) cwTask:(CWTask *)cwtask ended:(int)returnValue;
++ (NSString *) performSynchronousTask:(NSString *)path withArgs:(NSArray *)args workingDirectory:(NSString *)workingDirectory addedEnvironment:(NSDictionary *)addedEnvironment andReturnStatus:(int *)status;
 @end

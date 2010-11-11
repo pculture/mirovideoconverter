@@ -84,7 +84,8 @@
     self.progressFile = file;
     if(file && [[NSFileManager defaultManager] isReadableFileAtPath:file])
       [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
-    self.pid = [task startTask:path withArgs:args addToEnvironment:addedEnv];
+    task.addedEnvironment = addedEnv;
+    self.pid = [task startTask:path withArgs:args];
     self.taskStartDate = [NSDate date];
     self.loopTimer = 
       [NSTimer scheduledTimerWithTimeInterval:WATCH_INTERVAL target:self

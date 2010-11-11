@@ -326,7 +326,7 @@
                                                       forKey:@"FFMPEG_DATADIR"]];
   } else {
     int status;
-    NSString *output = [CWTask performSynchronousTask:path withArgs:args andReturnStatus:&status];
+    NSString *output = [CWTask performSynchronousTask:path withArgs:args workingDirectory:nil addedEnvironment:nil andReturnStatus:&status];
     [self cwTaskWatcher:nil updateString:output];
     [self cwTaskWatcher:nil ended:status];
   }
