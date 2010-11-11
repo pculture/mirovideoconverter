@@ -34,6 +34,6 @@ EOF
 #    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@192.168.0.2://var/www/MiroVideoConverter/mac/.
     echo scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter$testing/mac/.
     scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter$testing/mac/.
-    ssh pculture@ftp-osl.osuosl.org "cd data/mirovideoconverter/$testing/mac; unlink Miro\ Video\ Converter.dmg; ln -s Miro\ Video\ Converter-$1.dmg Miro\ Video\ Converter.dmg; cd ~; ./run-trigger"
+    ssh pculture@ftp-osl.osuosl.org "cd data/mirovideoconverter/$testing/mac; touch timestamp; unlink Miro\ Video\ Converter.dmg; ln -s Miro\ Video\ Converter-$1.dmg Miro\ Video\ Converter.dmg; cd ~; ./run-trigger"
     rm newCast.xml
 fi

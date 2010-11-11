@@ -246,6 +246,8 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
+  [args addObject:@"-threads"];
+  [args addObject:@"0"];
   [args addObject:@"-strict"];
   [args addObject:@"experimental"];
   [args addObject:@"-f"];
@@ -276,6 +278,8 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
+  [args addObject:@"-threads"];
+  [args addObject:@"0"];
   [args addObject:@"-b"];
   [args addObject:@"512000"];
   [args addObject:@"-ar"];
