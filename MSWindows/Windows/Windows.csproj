@@ -212,6 +212,12 @@
     <Content Include="ffmpeg-bin\libx264hq.ffpreset">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ffmpeg-bin\libx264-ipod640.ffpreset">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg-bin\libx264-slow.ffpreset">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="pcf.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

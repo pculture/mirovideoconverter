@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
 using Mirosubs.Converter.Windows.ConversionFormats;
+using System.Collections.Specialized;
 
 namespace Mirosubs.Converter.Windows.Process {
     class FFMPEGVideoConverter : VideoConverter {
@@ -46,6 +47,10 @@ namespace Mirosubs.Converter.Windows.Process {
             args = format.GetArguments(fileName,
                 outputFileName = Path.ChangeExtension(fileName,
                     format.OutputFileExtension));
+        }
+        protected override void AddEnvironmentVariables(StringDictionary environmentVariables) {
+            environmentVariables["FFMPEG_DATADIR"] = 
+                Path.Combine(ExecutableDir, "ffmpeg-bin");
         }
         protected override string ExeName {
             get { return @"ffmpeg-bin\ffmpeg.exe"; }

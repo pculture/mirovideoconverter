@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using SProcess = System.Diagnostics.Process;
+using System.Collections.Specialized;
 
 namespace Mirosubs.Converter.Windows.Process {
     /// <summary>
@@ -53,6 +54,7 @@ namespace Mirosubs.Converter.Windows.Process {
             startInfo.CreateNoWindow = true;
             startInfo.RedirectStandardError = true;
             startInfo.RedirectStandardOutput = true;
+            AddEnvironmentVariables(startInfo.EnvironmentVariables);
             process = new SProcess();
             process.StartInfo = startInfo;
             process.ErrorDataReceived +=
@@ -77,6 +79,9 @@ namespace Mirosubs.Converter.Windows.Process {
             catch { 
                 // do nothing
             }
+        }
+        protected virtual void AddEnvironmentVariables(StringDictionary environmentVariables) { 
+            // by default, do nothing. can be overridden in subclasses.
         }
         protected abstract string ExeName { get; }
         protected abstract string Args { get; }

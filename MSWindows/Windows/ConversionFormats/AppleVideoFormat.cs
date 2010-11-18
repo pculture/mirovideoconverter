@@ -57,8 +57,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
         public override string GetArguments(string inputFileName, string outputFileName) {
             string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
-                "-i \"{0}\" -y -acodec aac -strict experimental -ab 160000 -vcodec mpeg4 -b 1200kb " +
-                "-mbd 2 -cmp 2 -subcmp 2 {1} -r 20 \"{2}\"",
+                "-i \"{0}\" -acodec aac -ab 160k {1} -vcodec libx264 -vpre slow " +
+                "-vpre ipod640 -b 1200k -f mp4 -threads 0 \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
         public override IVideoConverter MakeConverter(string fileName) {
