@@ -32,7 +32,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             : base("MP4 Video", "mp4video", "mp4", VideoFormatGroup.Formats) { 
         }
         public override string GetArguments(string inputFileName, string outputFileName) {
-            return string.Format("-i \"{0}\" -acodec aac -strict experimental -ac 2 -ab 96k -vcodec libx264 -vpre slow -f mp4 -crf 22 \"{1}\"",
+            return string.Format("-i \"{0}\" -acodec aac -strict experimental -ac 2 -ab 160k -vcodec libx264 -vpre slow -f mp4 -crf 22 \"{1}\"",
                 inputFileName, outputFileName);
         }
         public override IVideoConverter MakeConverter(string fileName) {

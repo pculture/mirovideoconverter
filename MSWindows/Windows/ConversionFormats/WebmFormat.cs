@@ -34,7 +34,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
 
         public override string GetArguments(string inputFileName, string outputFileName) {
             return string.Format(
-                "-y -i \"{0}\" -f webm -vcodec libvpx -acodec libvorbis -ab 160000 -sameq \"{1}\"",
+                "-y -i \"{0}\" -f webm -vcodec libvpx -acodec libvorbis -ab 160000 -crf 22 \"{1}\"",
                 inputFileName, outputFileName);
         }
 
