@@ -110,7 +110,9 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
       size.height = canvas.height;
     }
   }
-  return CGSizeMake(size.width,size.height);
+  size.width += ((int)size.width % 2);
+  size.height += ((int)size.height % 2);
+  return size;
 }
 
 - (CGSize) fitScreenSize:(CGSize)size toDevice:(NSString *)device {
@@ -284,8 +286,6 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
-  [args addObject:@"-threads"];
-  [args addObject:@"0"];
   [args addObject:@"-b"];
   [args addObject:@"512000"];
   [args addObject:@"-ar"];
@@ -322,7 +322,7 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-f"];
   [args addObject:@"webm"];
   [args addObject:@"-vcodec"];
-  [args addObject:@"libvpx_vp8"];
+  [args addObject:@"libvpx"];
   [args addObject:@"-acodec"];
   [args addObject:@"libvorbis"];
   [args addObject:@"-ab"];
