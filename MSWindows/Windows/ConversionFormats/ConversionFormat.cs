@@ -97,10 +97,13 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
                 float heightRatio = (float)size.Height / targetSize.Height;
                 float ratio = Math.Max(widthRatio, heightRatio);
                 sizeArg = string.Format("-s {0}x{1}",
-                    (int)(size.Width / ratio),
-                    (int)(size.Height / ratio));
+                    RoundEven((int)(size.Width / ratio)),
+                    RoundEven((int)(size.Height / ratio)));
             }
             return sizeArg;
+        }
+        private int RoundEven(int p) {
+            return p + (p % 2);
         }
         public string OutputFileExtension {
             get {
