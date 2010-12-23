@@ -202,12 +202,16 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"libx264"];
   [args addObject:@"-vpre"];
   [args addObject:@"slow"];
+  [args addObject:@"-vpre"];
+  [args addObject:@"ipod640"];
   [args addObject:@"-crf"];
   [args addObject:@"22"];
   [args addObject:@"-acodec"];
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
   [args addObject:@"-s"];
   [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
@@ -264,6 +268,8 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
   [args addObject:@"-s"];
   [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
@@ -321,7 +327,8 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"libvorbis"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
-  [args addObject:@"-sameq"];
+  [args addObject:@"-crf"];
+  [args addObject:@"22"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -333,8 +340,17 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-f"];
   [args addObject:@"mp4"];
   [args addObject:@"-vcodec"];
-  [args addObject:@"mpeg4"];
-  [args addObject:@"-sameq"];
+  [args addObject:@"libx264"];
+  [args addObject:@"-acodec"];
+  [args addObject:@"aac"];
+  [args addObject:@"-ab"];
+  [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
+  [args addObject:@"-vpre"];
+  [args addObject:@"slow"];
+  [args addObject:@"-crf"];
+  [args addObject:@"22"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
