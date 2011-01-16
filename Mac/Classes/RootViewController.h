@@ -25,6 +25,10 @@
 //  Created by C Worth on 2/18/10.
 //
 
+// Comment out to build regular version
+// Appstore version removes check for updates menu item
+#define APPSTORE_VERSION
+
 #import <Cocoa/Cocoa.h>
 #import "DropBoxView.h"
 #import "CWTaskWatcher.h"
@@ -70,6 +74,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
   BOOL formatQueryActive;
   float videoLength;
   float previousPercentDone;
+  NSMenuItem *updateMenuItem;
 }
 @property(nonatomic,retain) IBOutlet NSView *rootView;
 @property(nonatomic,retain) IBOutlet NSTextField *convertAVideo;
@@ -103,6 +108,7 @@ typedef enum { ViewModeInitial, ViewModeWithFile, ViewModeConverting, ViewModeFi
 @property(nonatomic,assign) float videoLength;
 @property(nonatomic,assign) float previousPercentDone;
 @property(nonatomic,assign) BOOL ffmpegFinishedOkayBeforeError;
+@property (nonatomic, retain) IBOutlet NSMenuItem *updateMenuItem;
 
 -(void) loadConvertingView;
 -(void) setViewMode:(ViewMode)viewMode;
