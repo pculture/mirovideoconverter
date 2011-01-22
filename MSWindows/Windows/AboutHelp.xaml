@@ -12,7 +12,7 @@
                          VerticalAlignment="Top" HorizontalAlignment="Left" 
                          Width="130"/>
         <Label FontWeight="Bold" Height="28" Margin="12,88,0,0" Name="label3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175">About Miro Video Converter</Label>
-        <Label Margin="12,122,0,0" Name="label4" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81">Version 2.4</Label>
+        <Label Margin="12,122,0,0" Name="label4" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81">Version 2.5</Label>
         <miro:LinkButton ForegroundColor="Black" MouseOverForegroundColor="Blue"
                          Margin="87,127,0,0" ButtonText="View Code" 
                          Clicked="ViewSourceCode" Height="23" 
