@@ -46,9 +46,12 @@
 @synthesize convertingView,convertingFilename,percentDone,progressIndicator,cancelButton;
 @synthesize fFMPEGOutputWindow,fFMPEGOutputTextView,conversionWatcher,speedFile;
 @synthesize formatQueryActive,fileSize,elapsedTime,percentPerOutputByte,videoLength, previousPercentDone;
-@synthesize video,ffmpegFinishedOkayBeforeError;
+@synthesize video,ffmpegFinishedOkayBeforeError, updateMenuItem;
 
 -(void) awakeFromNib {
+  #ifdef APPSTORE_VERSION
+  [self.updateMenuItem setHidden:YES];
+  #endif
   static BOOL firstTime = YES;
   if(firstTime){
     video = [[VideoConversionCommands alloc] init];

@@ -11,3 +11,7 @@
  e) press return on script and let it do its thing
 7) Run /Applications version of app and download and install update
 8) Test new behavior
+
+9) Appstore version:  make sure rootviewcontroller.h compiler variable is set correctly
+10) add or remove sparkle framework
+11) link to correct version of ffmpeg

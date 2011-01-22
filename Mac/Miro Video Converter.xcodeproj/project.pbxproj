@@ -15,8 +15,6 @@
 		4F95FF1D11333093008B7180 /* bgwithbox.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F95FF1C11333093008B7180 /* bgwithbox.jpg */; };
 		4F963F0C1136DE94004C8F19 /* FFMPEGOutputWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F963F0B1136DE94004C8F19 /* FFMPEGOutputWindow.xib */; };
 		4F9D10EA114EBE9F00CB443E /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4F9D10E9114EBE9F00CB443E /* icon.icns */; };
-		4F9D116411418B1500839BBE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9D116311418B1500839BBE /* Sparkle.framework */; };
-		4F9D117111418B2D00839BBE /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F9D116311418B1500839BBE /* Sparkle.framework */; };
 		4F9F62D01135B1B40040352C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62CF1135B1B40040352C /* bg.jpg */; };
 		4F9F62D81135B2970040352C /* Converting.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F9F62D61135B2970040352C /* Converting.xib */; };
 		4FA02DAE117B97C2004DE43A /* ClickableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02DA0117B97C2004DE43A /* ClickableText.m */; };
@@ -30,6 +28,8 @@
 		4FA4090A11550D4900241C47 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4090911550D4900241C47 /* ffmpeg */; };
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
+		6A22511A12E4D3C000C9EDBA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A22511912E4D3C000C9EDBA /* Sparkle.framework */; };
+		6A22512312E4D3CB00C9EDBA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6A22511912E4D3C000C9EDBA /* Sparkle.framework */; };
 		6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -42,7 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4F9D117111418B2D00839BBE /* Sparkle.framework in CopyFiles */,
+				6A22512312E4D3CB00C9EDBA /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +63,6 @@
 		4F95FF1C11333093008B7180 /* bgwithbox.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bgwithbox.jpg; sourceTree = "<group>"; };
 		4F963F0B1136DE94004C8F19 /* FFMPEGOutputWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FFMPEGOutputWindow.xib; sourceTree = "<group>"; };
 		4F9D10E9114EBE9F00CB443E /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
-		4F9D116311418B1500839BBE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4F9F62CF1135B1B40040352C /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bg.jpg; path = ../MSWindows/Windows/resources/bg.jpg; sourceTree = SOURCE_ROOT; };
 		4F9F62D71135B2970040352C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Converting.xib; sourceTree = "<group>"; };
 		4FA02D9F117B97C2004DE43A /* ClickableText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickableText.h; path = Classes/ClickableText.h; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		4FA4090911550D4900241C47 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
+		6A22511912E4D3C000C9EDBA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "/Users/worth/CocoaApps/Sparkle 1/Sparkle.framework"; sourceTree = "<absolute>"; };
 		6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ffmpeg_presets; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,8 +95,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				4F9D116411418B1500839BBE /* Sparkle.framework in Frameworks */,
 				4F0DCCBF117DB2EA00A27EB7 /* ScriptingBridge.framework in Frameworks */,
+				6A22511A12E4D3C000C9EDBA /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,8 +106,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4F9D116311418B1500839BBE /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				6A22511912E4D3C000C9EDBA /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -237,6 +237,7 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Miro Video Converter" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -364,6 +365,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
 					"\"$(DEVELOPER_DIR)/Sparkle\"",
+					"\"$(SRCROOT)/../../Sparkle 1\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -388,6 +390,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
 					"\"$(DEVELOPER_DIR)/Sparkle\"",
+					"\"$(SRCROOT)/../../Sparkle 1\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -412,6 +415,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
 					"\"$(DEVELOPER_DIR)/Sparkle\"",
+					"\"$(SRCROOT)/../../Sparkle 1\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -442,8 +446,8 @@
 				ARCHS = (
 					i386,
 					x86_64,
-					ppc,
 				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

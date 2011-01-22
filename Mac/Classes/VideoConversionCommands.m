@@ -110,7 +110,9 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
       size.height = canvas.height;
     }
   }
-  return CGSizeMake(size.width,size.height);
+  size.width += ((int)size.width % 2);
+  size.height += ((int)size.height % 2);
+  return size;
 }
 
 - (CGSize) fitScreenSize:(CGSize)size toDevice:(NSString *)device {
@@ -202,12 +204,16 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"libx264"];
   [args addObject:@"-vpre"];
   [args addObject:@"slow"];
+  [args addObject:@"-vpre"];
+  [args addObject:@"ipod640"];
   [args addObject:@"-crf"];
   [args addObject:@"22"];
   [args addObject:@"-acodec"];
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
   [args addObject:@"-s"];
   [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
@@ -264,6 +270,8 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"aac"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
   [args addObject:@"-s"];
   [args addObject:[self outputVideoSizeStringForDevice:device]];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
@@ -278,8 +286,6 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
-  [args addObject:@"-threads"];
-  [args addObject:@"0"];
   [args addObject:@"-b"];
   [args addObject:@"512000"];
   [args addObject:@"-ar"];
@@ -316,12 +322,13 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   [args addObject:@"-f"];
   [args addObject:@"webm"];
   [args addObject:@"-vcodec"];
-  [args addObject:@"libvpx_vp8"];
+  [args addObject:@"libvpx"];
   [args addObject:@"-acodec"];
   [args addObject:@"libvorbis"];
   [args addObject:@"-ab"];
   [args addObject:@"160000"];
-  [args addObject:@"-sameq"];
+  [args addObject:@"-crf"];
+  [args addObject:@"22"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }
@@ -330,11 +337,22 @@ CGSize screenSizes[] = { { 0,0 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,4
   NSMutableArray *args = [NSMutableArray arrayWithCapacity:0];
   [args addObject:@"-i"];
   [args addObject:file];
+  [args addObject:@"-strict"];
+  [args addObject:@"experimental"];
   [args addObject:@"-f"];
   [args addObject:@"mp4"];
   [args addObject:@"-vcodec"];
-  [args addObject:@"mpeg4"];
-  [args addObject:@"-sameq"];
+  [args addObject:@"libx264"];
+  [args addObject:@"-acodec"];
+  [args addObject:@"aac"];
+  [args addObject:@"-ab"];
+  [args addObject:@"160000"];
+  [args addObject:@"-ac"];
+  [args addObject:@"2"];
+  [args addObject:@"-vpre"];
+  [args addObject:@"slow"];
+  [args addObject:@"-crf"];
+  [args addObject:@"22"];
   [args addObject:[self fFMPEGOutputFileForFile:file andDevice:device]];
   return [NSArray arrayWithArray:args];
 }

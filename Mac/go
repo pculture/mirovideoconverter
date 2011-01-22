@@ -1,0 +1,4 @@
+#!/bin/bash
+open English.lproj/MainMenu.xib
+open -a /Applications/Emacs.app Classes/VideoConversionCommands.m
+open Miro\ Video\ Converter.xcodeproj
