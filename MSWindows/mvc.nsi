@@ -1,17 +1,14 @@
-; These are passed in from setup.py:
+; Passed in from command line:
 ;  CONFIG_VERSION        eg, "0.8.0"
-;  CONFIG_PROJECT_URL    eg, "http://www.participatoryculture.org/"
-;  CONFIG_SHORT_APP_NAME eg, "Miro"
-;  CONFIG_LONG_APP_NAME  eg, "Miro"
-;  CONFIG_PUBLISHER      eg, "Participatory Culture Foundation"
-;  CONFIG_EXECUTABLE     eg, "Miro.exe
-;  CONFIG_DOWNLOADER_EXECUTABLE     eg, "Miro_Downloader.exe
-;  CONFIG_MOVIE_DATA_EXECUTABLE     eg, "Miro_MovieData.exe
-;  CONFIG_HELPER_EXECUTABLE     eg, "Miro_Helper.exe
-;  CONFIG_ICON           eg, "Miro.ico"
-;  CONFIG_OUTPUT_FILE    eg, "Miro-1.2.3.exe"
-;  CONFIG_PROG_ID        eg, "Miro.1"
-;  CONFIG_BINARY_KIT     eg, "miro-binary-kit-win-v1.0"
+
+!define CONFIG_PROJECT_URL "http://www.mirovideoconverter.com/"
+!define CONFIG_SHORT_APP_NAME "MVC"
+!define CONFIG_LONG_APP_NAME  "Miro Video Converter"
+!define CONFIG_PUBLISHER "Participatory Culture Foundation"
+!define CONFIG_EXECUTABLE "MiroConverter.exe"
+!define CONFIG_OUTPUT_FILE "MiroConverter-${CONFIG_VERSION}.exe"
+!define CONFIG_ICON "converter3.ico"
+
 !define INST_KEY "Software\${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CONFIG_LONG_APP_NAME}"
 
@@ -57,11 +54,6 @@ Var ZUGO_FLAGS
 Var ZUGO_COUNTRY
 Var ZUGO_PROVIDER
 Var ZUGO_TERMS
-
-; Runs in tv/windows/dist, so 4 ..s.
-!addplugindir ..\${CONFIG_BINARY_KIT}\NSIS-Plugins\
-
-!addincludedir ..\${CONFIG_BINARY_KIT}\NSIS-Plugins\
 
 !define MUI_WELCOMEPAGE_TITLE "Welcome to $APP_NAME!"
 !define MUI_WELCOMEPAGE_TEXT "To get started, choose an easy or a custom install process and then click 'Install'."
@@ -466,30 +458,17 @@ UninstPage custom un.pickThemesPage un.pickThemesPageAfter
   ; Remove the program
   Delete   "${directory}\${CONFIG_EXECUTABLE}"
   Delete   "${directory}\${CONFIG_ICON}"
-  Delete   "${directory}\${CONFIG_DOWNLOADER_EXECUTABLE}"
-  Delete   "${directory}\${CONFIG_MOVIE_DATA_EXECUTABLE}"
-  Delete   "${directory}\${CONFIG_HELPER_EXECUTABLE}"
   Delete   "${directory}\*.dll"
-  Delete   "${directory}\*.pyd"
-  Delete   "${directory}\w9xpopen.exe"
   Delete   "${directory}\uninstall.exe"
-  Delete   "${directory}\library.zip"
-  Delete   "${directory}\moviedata_util.py"
-  Delete   "${directory}\miro-segmenter.exe"
-  Delete   "${directory}\ffmpeg.exe"
-  Delete   "${directory}\ffmpeg2theora.exe"
-  Delete   "${directory}\*.ffpreset"
+  Delete   "${directory}\mvc_install.exe"
+  Delete   "${directory}\${CONFIG_EXECUTABLE}.config"
+  Delete   "${directory}\lib\*.dll"
+  Delete   "${directory}\ffmpeg-bin\ffmpeg.exe"
+  Delete   "${directory}\ffmpeg-bin\ffmpeg2theora.exe"
+  Delete   "${directory}\ffmpeg-bin\*.ffpreset"
 
-  RMDir /r "${directory}\extensions"
-  RMDir /r "${directory}\etc"
   RMDir /r "${directory}\lib"
-  RMDir /r "${directory}\share"
-  RMDir /r "${directory}\resources"
-  RMDir /r "${directory}\xulrunner"
-  RMDir /r "${directory}\vlc-plugins"
-  RMDir /r "${directory}\Microsoft.VC90.CRT"
-  RMDir /r "${directory}\imagemagick"
-
+  RMDir /r "${directory}\ffmpeg-bin"
   RMDIR ${directory}
 !macroend
 
