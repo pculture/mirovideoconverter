@@ -36,12 +36,7 @@ CRCCheck on
 Icon "${CONFIG_ICON}"
 
 Var STARTMENU_FOLDER
-Var THEME_NAME
 Var APP_NAME ; Used in text within the program
-Var ONLY_INSTALL_THEME
-Var THEME_TEMP_DIR
-Var INITIAL_FEEDS
-Var TACKED_ON_FILE
 Var REINSTALL
 Var ADVANCED
 Var SIMPLE_INSTALL
@@ -460,7 +455,7 @@ UninstPage custom un.pickThemesPage un.pickThemesPageAfter
   Delete   "${directory}\${CONFIG_ICON}"
   Delete   "${directory}\*.dll"
   Delete   "${directory}\uninstall.exe"
-  Delete   "${directory}\mvc_install.exe"
+  Delete   "${directory}\mvc_install.jpg"
   Delete   "${directory}\${CONFIG_EXECUTABLE}.config"
   Delete   "${directory}\lib\*.dll"
   Delete   "${directory}\ffmpeg-bin\ffmpeg.exe"
@@ -470,15 +465,6 @@ UninstPage custom un.pickThemesPage un.pickThemesPageAfter
   RMDir /r "${directory}\lib"
   RMDir /r "${directory}\ffmpeg-bin"
   RMDIR ${directory}
-!macroend
-
-!macro clear_out_old_xulrunner directory
-  Delete   "${directory}\application.ini"
-  RMDIR /r "${directory}\chrome"
-  RMDIR /r "${directory}\components"
-  RMDIR /r "${directory}\extensions"
-  RMDIR /r "${directory}\defaults"
-  RMDIR /r "${directory}\plugins"
 !macroend
 
 !macro GetConfigOptionsMacro trim find
@@ -520,11 +506,6 @@ Pop $R1
 Exch $R0
 !macroend
 
-!macro locateThemes _HANDLE
-  SetShellVarContext all
-  ${locate::Open} "$APPDATA\Participatory Culture Foundation\Miro\Themes" "/F=0 /D=1 /-PN=xul /-N=xul /SF=DATE" `${_HANDLE}`
-!macroend
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -541,39 +522,39 @@ Exch $R0
 ;   Pop $R0   ; at this point $R0 is "true" or "false"
 ;
 Function IsUserAdmin
-Push $R0
-Push $R1
-Push $R2
+  Push $R0
+  Push $R1
+  Push $R2
 
-ClearErrors
-UserInfo::GetName
-IfErrors Win9x
-Pop $R1
-UserInfo::GetAccountType
-Pop $R2
+  ClearErrors
+  UserInfo::GetName
+  IfErrors Win9x
+  Pop $R1
+  UserInfo::GetAccountType
+  Pop $R2
 
-StrCmp $R2 "Admin" 0 Continue
-; Observation: I get here when running Win98SE. (Lilla)
-; The functions UserInfo.dll looks for are there on Win98 too,
-; but just don't work. So UserInfo.dll, knowing that admin isn't required
-; on Win98, returns admin anyway. (per kichik)
-StrCpy $R0 "true"
-Goto Done
+  StrCmp $R2 "Admin" 0 Continue
+  ; Observation: I get here when running Win98SE. (Lilla)
+  ; The functions UserInfo.dll looks for are there on Win98 too,
+  ; but just don't work. So UserInfo.dll, knowing that admin isn't required
+  ; on Win98, returns admin anyway. (per kichik)
+  StrCpy $R0 "true"
+  Goto Done
 
-Continue:
-; You should still check for an empty string because the functions
-; UserInfo.dll looks for may not be present on Windows 95. (per kichik)
-StrCmp $R2 "" Win9x
-StrCpy $R0 "false"
-Goto Done
+  Continue:
+  ; You should still check for an empty string because the functions
+  ; UserInfo.dll looks for may not be present on Windows 95. (per kichik)
+  StrCmp $R2 "" Win9x
+  StrCpy $R0 "false"
+  Goto Done
 
-Win9x:
-StrCpy $R0 "true"
+  Win9x:
+  StrCpy $R0 "true"
 
-Done:
-Pop $R2
-Pop $R1
-Exch $R0
+  Done:
+  Pop $R2
+  Pop $R1
+  Exch $R0
 FunctionEnd
 
 ; Set $R0 to the config option and $R1 to the config file name
@@ -645,50 +626,6 @@ Function LaunchLink
   ExecShell "" "$SMPROGRAMS\$STARTMENU_FOLDER\$R2"
 FunctionEnd
 
-
-Function un.pickThemesPage
-  Var /GLOBAL THEMES_HWND
-  !insertmacro locateThemes $0
-  StrCmp $0 0 0 +3
-  ${locate::Close} $0
-  Abort
-  !insertmacro MUI_HEADER_TEXT "Pick themes to uninstall" "This won't remove the channels or channel guides that are in your database."
-  nsDialogs::Create /NOUNLOAD 1018
-  nsDialogs::CreateControl /NOUNLOAD ${__NSD_ListBox_CLASS} ${__NSD_ListBox_STYLE}|${LBS_MULTIPLESEL} ${__NSD_ListBox_EXSTYLE} 0 0 200 200 ""
-  Pop $THEMES_HWND
-pickThemesLoop:
-  ${locate::Find} $0 $1 $2 $3 $4 $5 $6
-  StrCmp $3 "" LocateDone 0
-  ${NSD_LB_AddString} $THEMES_HWND $3
-  Goto pickThemesLoop
-LocateDone:
-  ${locate::Close} $0
-  SendMessage $THEMES_HWND ${LB_SELITEMRANGEEX} 0 65536
-  nsDialogs::Show
-FunctionEnd
-
-Function un.pickThemesPageAfter
-  ; scan the theme directory again, checking to see if the name is
-  ; present and selected
-  !insertmacro locateThemes $0
-  StrCmp $0 0 pickThemesAfterEnd
-pickThemesAfterLoop:
-  ${locate::Find} $0 $1 $2 $3 $4 $5 $6
-  StrCmp $3 "" pickThemesAfterEnd
-  SendMessage $THEMES_HWND ${LB_FINDSTRINGEXACT} -1 "STR:$3" $R0
-  IntCmp $R0 -1 pickThemesAfterLoop ; didn't find it
-  SendMessage $THEMES_HWND ${LB_GETSEL} $R0 0 $R1
-  IntCmp $R1 0 pickThemesAfterLoop ; not selected
-  RMDir /r $1
-  Goto pickThemesAfterLoop
-pickThemesAfterEnd:
-  ${locate::Close} $0
-  SetShellVarContext all
-  RMDir "$APPDATA\Participatory Culture Foundation\Miro\Themes"
-  RMDir "$APPDATA\Participatory Culture Foundation\Miro"
-  RMDIR "$APPDATA\Participatory Culture Foundation"
-FunctionEnd
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Sections                                                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -742,87 +679,12 @@ unzipok:
 
   File  "${CONFIG_EXECUTABLE}"
   File  "${CONFIG_ICON}"
-  File  "${CONFIG_DOWNLOADER_EXECUTABLE}"
-  File  "${CONFIG_MOVIE_DATA_EXECUTABLE}"
-  File  "${CONFIG_HELPER_EXECUTABLE}"
   File  "*.dll"
-  File  "*.pyd"
-  File  "w9xpopen.exe"
-  File  "library.zip"
-  File  "miro-segmenter.exe"
-  File  "ffmpeg.exe"
-  File  "ffmpeg2theora.exe"
-  File  "*.ffpreset"
-  File  /r etc
+  File  "mvc_install.jpg"
+  File  "${CONFIG_EXECUTABLE}.config"
   File  /r lib
-  File  /r share
-  File  /r extensions
-  File  /r resources
-  File  /r xulrunner
-  File  /r vlc-plugins
-  File  /r Microsoft.VC90.CRT
+  File  /r ffmpeg-bin
 !endif
-
-install_theme:
-  StrCmp $THEME_NAME "" done_installing_theme
-  SetShellVarContext all ; use the global $APPDATA
-
-  StrCpy $R0 "$APPDATA\Participatory Culture Foundation\Miro\Themes\$THEME_NAME"
-  StrCmp $THEME_TEMP_DIR $R0 files_ok 0
-  RMDir /r "$R0"
-  ClearErrors
-  CreateDirectory "$R0"
-  CopyFiles /SILENT "$THEME_TEMP_DIR\*.*" "$R0"
-done_installing_theme:
-
-  StrCmp $INITIAL_FEEDS "" done_installing_initial_feeds
-
-  CreateDirectory "$INSTDIR\resources\"
-  CopyFiles /SILENT "$INITIAL_FEEDS" "$INSTDIR\resources\initial-feeds.democracy"
-
-done_installing_initial_feeds:
-
-  IfErrors 0 files_ok
-
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installation failed.  An error occured writing to the ${CONFIG_SHORT_APP_NAME} Folder."
-  Quit
-files_ok:
-
-
-  ; Old versions used HKEY_LOCAL_MACHINE for the RunAtStartup value, we use
-  ; HKEY_CURRENT_USER now
-  ReadRegStr $R0 HKLM  "Software\Microsoft\Windows\CurrentVersion\Run" "${CONFIG_LONG_APP_NAME}"
-  StrCmp $R0 "" +3
-    DeleteRegValue HKLM  "Software\Microsoft\Windows\CurrentVersion\Run" "${CONFIG_LONG_APP_NAME}"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "${CONFIG_LONG_APP_NAME}" $R0
-
-  StrCpy $R3 '$INSTDIR\${CONFIG_EXECUTABLE} "%1"'
-  StrCmp $THEME_NAME "" install_reg_keys
-  StrCpy $R3 '$INSTDIR\${CONFIG_EXECUTABLE} --theme "$THEME_NAME" "%1"'
-
-install_reg_keys:
-  ; Create a ProgID for Democracy
-  WriteRegStr HKCR "${CONFIG_PROG_ID}" "" "${CONFIG_LONG_APP_NAME}"
-  WriteRegDword HKCR "${CONFIG_PROG_ID}" "EditFlags" 0x00010000
-  ; FTA_OpenIsSafe flag
-  WriteRegStr HKCR "${CONFIG_SHORT_APP_NAME}\shell" "" "open"
-  WriteRegStr HKCR "${CONFIG_SHORT_APP_NAME}\DefaultIcon" "" "$INSTDIR\${CONFIG_EXECUTABLE},0"
-  WriteRegStr HKCR "${CONFIG_SHORT_APP_NAME}\shell\open\command" "" "$R3"
-  WriteRegStr HKCR "${CONFIG_SHORT_APP_NAME}\shell\edit" "" "Edit Options File"
-  WriteRegStr HKCR "${CONFIG_SHORT_APP_NAME}\shell\edit\command" "" "$R3"
-
-  ; Delete our old, poorly formatted ProgID
-  DeleteRegKey HKCR "DemocracyPlayer"
-
-  Call GetShortcutInfo
-
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-  CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$R2" \
-    "$INSTDIR\${CONFIG_EXECUTABLE}" "$R1" "$R0"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$R3" \
-    "$INSTDIR\uninstall.exe" "$R1"
-  !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
 
@@ -836,202 +698,6 @@ Section /o "Quick launch icon" SecQuickLaunch
   Call GetShortcutInfo
   CreateShortcut "$QUICKLAUNCH\$R2" "$INSTDIR\${CONFIG_EXECUTABLE}" \
     "$R1" "$R0"
-SectionEnd
-
-Section "Handle Miro files" SecRegisterMiro
-  WriteRegStr HKCR ".miro" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Miro files" SecUnregisterMiro
-  DeleteRegKey HKCR ".miro"
-SectionEnd
-
-Section "Handle Democracy files" SecRegisterDemocracy
-  WriteRegStr HKCR ".democracy" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Democracy files" SecUnregisterDemocracy
-  DeleteRegKey HKCR ".democracy"
-SectionEnd
-
-Section "Handle Torrent files" SecRegisterTorrent
-  WriteRegStr HKCR ".torrent" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Torrent files" SecUnregisterTorrent
-  DeleteRegKey HKCR ".torrent"
-SectionEnd
-
-Section "Handle AVI files" SecRegisterAvi
-  WriteRegStr HKCR ".avi" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of AVI files" SecUnregisterAvi
-  DeleteRegKey HKCR ".avi"
-SectionEnd
-
-; Magnet extension handling is done in Miro, not in the installer
-
-Section "un.Remove handling of Magnet files" SecUnregisterMagnet
-  DeleteRegKey HKCU "Software\Classes\.magnet"
-  DeleteRegKey HKCU "Software\Classes\MIME\Database\Content Type\magnet"
-  DeleteRegKey HKCU "Software\Classes\magnet"
-SectionEnd
-
-Section "Handle MPEG files" SecRegisterMpg
-  WriteRegStr HKCR ".m4v" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpg" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpeg" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mp2" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mp4" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpe" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpv" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpv2" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of MPEG files" SecUnregisterMpg
-  DeleteRegKey HKCR ".m4v"
-  DeleteRegKey HKCR ".mpg"
-  DeleteRegKey HKCR ".mpeg"
-  DeleteRegKey HKCR ".mp2"
-  DeleteRegKey HKCR ".mp4"
-  DeleteRegKey HKCR ".mpe"
-  DeleteRegKey HKCR ".mpv"
-  DeleteRegKey HKCR ".mpv2"
-SectionEnd
-
-Section "Handle MP3 files" SecRegisterMp3
-  WriteRegStr HKCR ".mp3" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mpa" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of MP3 files" SecUnregisterMp3
-  DeleteRegKey HKCR ".mp3"
-  DeleteRegKey HKCR ".mpa"
-SectionEnd
-
-Section "Handle Quicktime files" SecRegisterMov
-  WriteRegStr HKCR ".mov" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".qt" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Quicktime files" SecUnregisterMov
-  DeleteRegKey HKCR ".mov"
-  DeleteRegKey HKCR ".qt"
-SectionEnd
-
-Section "Handle ASF files" SecRegisterAsf
-  WriteRegStr HKCR ".asf" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of ASF files" SecUnregisterAsf
-  DeleteRegKey HKCR ".asf"
-SectionEnd
-
-Section "Handle Windows Media files" SecRegisterWmv
-  WriteRegStr HKCR ".wmv" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Windows Media files" SecUnregisterWmv
-  DeleteRegKey HKCR ".wmv"
-SectionEnd
-
-Section "Handle DTS Media files" SecRegisterDts
-  WriteRegStr HKCR ".dts" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of DTS Media files" SecUnregisterDts
-  DeleteRegKey HKCR ".dts"
-SectionEnd
-
-Section "Handle Ogg Media files" SecRegisterOgg
-  WriteRegStr HKCR ".ogg" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".ogm" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".oga" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".ogv" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".ogx" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Ogg Media files" SecUnregisterOgg
-  DeleteRegKey HKCR ".ogg"
-  DeleteRegKey HKCR ".ogm"
-  DeleteRegKey HKCR ".oga"
-  DeleteRegKey HKCR ".ogv"
-  DeleteRegKey HKCR ".ogx"
-SectionEnd
-
-Section "Handle Matroska Media files" SecRegisterMkv
-  WriteRegStr HKCR ".mkv" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mka" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".mks" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Matroska Media files" SecUnregisterMkv
-  DeleteRegKey HKCR ".mkv"
-  DeleteRegKey HKCR ".mka"
-  DeleteRegKey HKCR ".mks"
-SectionEnd
-
-Section "Handle 3gp Media files" SecRegister3gp
-  WriteRegStr HKCR ".3gp" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of 3gp Media files" SecUnregister3gp
-  DeleteRegKey HKCR ".3gp"
-SectionEnd
-
-Section "Handle 3g2 Media files" SecRegister3g2
-  WriteRegStr HKCR ".3g2" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of 3g2 Media files" SecUnregister3g2
-  DeleteRegKey HKCR ".3g2"
-SectionEnd
-
-Section "Handle Flash Video files" SecRegisterFlv
-  WriteRegStr HKCR ".flv" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Flash Video files" SecUnregisterFlv
-  DeleteRegKey HKCR ".flv"
-SectionEnd
-
-Section "Handle Nullsoft Video files" SecRegisterNsv
-  WriteRegStr HKCR ".nsv" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Nullsoft Video files" SecUnregisterNsv
-  DeleteRegKey HKCR ".nsv"
-SectionEnd
-
-Section "Handle pva Video files" SecRegisterPva
-  WriteRegStr HKCR ".pva" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of pva Video files" SecUnregisterPva
-  DeleteRegKey HKCR ".pva"
-SectionEnd
-
-Section "Handle Annodex Video files" SecRegisterAnx
-  WriteRegStr HKCR ".anx" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Annodex Video files" SecUnregisterAnx
-  DeleteRegKey HKCR ".anx"
-SectionEnd
-
-Section "Handle Xvid Video files" SecRegisterXvid
-  WriteRegStr HKCR ".xvid" "" "${CONFIG_PROG_ID}"
-  WriteRegStr HKCR ".3ivx" "" "${CONFIG_PROG_ID}"
-SectionEnd
-
-Section "un.Remove handling of Xvid Video files" SecUnregisterXvid
-  DeleteRegKey HKCR ".xvid"
-  DeleteRegKey HKCR ".3ivx"
-SectionEnd
-
-Section -NotifyShellExentionChange
-  System::Call 'Shell32::SHChangeNotify(i 0x8000000, i 0, i 0, i 0)'
 SectionEnd
 
 Function un.onInit
@@ -1090,72 +756,10 @@ SkipChangingInstDir:
   FileRead $0 $ZUGO_COUNTRY
   FileClose $0
 
-  GetTempFileName $TACKED_ON_FILE
-  Delete "$TACKED_ON_FILE"  ; The above macro creates the file
-  TackOn::writeToFile "$TACKED_ON_FILE"
-  FileOpen $0 "$TACKED_ON_FILE" r
-  IfErrors no_tackon
-
-  ; If file starts with 0x50 0x4b 0x03 0x04, it's a zip file
-  FileReadByte $0 $1
-  IntCmpU $1 0x50 0 non_zip_tackon non_zip_tackon
-  FileReadByte $0 $1
-  IntCmpU $1 0x4b 0 non_zip_tackon non_zip_tackon
-  FileReadByte $0 $1
-  IntCmpU $1 0x03 0 non_zip_tackon non_zip_tackon
-  FileReadByte $0 $1
-  IntCmpU $1 0x04 0 non_zip_tackon non_zip_tackon
-
-  ; We have a zip tacked on file
-
-  FileClose $0
-
-  GetTempFileName $THEME_TEMP_DIR
-  Delete "$THEME_TEMP_DIR"  ; The above macro creates the file
-  !insertmacro ZIPDLL_EXTRACT "$TACKED_ON_FILE" "$THEME_TEMP_DIR" <ALL>
-
-  StrCpy $R0 "$THEME_TEMP_DIR"
-  Call GetThemeVersion
-  Pop $0
-  StrCmp $0 "0" 0 error_in_theme
-
-  StrCpy $R0 "themeName"
-  StrCpy $R1 "$THEME_TEMP_DIR\app.config"
-  Call GetConfigOption
-  Pop $THEME_NAME
-  StrCmp "$THEME_NAME" "" error_in_theme
-  StrCpy $R0 "longAppName"
-  StrCpy $R1 "$THEME_TEMP_DIR\app.config"
   Call GetConfigOption
   Pop $APP_NAME
 
   Goto MoreAttributes
-
-error_in_theme:
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Error in theme"
-  Goto no_tackon
-
-non_zip_tackon:  ; non-zip tacked on file
-
-  FileClose $0
-  StrCpy $INITIAL_FEEDS "$TACKED_ON_FILE"
-
-no_tackon:
-  ClearErrors
-
-  StrCmp $THEME_TEMP_DIR "" 0 MoreAttributes
-  !insertmacro locateThemes $0
-  StrCmp $0 0 LocateDone 0
-  ${locate::Find} $0 $1 $2 $3 $4 $5 $6
-  StrCpy $THEME_TEMP_DIR $1
-  StrCmp $3 "" LocateDone
-  StrCpy $THEME_NAME $3
-  StrCpy $R0 "longAppName"
-  StrCpy $R1 "$THEME_TEMP_DIR\app.config"
-  Call GetConfigOption
-  Pop $APP_NAME
-LocateDone:
-  ${locate::Close} $0
 
 MoreAttributes:
   StrCpy $R0 "publisher"
@@ -1174,7 +778,7 @@ find_project_url:
 
   ; Is the app running?  Stop it if so.
 TestRunning:
-  ${nsProcess::FindProcess} "miro.exe" $R0
+  ${nsProcess::FindProcess} "MiroConverter.exe" $R0
   StrCmp $R0 0 0 NotRunning
   StrCmp $REINSTALL 1 0 ShowCloseBox
   Sleep 2000
@@ -1187,31 +791,6 @@ Please shut it down before continuing." \
   Quit
 NotRunning:
 
-TestOldRunning:
-  ${nsProcess::FindProcess} "democracy.exe" $R0
-  StrCmp $R0 0 0 NotOldRunning
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
-  "It looks like you're running Democracy Player.$\n\
-Please shut it down before continuing." \
-       IDOK TestOldRunning
-  Quit
-NotOldRunning:
-
-  ; Is the downloader running?  Stop it if so.
-  ${nsProcess::FindProcess} "miro-downloader.exe" $R0
-  StrCmp $R0 0 0 NotDownloaderRunning
-  ${nsProcess::KillProcess} "miro-downloader.exe" $R0
-NotDownloaderRunning:
-  ; Is the downloader running?  Stop it if so.
-  ${nsProcess::FindProcess} "democracy-downloader.exe" $R0
-  StrCmp $R0 0 0 NotOldDownloaderRunning
-  ${nsProcess::KillProcess} "democracy-downloader.exe" $R0
-NotOldDownloaderRunning:
-
-  ; Is the app already installed? Bail if so.
-  ReadRegStr $R0 HKLM "${INST_KEY}" "InstallDir"
-  StrCmp $R0 "" NotCurrentInstalled
-  !insertmacro uninstall $R0
 NotCurrentInstalled:
   ; Is the app already installed? Bail if so.
   ReadRegStr $R0 HKLM "${OLD_INST_KEY}" "InstallDir"
@@ -1282,42 +861,6 @@ SkipLanguageDLL:
   IntOp $0 $0 | 17  ; Set register .torrents to selected and read only
   SectionSetFlags ${SecRegisterTorrent} $0
 
-DoneTorrentRegistration:
-
-  !insertmacro checkExtensionHandled ".miro" ${SecRegisterMiro}
-  !insertmacro checkExtensionHandled ".democracy" ${SecRegisterDemocracy}
-  !insertmacro checkExtensionHandled ".avi" ${SecRegisterAvi}
-  !insertmacro checkExtensionHandled ".m4v" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mpg" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mpeg" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mp2" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mp4" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mpe" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mpv" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mpv2" ${SecRegisterMpg}
-  !insertmacro checkExtensionHandled ".mp3" ${SecRegisterMp3}
-  !insertmacro checkExtensionHandled ".mpa" ${SecRegisterMp3}
-  !insertmacro checkExtensionHandled ".mov" ${SecRegisterMov}
-  !insertmacro checkExtensionHandled ".qa" ${SecRegisterMov}
-  !insertmacro checkExtensionHandled ".asf" ${SecRegisterAsf}
-  !insertmacro checkExtensionHandled ".wmv" ${SecRegisterWmv}
-  !insertmacro checkExtensionHandled ".dts" ${SecRegisterDts}
-  !insertmacro checkExtensionHandled ".ogg" ${SecRegisterOgg}
-  !insertmacro checkExtensionHandled ".ogm" ${SecRegisterOgg}
-  !insertmacro checkExtensionHandled ".oga" ${SecRegisterOgg}
-  !insertmacro checkExtensionHandled ".ogv" ${SecRegisterOgg}
-  !insertmacro checkExtensionHandled ".ogx" ${SecRegisterOgg}
-  !insertmacro checkExtensionHandled ".mkv" ${SecRegisterMkv}
-  !insertmacro checkExtensionHandled ".mka" ${SecRegisterMkv}
-  !insertmacro checkExtensionHandled ".mks" ${SecRegisterMkv}
-  !insertmacro checkExtensionHandled ".3gp" ${SecRegister3gp}
-  !insertmacro checkExtensionHandled ".3g2" ${SecRegister3g2}
-  !insertmacro checkExtensionHandled ".flv" ${SecRegisterFlv}
-  !insertmacro checkExtensionHandled ".nsv" ${SecRegisterNsv}
-  !insertmacro checkExtensionHandled ".pva" ${SecRegisterPva}
-  !insertmacro checkExtensionHandled ".anx" ${SecRegisterAnx}
-  !insertmacro checkExtensionHandled ".xvid" ${SecRegisterXvid}
-  !insertmacro checkExtensionHandled ".3ivx" ${SecRegisterXvid}
 FunctionEnd
 
 Function .onInstSuccess
@@ -1396,45 +939,6 @@ Section "Uninstall" SEC91
 
 continue:
   ClearErrors
-
-  !insertmacro checkExtensionNotHandled ".miro" ${SecUnregisterMiro}
-  !insertmacro checkExtensionNotHandled ".democracy" ${SecUnregisterDemocracy}
-  !insertmacro checkExtensionNotHandled ".avi" ${SecUnregisterAvi}
-  !insertmacro checkExtensionNotHandled ".m4v" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mpg" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mpeg" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mp2" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mp4" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mpe" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mpv" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mpv2" ${SecUnregisterMpg}
-  !insertmacro checkExtensionNotHandled ".mp3" ${SecUnregisterMp3}
-  !insertmacro checkExtensionNotHandled ".mpa" ${SecUnregisterMp3}
-  !insertmacro checkExtensionNotHandled ".mov" ${SecUnregisterMov}
-  !insertmacro checkExtensionNotHandled ".qa" ${SecUnregisterMov}
-  !insertmacro checkExtensionNotHandled ".asf" ${SecUnregisterAsf}
-  !insertmacro checkExtensionNotHandled ".wmv" ${SecUnregisterWmv}
-  !insertmacro checkExtensionNotHandled ".dts" ${SecUnregisterDts}
-  !insertmacro checkExtensionNotHandled ".ogg" ${SecUnregisterOgg}
-  !insertmacro checkExtensionNotHandled ".ogm" ${SecUnregisterOgg}
-  !insertmacro checkExtensionNotHandled ".oga" ${SecUnregisterOgg}
-  !insertmacro checkExtensionNotHandled ".ogv" ${SecUnregisterOgg}
-  !insertmacro checkExtensionNotHandled ".ogx" ${SecUnregisterOgg}
-  !insertmacro checkExtensionNotHandled ".mkv" ${SecUnregisterMkv}
-  !insertmacro checkExtensionNotHandled ".mka" ${SecUnregisterMkv}
-  !insertmacro checkExtensionNotHandled ".mks" ${SecUnregisterMkv}
-  !insertmacro checkExtensionNotHandled ".3gp" ${SecUnregister3gp}
-  !insertmacro checkExtensionNotHandled ".3g2" ${SecUnregister3g2}
-  !insertmacro checkExtensionNotHandled ".flv" ${SecUnregisterFlv}
-  !insertmacro checkExtensionNotHandled ".nsv" ${SecUnregisterNsv}
-  !insertmacro checkExtensionNotHandled ".pva" ${SecUnregisterPva}
-  !insertmacro checkExtensionNotHandled ".anx" ${SecUnregisterAnx}
-  !insertmacro checkExtensionNotHandled ".xvid" ${SecUnregisterXvid}
-  !insertmacro checkExtensionNotHandled ".3ivx" ${SecUnregisterXvid}
-  !insertmacro checkExtensionNotHandled ".magnet" ${SecUnregisterMagnet}
-
-  ; remove from magnet.exe registration
-  DeleteRegKey HKLM "Software\magnet\handlers\${CONFIG_SHORT_APP_NAME}"
 
   !insertmacro uninstall $INSTDIR
   RMDIR "$PROGRAMFILES\$PUBLISHER"
