@@ -15,27 +15,21 @@
 
 !define RUN_SHORTCUT "${CONFIG_LONG_APP_NAME}.lnk"
 !define UNINSTALL_SHORTCUT "Uninstall ${CONFIG_SHORT_APP_NAME}.lnk"
-!define MUI_ICON "${MIRO_INSTALL_ICON}"
-!define MUI_UNICON "${MIRO_INSTALL_ICON}"
+!define MUI_ICON "${CONFIG_ICON}"
+!define MUI_UNICON "${CONFIG_ICON}"
 
-Name "$APP_NAME"
+Name "${CONFIG_LONG_APP_NAME}"
 OutFile "${CONFIG_OUTPUT_FILE}"
 InstallDir "$PROGRAMFILES\${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
 InstallDirRegKey HKLM "${INST_KEY}" "Install_Dir"
 SetCompressor lzma
 
-SetOverwrite ifnewer
+SetOverwrite on
 CRCCheck on
 
 Icon "${CONFIG_ICON}"
 
 Var STARTMENU_FOLDER
-Var APP_NAME ; Used in text within the program
-Var REINSTALL
-Var ADVANCED
-Var SIMPLE_INSTALL
-Var PUBLISHER
-Var PROJECT_URL
 Var ZUGO_HOMEPAGE
 Var ZUGO_TOOLBAR
 Var ZUGO_DEFAULT_SEARCH
@@ -44,26 +38,15 @@ Var ZUGO_COUNTRY
 Var ZUGO_PROVIDER
 Var ZUGO_TERMS
 
-!define MUI_WELCOMEPAGE_TITLE "Welcome to $APP_NAME!"
-!define MUI_WELCOMEPAGE_TEXT "To get started, choose an easy or a custom install process and then click 'Install'."
+!define MUI_WELCOMEPAGE_TITLE "Welcome to ${CONFIG_LONG_APP_NAME}!"
+;!define MUI_WELCOMEPAGE_TEXT "To get started, choose an easy or a custom install process and then click 'Install'."
 
 !include "MUI.nsh"
-!include "Sections.nsh"
-!include zipdll.nsh
-!include nsProcess.nsh
-!include "TextFunc.nsh"
-!include "WordFunc.nsh"
 !include "FileFunc.nsh"
-!include "WinMessages.nsh"
-!include Locate.nsh
 !include nsDialogs.nsh
 
-!insertmacro TrimNewLines
-!insertmacro WordFind
 !insertmacro GetParameters
 !insertmacro GetOptions
-!insertmacro un.TrimNewLines
-!insertmacro un.WordFind
 !insertmacro un.GetParameters
 !insertmacro un.GetOptions
 
@@ -81,7 +64,6 @@ Var ZUGO_TERMS
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE "check_radio_buttons"
 
 !define MUI_COMPONENTSPAGE_NODESC
-!define MUI_WELCOMEFINISHPAGE_BITMAP "${MIRO_INSTALL_IMAGE}"
 !insertmacro MUI_PAGE_WELCOME
 
 Function add_radio_buttons
@@ -116,7 +98,7 @@ toolbar_options:
   !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Bottom" "110"
 
   !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Type"   "checkbox"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Text"   "$APP_NAME core (required)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Text"   "${CONFIG_LONG_APP_NAME} core (required)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Left"   "120"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Right"  "315"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Top"    "115"
@@ -241,20 +223,17 @@ FunctionEnd
 
 ; Finish page
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_TITLE "$APP_NAME has been installed!"
-!define MUI_FINISHPAGE_TEXT "$APP_NAME is a non-profit project and is free and open-source software.  Thanks for supporting an open internet!"
+!define MUI_FINISHPAGE_TITLE "${CONFIG_LONG_APP_NAME} has been installed!"
 !define MUI_FINISHPAGE_TITLE_3LINES
-!define MUI_FINISHPAGE_RUN_TEXT "Run $APP_NAME"
+!define MUI_FINISHPAGE_RUN_TEXT "Run ${CONFIG_LONG_APP_NAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
-!define MUI_FINISHPAGE_LINK "$PUBLISHER homepage."
-!define MUI_FINISHPAGE_LINK_LOCATION "$PROJECT_URL"
+!define MUI_FINISHPAGE_LINK "${CONFIG_PUBLISHER} homepage."
+!define MUI_FINISHPAGE_LINK_LOCATION "${CONFIG_PROJECT_URL}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_CONFIRM
-UninstPage custom un.pickThemesPage un.pickThemesPageAfter
-; defined lower down
 
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
@@ -264,29 +243,11 @@ UninstPage custom un.pickThemesPage un.pickThemesPageAfter
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 !insertmacro MUI_LANGUAGE "English" # first language is the default language
-!insertmacro MUI_LANGUAGE "French"
-!insertmacro MUI_LANGUAGE "German"
-!insertmacro MUI_LANGUAGE "Spanish"
-!insertmacro MUI_LANGUAGE "SimpChinese"
-!insertmacro MUI_LANGUAGE "TradChinese"
-!insertmacro MUI_LANGUAGE "Japanese"
-!insertmacro MUI_LANGUAGE "Korean"
-!insertmacro MUI_LANGUAGE "Italian"
-!insertmacro MUI_LANGUAGE "Dutch"
-!insertmacro MUI_LANGUAGE "Danish"
-!insertmacro MUI_LANGUAGE "Swedish"
-!insertmacro MUI_LANGUAGE "Norwegian"
-!insertmacro MUI_LANGUAGE "Finnish"
-!insertmacro MUI_LANGUAGE "Greek"
-!insertmacro MUI_LANGUAGE "Russian"
-!insertmacro MUI_LANGUAGE "Portuguese"
-!insertmacro MUI_LANGUAGE "Arabic"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Reserve files (interacts with solid compression to speed up installation) ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!insertmacro MUI_RESERVEFILE_LANGDLL
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -332,6 +293,7 @@ FunctionEnd
 
 Section "-${CONFIG_LONG_APP_NAME}"
 
+  ClearErrors
   SetShellVarContext all
 
   SetOutPath "$INSTDIR"
@@ -351,24 +313,20 @@ Section "-${CONFIG_LONG_APP_NAME}"
 files_ok:
   Call GetShortcutInfo
 
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$R2" \
     "$INSTDIR\${CONFIG_EXECUTABLE}" "$R1" "$R0"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$R3" \
     "$INSTDIR\uninstall.exe" "$R1"
-  !insertmacro MUI_STARTMENU_WRITE_END
+
 SectionEnd
 
 Function un.onInit
-  StrCpy $APP_NAME "${CONFIG_LONG_APP_NAME}"
-  StrCpy $PUBLISHER "${CONFIG_PUBLISHER}"
+  StrCpy $STARTMENU_FOLDER "${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
 FunctionEnd
 
 Function .onInit
-  StrCpy $APP_NAME "${CONFIG_LONG_APP_NAME}"
-  StrCpy $PUBLISHER "${CONFIG_PUBLISHER}"
-  StrCpy $PROJECT_URL "${CONFIG_PROJECT_URL}"
+  StrCpy $STARTMENU_FOLDER "${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
   StrCpy $ZUGO_PROVIDER "Bing™"
   StrCpy $ZUGO_TERMS "http://www.startnow.com/terms/bing/"
 
@@ -392,27 +350,9 @@ Function .onInit
   FileRead $0 $ZUGO_COUNTRY
   FileClose $0
 
-  Call GetConfigOption
-  Pop $APP_NAME
-
-  ; Is the app running?  Stop it if so.
-TestRunning:
-  ${nsProcess::FindProcess} "${CONFIG_EXECUTABLE}" $R0
-  StrCmp $R0 0 0 NotRunning
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
-  "It looks like you're already running $APP_NAME.$\n\
-Please shut it down before continuing." \
-       IDOK TestRunning
-  Quit
-NotRunning:
-StartInstall:
-  !insertmacro MUI_LANGDLL_DISPLAY
-SkipLanguageDLL:
 FunctionEnd
 
 Function .onInstSuccess
-  StrCmp $THEME_NAME "" 0 end
-  StrCmp $REINSTALL "1" end
 !ifdef MIROBAR_EXE
 ;StrCmp "$ZUGO_COUNTRY" "US" 0 +2
 ;StrCpy $ZUGO_FLAGS "$ZUGO_FLAGS /OFFERED"
@@ -436,9 +376,8 @@ StrCmp "$ZUGO_FLAGS" "" end
 
 ;MessageBox MB_OK "$PLUGINSDIR\${MIROBAR_EXE} $ZUGO_FLAGS"
 Exec "$PLUGINSDIR\${MIROBAR_EXE} $ZUGO_FLAGS"
-!endif
-
 end:
+!endif
 FunctionEnd
 
 Section -Post
@@ -451,8 +390,8 @@ Section -Post
   WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$INSTDIR\uninstall.exe"
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\${CONFIG_EXECUTABLE}"
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayVersion" "${CONFIG_VERSION}"
-  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "$PROJECT_URL"
-  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "$PUBLISHER"
+  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "${CONFIG_PROJECT_URL}"
+  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "${CONFIG_PUBLISHER}"
 
   ; We're Vista compatible now, so drop the compatability crap
   DeleteRegValue HKLM "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\${CONFIG_EXECUTABLE}"
@@ -464,28 +403,20 @@ Section "Uninstall" SEC91
 
   ${un.GetParameters} $R0
 
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $R1
-  Delete "$SMPROGRAMS\$R1\$R0.lnk"
-  Delete "$SMPROGRAMS\$R1\Uninstall $R0.lnk"
+  Delete "$SMPROGRAMS\$STARTMENU_FOLDER\$R0.lnk"
+  Delete "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall $R0.lnk"
 
-  RMDir "$SMPROGRAMS\$R1"
+  RMDir "$SMPROGRAMS\$STARTMENU_FOLDER"
 
-continue:
   ClearErrors
 
   !insertmacro uninstall $INSTDIR
-  RMDIR "$PROGRAMFILES\$PUBLISHER"
+  RMDIR "$PROGRAMFILES\${CONFIG_PUBLISHER}"
 
   ; Remove Start Menu shortcuts
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $R0
-  Delete "$SMPROGRAMS\$R0\${RUN_SHORTCUT}"
-  Delete "$SMPROGRAMS\$R0\${UNINSTALL_SHORTCUT}"
-  RMDir "$SMPROGRAMS\$R0"
+  Delete "$SMPROGRAMS\$STARTMENU_FOLDER\${RUN_SHORTCUT}"
+  Delete "$SMPROGRAMS\$STARTMENU_FOLDER\${UNINSTALL_SHORTCUT}"
+  RMDir "$SMPROGRAMS\$STARTMENU_FOLDER"
 
-  ; Remove desktop and quick launch shortcuts
-  Delete "$DESKTOP\${RUN_SHORTCUT}"
-  Delete "$QUICKLAUNCH\${RUN_SHORTCUT}"
-
-done:
   SetAutoClose true
 SectionEnd
