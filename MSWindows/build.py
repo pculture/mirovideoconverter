@@ -1,40 +1,34 @@
-import sys, os, re
+import sys, os, re, shutil
 import getopt
 import uuid
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+def rel(*x):
+    return os.path.join(PROJECT_ROOT, *x)
 
 def run(cmd):
     for line in os.popen(cmd).readlines():
         print(line)
 
-def update_msi_version():
-    print("Updating vdproj file\n")
-    product_code = str(uuid.uuid4()).upper()
-    package_code = str(uuid.uuid4()).upper()
-    lines = []
-    with open('WindowsSetup\\WindowsSetup.vdproj', 'r') as f:
-        for line in f.readlines():
-            old_line = line
-            if re.search(r"ProductCode\" = \"8:\{", line) is not None:
-                line = re.sub("8:\{[A-Z0-9\-]+\}", "8:{%s}" % product_code, line)
-            if re.search(r"PackageCode\" = \"8:\{", line) is not None:
-                line = re.sub("8:\{[A-Z0-9\-]+\}", "8:{%s}" % package_code, line)
-            product_version_match = re.search(
-                r"ProductVersion\" = \"8:(\d+\.\d+\.\d+)", line)
-            if product_version_match is not None:
-                old_product_version = product_version_match.groups(1)[0]
-                new_product_version = \
-                    '.'.join(str(int(old_product_version.replace('.','')) + 1))
-                line = re.sub(old_product_version, new_product_version, line)
-            if line != old_line:
-                print("Replacing %s\nwith      %s\n" % (old_line, line))
-            lines.append(line)
-    with open('WindowsSetup\\WindowsSetup.vdproj', 'w') as f:
-        for line in lines:
-            f.write("%s" % line)
-
 def build():
     print("Building\n")
-    run("devenv /build Release FFMPEGWrapper.sln /project WindowsSetup")
+    run("devenv /build Release FFMPEGWrapper.sln /project Windows")
+
+def make_nsis_installer(version):
+    NSIS_PATH = "\"C:\\Program Files (x86)\\NSIS\\makensis.exe\""
+    dist_dir = rel("distribution")
+    if os.path.exists(dist_dir):
+        shutil.rmtree(dist_dir)
+    shutil.copytree(rel("Windows\\bin\\Release"), dist_dir)
+    shutil.copytree(rel("Windows\\lib"), os.path.join(dist_dir, "lib"))
+    shutil.copy(rel("Windows\\resources\converter3.ico"), dist_dir)
+    shutil.copy(rel("mvc.nsi"), dist_dir)
+    shutil.copy(rel("DotNet.nsh"), dist_dir)
+    shutil.copy(rel("nsProcess.nsh"), dist_dir)
+    os.chdir(dist_dir)
+    cmd = "{0} /DCONFIG_VERSION={1} mvc.nsi".format(NSIS_PATH, version)
+    print("About to run {0}".format(cmd))
+    run(cmd)
 
 def find_assembly_version_no():
     with open('Windows\\Properties\\AssemblyInfo.cs', 'r') as f:
@@ -56,9 +50,9 @@ def make_version_file():
 def upload_to_server(testing_only):
     print("Uploading to server\n")
     target_folder = ("/home/pculture/data/mirovideoconverter"
-        "/{0}MiroConverterSetup.msi").format("testing/" if testing_only else "")
+        "/{0}MiroConverterSetup.exe").format("testing/" if testing_only else "")
     run(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
-        ".\\WindowsSetup\\Release\MiroConverterSetup.msi " 
+        ".\\distribution\\MiroConverterSetup.exe " 
         "pculture@ftp-osl.osuosl.org:{0}").format(target_folder))
     if not testing_only:
         run(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
@@ -67,15 +61,24 @@ def upload_to_server(testing_only):
             "/home/pculture/data/mirovideoconverter/MiroConverterVersion.xml"))
     run(("plink -ssh -i %USERPROFILE%\.ssh\osuosl.ppk "
         "pculture@ftp-osl.osuosl.org ./run-trigger"))
-
-
+        
 def main(argv):
-    opts, args = getopt.getopt(argv, "r", ["release"])
-    testing_only = (len(opts) == 0 or opts[0][0] not in ("-r", "--release"))
+    opts, args = getopt.getopt(argv, "v:r", ["version=", "release"])
+    testing_only = True
+    version = None
+    for opt, arg in opts:
+        if opt in ("-v", "--version"):
+            version = arg
+        if opt in ("-r", "--release"):
+            testing_only = False
+    if version is None:
+        raise Exception("The version argument is not optional, homeboy")
+    if re.match(r"^[\d\.]+$", version) is None:
+        raise Exception("Version must be numeric only")
     print("You are running the {0} deployment.\n".format(
         "testing" if testing_only else "production"))
-    update_msi_version()
     build()
+    make_nsis_installer(version)
     if not testing_only:
         make_version_file()
     upload_to_server(testing_only)

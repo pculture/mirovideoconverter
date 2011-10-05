@@ -3,6 +3,7 @@ MSWindows/Windows/obj/
 MSWindows/WindowsSetup/Debug/
 MSWindows/WindowsSetup/Release/
 MSWindows/FFMPEGWrapper.suo
+MSWindows/distribution
 Mac/build/
 *.pyc
 *.pfx

@@ -7,7 +7,7 @@
 !define CONFIG_LONG_APP_NAME  "Miro Video Converter"
 !define CONFIG_PUBLISHER "Participatory Culture Foundation"
 !define CONFIG_EXECUTABLE "MiroConverter.exe"
-!define CONFIG_OUTPUT_FILE "MiroConverter-${CONFIG_VERSION}.exe"
+!define CONFIG_OUTPUT_FILE "MiroConverterSetup.exe"
 !define CONFIG_ICON "converter3.ico"
 
 !define INST_KEY "Software\${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
@@ -45,7 +45,7 @@ Var ZUGO_TERMS
 !include "FileFunc.nsh"
 !include nsDialogs.nsh
 !include LogicLib.nsh
-!include "DotNET.nsh"
+!include "DotNet.nsh"
 
 !insertmacro GetParameters
 !insertmacro GetOptions
@@ -268,7 +268,6 @@ SectionEnd
   Delete   "${directory}\${CONFIG_ICON}"
   Delete   "${directory}\*.dll"
   Delete   "${directory}\uninstall.exe"
-  Delete   "${directory}\mvc_install.jpg"
   Delete   "${directory}\${CONFIG_EXECUTABLE}.config"
   Delete   "${directory}\lib\*.dll"
   Delete   "${directory}\ffmpeg-bin\ffmpeg.exe"
@@ -309,7 +308,6 @@ Section "-${CONFIG_LONG_APP_NAME}"
   File  "${CONFIG_EXECUTABLE}"
   File  "${CONFIG_ICON}"
   File  "*.dll"
-  File  "mvc_install.jpg"
   File  "${CONFIG_EXECUTABLE}.config"
   File  /r lib
   File  /r ffmpeg-bin
