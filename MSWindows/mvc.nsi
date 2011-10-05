@@ -44,6 +44,8 @@ Var ZUGO_TERMS
 !include "MUI.nsh"
 !include "FileFunc.nsh"
 !include nsDialogs.nsh
+!include LogicLib.nsh
+!include "DotNET.nsh"
 
 !insertmacro GetParameters
 !insertmacro GetOptions
@@ -219,6 +221,12 @@ FunctionEnd
 ; !insertmacro MUI_PAGE_LICENSE "license.txt"
 
 ; Installation page
+; Not 100% sure but this should be the version that corresponds to 3.5 SP1
+!define DOTNET_VERSION "3.5.30729.01"
+Section "Main Section (Required)"
+  SectionIn RO
+  !insertmacro CheckDotNET ${DOTNET_VERSION}
+SectionEnd
 !insertmacro MUI_PAGE_INSTFILES
 
 ; Finish page

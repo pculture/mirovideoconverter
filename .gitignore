@@ -6,6 +6,7 @@ MSWindows/FFMPEGWrapper.suo
 Mac/build/
 *.pyc
 *.pfx
+*~
 pcfpfxpassword.yaml
 Mac/DMG/*.dmg
 /Mac/Miro Video Converter.xcodeproj/*.pbxuser
