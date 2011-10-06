@@ -1,4 +1,5 @@
 import sys, os, re, shutil
+import subprocess
 import getopt
 import uuid
 
@@ -7,15 +8,21 @@ def rel(*x):
     return os.path.join(PROJECT_ROOT, *x)
 
 def run(cmd):
-    for line in os.popen(cmd).readlines():
-        print(line)
+    print("Running {0}".format(" ".join(cmd)))
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    output, err = process.communicate()
+    print(output)
+    print(err)
 
 def build():
     print("Building\n")
-    run("devenv /build Release FFMPEGWrapper.sln /project Windows")
+    run(["devenv", "/build", "Release", "FFMPEGWrapper.sln", "/project", "Windows"])
 
 def make_nsis_installer(version):
-    NSIS_PATH = "\"C:\\Program Files (x86)\\NSIS\\makensis.exe\""
+    NSIS_PATH = "C:\\Program Files (x86)\\NSIS\\makensis.exe"
     dist_dir = rel("distribution")
     if os.path.exists(dist_dir):
         shutil.rmtree(dist_dir)
@@ -26,8 +33,7 @@ def make_nsis_installer(version):
     shutil.copy(rel("DotNet.nsh"), dist_dir)
     shutil.copy(rel("nsProcess.nsh"), dist_dir)
     os.chdir(dist_dir)
-    cmd = "{0} /DCONFIG_VERSION={1} mvc.nsi".format(NSIS_PATH, version)
-    print("About to run {0}".format(cmd))
+    cmd = [NSIS_PATH, "/DCONFIG_VERSION={1}".format(NSIS_PATH, version), "mvc.nsi"]
     run(cmd)
 
 def find_assembly_version_no():
@@ -51,17 +57,17 @@ def upload_to_server(testing_only):
     print("Uploading to server\n")
     target_folder = ("/home/pculture/data/mirovideoconverter"
         "/{0}MiroConverterSetup.exe").format("testing/" if testing_only else "")
-    run(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
-        ".\\distribution\\MiroConverterSetup.exe " 
-        "pculture@ftp-osl.osuosl.org:{0}").format(target_folder))
+    run(["pscp", "-v", "-i", "%USERPROFILE%\\.ssh\\osuosl.ppk", 
+        rel("distribution\\MiroConverterSetup.exe"), 
+        "pculture@ftp-osl.osuosl.org:{0}".format(target_folder)])
     if not testing_only:
-        run(("pscp -v -i %USERPROFILE%\\.ssh\\osuosl.ppk " 
-            "c:\\temp\miroconverterversion.xml " 
-            "pculture@ftp-osl.osuosl.org:"
-            "/home/pculture/data/mirovideoconverter/MiroConverterVersion.xml"))
-    run(("plink -ssh -i %USERPROFILE%\.ssh\osuosl.ppk "
-        "pculture@ftp-osl.osuosl.org ./run-trigger"))
-        
+        run(["pscp", "-v", "-i", "%USERPROFILE%\\.ssh\\osuosl.ppk",
+            "c:\\temp\miroconverterversion.xml", 
+            ("pculture@ftp-osl.osuosl.org:"
+             "/home/pculture/data/mirovideoconverter/MiroConverterVersion.xml")])
+    run(["plink", "-ssh", "-i", "%USERPROFILE%\\.ssh\\osuosl.ppk",
+        "pculture@ftp-osl.osuosl.org", "./run-trigger"])
+
 def main(argv):
     opts, args = getopt.getopt(argv, "v:r", ["version=", "release"])
     testing_only = True
