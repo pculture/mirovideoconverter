@@ -30,6 +30,7 @@ else
        </item>
 EOF
     echo add newCast.xml to SparkleAppCast.xml, create $1.html, then press return
+    open -a /Applications/Emacs.app SparkleAppCast.xml
     read
 #    scp $1.html SparkleAppCast.xml Miro\ Video\ Converter-$1.dmg root@192.168.0.2://var/www/MiroVideoConverter/mac/.
     echo scp Miro\ Video\ Converter-$1.dmg $1.html SparkleAppCast.xml pculture@ftp-osl.osuosl.org:data/mirovideoconverter$testing/mac/.

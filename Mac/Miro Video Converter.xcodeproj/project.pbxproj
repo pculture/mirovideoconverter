@@ -29,8 +29,8 @@
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
 		6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */; };
-		6AC9C16413D890760086EE53 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC9C16313D890760086EE53 /* Sparkle.framework */; };
-		6AC9C16513D890970086EE53 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AC9C16313D890760086EE53 /* Sparkle.framework */; };
+		6AAF8D30145A018A00BF890B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AAF8D2F145A018A00BF890B /* Sparkle.framework */; };
+		6AAF8D31145A047D00BF890B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AAF8D2F145A018A00BF890B /* Sparkle.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -42,7 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6AC9C16513D890970086EE53 /* Sparkle.framework in CopyFiles */,
+				6AAF8D31145A047D00BF890B /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +84,7 @@
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
 		6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ffmpeg_presets; sourceTree = SOURCE_ROOT; };
-		6AC9C16313D890760086EE53 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		6AAF8D2F145A018A00BF890B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -94,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AC9C16413D890760086EE53 /* Sparkle.framework in Frameworks */,
+				6AAF8D30145A018A00BF890B /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4F0DCCBF117DB2EA00A27EB7 /* ScriptingBridge.framework in Frameworks */,
 			);
@@ -147,8 +147,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6AAF8D2F145A018A00BF890B /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				6AC9C16313D890760086EE53 /* Sparkle.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
@@ -274,7 +274,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp ffmpeg build/Release/Miro\\ Video\\ Converter.app/Contents/Resources";
+			shellScript = "env >~/env\ncp ffmpeg \"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)\"®";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -329,6 +329,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -345,14 +346,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Sparkle 1.5b6/With Garbage Collection\"",
-					"\"$(SRCROOT)\"",
-					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
-					"\"$(DEVELOPER_DIR)/Sparkle\"",
-					"\"$(SRCROOT)/../../Sparkle 1\"",
-				);
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -364,14 +357,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Sparkle 1.5b6/With Garbage Collection\"",
-					"\"$(SRCROOT)\"",
-					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
-					"\"$(DEVELOPER_DIR)/Sparkle\"",
-					"\"$(SRCROOT)/../../Sparkle 1\"",
-				);
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -383,14 +368,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Sparkle 1.5b6/With Garbage Collection\"",
-					"\"$(SRCROOT)\"",
-					"\"$(DEVELOPER_DIR)/Sparkle/With Garbage Collection\"",
-					"\"$(DEVELOPER_DIR)/Sparkle\"",
-					"\"$(SRCROOT)/../../Sparkle 1\"",
-				);
 				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = "Miro Video Converter";
@@ -402,6 +379,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -419,6 +397,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = G5;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

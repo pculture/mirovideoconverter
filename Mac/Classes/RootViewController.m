@@ -493,8 +493,11 @@
 
   // time updates: time= for ffmpeg
   float curTime = 0;
-  if(strlen(buf) > strlen("time=")+1 && (p=strstr(buf,"time=")))
-    sscanf(p+strlen("time="),"%f", &curTime);
+  if(strlen(buf) > strlen("time=00:00:00.00")+1 && (p=strstr(buf,"time="))) {
+    float hours, minutes, seconds;
+    sscanf(p+strlen("time="),"%f:%f:%f", &hours, &minutes, &seconds);
+    curTime = hours*3600+minutes*60+seconds;
+  }
   // "position": for ffpeg2theora
   if(strlen(buf) > strlen("\"position\":")+1 && (p=strstr(buf,"\"position\":")))
     sscanf(p+strlen("\"position\":"),"%f", &curTime);

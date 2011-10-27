@@ -3,6 +3,8 @@
 // Latest build: 11/8/2010
 //
 
+// Note: there has been another build on 10/27/2011.  As a result, libvpx, x264, and ffmpeg are out of date in this folder, as well as their build files and the main build file.
+
 Source code tarballs and build procedure:
 This directory contains the ffmpeg source code and third party library source code used to compile a statically linked universal version of ffmpeg for OS X, including i386, x86_64, and ppc (32 bit) architectures.  Each source project has a corresponding build file and tarball.  Consult the build file for OS X specific changes to the build process used to compile that library.
 The script mainbuild.sh compiles each of the source libraries in the proper order and creates the final universal binary.

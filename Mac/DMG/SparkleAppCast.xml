@@ -6,6 +6,18 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
        <item>
+          <title>Version 2.6</title>
+          <sparkle:releaseNotesLink>
+            http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/2.6.html
+          </sparkle:releaseNotesLink>
+          <pubDate>Thu, 27 Oct 2011 17:54:00 -0400</pubDate>
+          <enclosure url="http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/Miro Video Converter-2.6.dmg"
+      	       sparkle:version="2.6"
+      	       sparkle:dsaSignature="MC4CFQDHTZhgZZm8EZj/MCbZWUVdroEkYQIVAJdxERs6LoEkz2jI3wdDI3WN8Q/r"
+      	       length="22142976"
+      	       type="application/octet-stream"  />
+       </item>
+       <item>
           <title>Version 2.5</title>
           <sparkle:releaseNotesLink>
             http://ftp.osuosl.org/pub/pculture.org/mirovideoconverter/mac/2.5.html
