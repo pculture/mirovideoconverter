@@ -1,0 +1,3 @@
+#!/bin/bash
+cp ffmpeg_appstore ffmpeg
+cp ffmpeg2theora_appstore ffmpeg2theora

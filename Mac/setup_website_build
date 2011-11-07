@@ -1,0 +1,4 @@
+#!/bin/bash
+cp ffmpeg_website ffmpeg
+cp ffmpeg2theora_website ffmpeg2theora
+

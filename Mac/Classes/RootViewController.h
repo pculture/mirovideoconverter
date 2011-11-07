@@ -25,10 +25,6 @@
 //  Created by C Worth on 2/18/10.
 //
 
-// Comment out to build regular version
-// Appstore version removes check for updates menu item
-//#define APPSTORE_VERSION
-
 #import <Cocoa/Cocoa.h>
 #import "DropBoxView.h"
 #import "CWTaskWatcher.h"

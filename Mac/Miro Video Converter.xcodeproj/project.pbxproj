@@ -25,12 +25,11 @@
 		4FA02DB3117B97C2004DE43A /* Miro_Video_ConverterAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02DA9117B97C2004DE43A /* Miro_Video_ConverterAppDelegate.m */; };
 		4FA02DB4117B97C2004DE43A /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02DAB117B97C2004DE43A /* RootViewController.m */; };
 		4FA02DB5117B97C2004DE43A /* VideoConversionCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02DAD117B97C2004DE43A /* VideoConversionCommands.m */; };
-		4FA4090A11550D4900241C47 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 4FA4090911550D4900241C47 /* ffmpeg */; };
 		4FFC7D6B113B185200CC16E2 /* libx264hq.ffpreset in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */; };
 		4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */; };
+		6A8B5D9E1465EEA80014070B /* Miro_Video_Converter-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B5D9D1465EEA80014070B /* Miro_Video_Converter-Info.plist */; };
+		6A8B5DA01465EF050014070B /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B5D9F1465EF050014070B /* ffmpeg */; };
 		6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */; };
-		6AAF8D30145A018A00BF890B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AAF8D2F145A018A00BF890B /* Sparkle.framework */; };
-		6AAF8D31145A047D00BF890B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6AAF8D2F145A018A00BF890B /* Sparkle.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -42,7 +41,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6AAF8D31145A047D00BF890B /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,12 +78,11 @@
 		4FA02DAB117B97C2004DE43A /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Classes/RootViewController.m; sourceTree = "<group>"; };
 		4FA02DAC117B97C2004DE43A /* VideoConversionCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoConversionCommands.h; path = Classes/VideoConversionCommands.h; sourceTree = "<group>"; };
 		4FA02DAD117B97C2004DE43A /* VideoConversionCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoConversionCommands.m; path = Classes/VideoConversionCommands.m; sourceTree = "<group>"; };
-		4FA4090911550D4900241C47 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = libx264hq.ffpreset; path = "../MSWindows/Windows/ffmpeg-bin/libx264hq.ffpreset"; sourceTree = SOURCE_ROOT; };
 		4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg2theora; sourceTree = "<group>"; };
+		6A8B5D9D1465EEA80014070B /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
+		6A8B5D9F1465EF050014070B /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ffmpeg_presets; sourceTree = SOURCE_ROOT; };
-		6AAF8D2F145A018A00BF890B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Miro_Video_Converter-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Miro Video Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Miro Video Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -94,7 +91,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AAF8D30145A018A00BF890B /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4F0DCCBF117DB2EA00A27EB7 /* ScriptingBridge.framework in Frameworks */,
 			);
@@ -126,8 +122,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6A8B5D9F1465EF050014070B /* ffmpeg */,
+				6A8B5D9D1465EEA80014070B /* Miro_Video_Converter-Info.plist */,
 				6AAB07F6128A1DDB00C3EB5F /* ffmpeg_presets */,
-				4FA4090911550D4900241C47 /* ffmpeg */,
 				4FFC7D7B113B19AD00CC16E2 /* ffmpeg2theora */,
 				4FFC7D6A113B185200CC16E2 /* libx264hq.ffpreset */,
 				4F9F62CF1135B1B40040352C /* bg.jpg */,
@@ -135,7 +132,7 @@
 				4F9D10E9114EBE9F00CB443E /* icon.icns */,
 				4F43CB5B112DEAB900E4B728 /* device.png */,
 				4F43CB5C112DEAB900E4B728 /* video.png */,
-				8D1107310486CEB800E47090 /* Miro_Video_Converter-Info.plist */,
+				256AC3F00F4B6AF500CF3369 /* Miro_Video_Converter_Prefix.pch */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				4F9F62D61135B2970040352C /* Converting.xib */,
@@ -147,7 +144,6 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6AAF8D2F145A018A00BF890B /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
@@ -175,7 +171,6 @@
 				4FA02DAB117B97C2004DE43A /* RootViewController.m */,
 				4FA02DAC117B97C2004DE43A /* VideoConversionCommands.h */,
 				4FA02DAD117B97C2004DE43A /* VideoConversionCommands.m */,
-				256AC3F00F4B6AF500CF3369 /* Miro_Video_Converter_Prefix.pch */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -255,8 +250,9 @@
 				4FFC7D7C113B19AD00CC16E2 /* ffmpeg2theora in Resources */,
 				4F6948B4114A9985001514E5 /* dsa_pub.pem in Resources */,
 				4F9D10EA114EBE9F00CB443E /* icon.icns in Resources */,
-				4FA4090A11550D4900241C47 /* ffmpeg in Resources */,
 				6AAB0816128A1DDB00C3EB5F /* ffmpeg_presets in Resources */,
+				6A8B5D9E1465EEA80014070B /* Miro_Video_Converter-Info.plist in Resources */,
+				6A8B5DA01465EF050014070B /* ffmpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,18 +343,46 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
+				INFOPLIST_FILE = "Miro_Video_Converter-Info-Website.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = "Miro Video Converter";
 			};
 			name = DebugTargeted;
+		};
+		6A8B5D951465ECCB0014070B /* Release Appstore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_MODEL_TUNING = G5;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SDKROOT = macosx;
+			};
+			name = "Release Appstore";
+		};
+		6A8B5D961465ECCB0014070B /* Release Appstore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = APPSTORE_VERSION;
+				INFOPLIST_FILE = "Miro_Video_Converter-Info-Appstore.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "Miro Video Converter";
+			};
+			name = "Release Appstore";
 		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
+				INFOPLIST_FILE = "Miro_Video_Converter-Info-Website.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = "Miro Video Converter";
 			};
@@ -368,7 +392,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				INFOPLIST_FILE = "Miro_Video_Converter-Info.plist";
+				INFOPLIST_FILE = "Miro_Video_Converter-Info-Website.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = "Miro Video Converter";
 			};
@@ -418,6 +442,7 @@
 				C01FCF4B08A954540054247B /* Debug */,
 				4FFC610411540A2B00EF9EE6 /* DebugTargeted */,
 				C01FCF4C08A954540054247B /* Release */,
+				6A8B5D961465ECCB0014070B /* Release Appstore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -428,6 +453,7 @@
 				C01FCF4F08A954540054247B /* Debug */,
 				4FFC610311540A2B00EF9EE6 /* DebugTargeted */,
 				C01FCF5008A954540054247B /* Release */,
+				6A8B5D951465ECCB0014070B /* Release Appstore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

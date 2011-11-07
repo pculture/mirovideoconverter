@@ -1,6 +1,8 @@
+Website:
+0) run setup_website_build script
+0.5) add sparkle framework
 1) raise version number in plist
-2) make sure building Release
-3) make clean, build, watch for build errors warnings
+2) build scheme release
 4) build and run to make sure installed in directory
 5) ./DmgBuildScript.sh {version}
 6) ./addAndUploadVersion.sh {version}, in the middle of the script:
@@ -12,6 +14,8 @@
 7) Run /Applications version of app and download and install update
 8) Test new behavior
 
-9) Appstore version:  make sure rootviewcontroller.h compiler variable is set correctly
-10) add or remove sparkle framework
+0) run setup_appstore_build script
+0.5 remove sparkle framework
+1) raise version number in plist
+2) build scheme release appstore
 11) link to correct version of ffmpeg
