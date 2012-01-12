@@ -3,23 +3,31 @@ Intro
 ---------
 Miro Video Converter converts almost any video to MP4, Ogg Theora, or a specific phone or iPod.
 
+Supported Formats
+    *Theora
+    *WebM (vp8)
+    *Mp4 Video
+    *Mp3 (Audio Only)
+
 Supported Devices
 Android Phones
 
-    * Droid / Milestone
-    * Nexus One
+    * Behold II
+    * Cliq / DEXT
+    * Droid
+    * Eris / Desire
     * G1
-    * Magic / myTouch
-    * Droid Eris
     * HTC Hero
-    * Cliq
-    * Behold
+    * Magic / MyTouch
+    * Nexus One
 
 Apple Devices
 
-    * iPhone / iPod Touch
+    * iPad
+    * iPhone
     * iPod Classic
     * iPod Nano
+    * iPod Touch
 
 Other
 
@@ -51,9 +59,9 @@ FFMPEG and FFMPEG2Theora
 
   The OS X version of FFMPEG was created by compiling recent (as of March, 2010) snapshots of the ffmpeg source code (from www.ffmpeg.org), and snapshots of various 3rd party libraries, for each Mac architecture type (x86_64, i386, ppc) and linking them together into three ffmpeg binaries, and finally combining the binaries to make a universal OS X executable.  
 
-  The Windows version is a statically compiled version of FFMPEG (from ffmpeg.arrozcru.org/builds).
+  The Windows version is a statically compiled version of FFMPEG (from http://ffmpeg.zeranoe.com/builds/).
 
-  FFMPEG2Theora, version 0.26 was obtained precompiled from xiph.org.
+  FFMPEG2Theora, version 0.28 was obtained precompiled from http://v2v.cc/~j/ffmpeg2theora/.
 
   For licensing information on FFMPEG and FFMPEG2Theora, see the coresoponding LICENSE files in this directory.
 

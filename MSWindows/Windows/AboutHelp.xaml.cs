@@ -24,7 +24,7 @@ namespace Mirosubs.Converter.Windows {
             SProcess.Start(@"http://getsatisfaction.com/participatoryculturefoundation/products/participatoryculturefoundation_miro_video_converter");
         }
         private void ViewSourceCode(object sender, EventArgs e) {
-            SProcess.Start(@"https://github.com/8planes/mirovideoconverter");
+            SProcess.Start(@"https://github.com/pculture/mirovideoconverter");
         }
         private void ViewPCF(object sender, EventArgs e) {
             SProcess.Start(@"http://pculture.org/");
