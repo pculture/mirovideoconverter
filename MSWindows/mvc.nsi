@@ -1,5 +1,5 @@
 ; Passed in from command line:
-;  CONFIG_VERSION        eg, "0.8.0"
+!define  CONFIG_VERSION "2.8.0"
 
 ; TODO: Add MIROBAR_EXE
 !define CONFIG_PROJECT_URL "http://www.mirovideoconverter.com/"
@@ -18,6 +18,17 @@
 !define MUI_ICON "${CONFIG_ICON}"
 !define MUI_UNICON "${CONFIG_ICON}"
 
+;INCLUDES
+!addplugindir ".\"
+!include "MUI2.nsh"
+!include "LogicLib.nsh"
+!include "FileFunc.nsh"
+!include "nsDialogs.nsh"
+!include "DotNet.nsh"
+
+!define PRODUCT_NAME "${CONFIG_LONG_APP_NAME}"
+
+;GENERAL SETTINGS
 Name "${CONFIG_LONG_APP_NAME}"
 OutFile "${CONFIG_OUTPUT_FILE}"
 InstallDir "$PROGRAMFILES\${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
@@ -30,233 +41,6 @@ CRCCheck on
 Icon "${CONFIG_ICON}"
 
 Var STARTMENU_FOLDER
-Var ZUGO_HOMEPAGE
-Var ZUGO_TOOLBAR
-Var ZUGO_DEFAULT_SEARCH
-Var ZUGO_FLAGS
-Var ZUGO_COUNTRY
-Var ZUGO_PROVIDER
-Var ZUGO_TERMS
-
-!define MUI_WELCOMEPAGE_TITLE "Welcome to ${CONFIG_LONG_APP_NAME}!"
-;!define MUI_WELCOMEPAGE_TEXT "To get started, choose an easy or a custom install process and then click 'Install'."
-
-!include "MUI.nsh"
-!include "FileFunc.nsh"
-!include nsDialogs.nsh
-!include LogicLib.nsh
-!include "DotNet.nsh"
-
-!insertmacro GetParameters
-!insertmacro GetOptions
-!insertmacro un.GetParameters
-!insertmacro un.GetOptions
-
-!ifdef MIROBAR_EXE
-  ReserveFile "${MIROBAR_EXE}"
-!endif
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Pages                                                                     ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Welcome page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE   "add_radio_buttons"
-!define MUI_PAGE_CUSTOMFUNCTION_SHOW  "fix_background_color"
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE "check_radio_buttons"
-
-!define MUI_COMPONENTSPAGE_NODESC
-!insertmacro MUI_PAGE_WELCOME
-
-Function add_radio_buttons
-; if no reinstall or advanced, just start right up
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Settings" "NumFields" "14"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Settings" "NextButtonText" "Next >"
-
-  !ifdef MIROBAR_EXE
-
-  StrCmp $ZUGO_COUNTRY "US" +5
-  StrCpy $ZUGO_TOOLBAR "0"
-  StrCpy $ZUGO_DEFAULT_SEARCH "0"
-  StrCpy $ZUGO_HOMEPAGE "0"
-  Goto after_zugo
-  StrCmp "$ZUGO_TOOLBAR$ZUGO_DEFAULT_SEARCH$ZUGO_HOMEPAGE" "" 0 toolbar_options
-
-  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "${MIROBAR_EXE}"
-  StrCmp $ZUGO_COUNTRY "US" 0 zugo_int
-  ;MessageBox MB_OK "$PLUGINSDIR\${MIROBAR_EXE} /OFFERED /TOOLBAR /DEFAULTSTART /DEFAULTSEARCH $ZUGO_FLAGS"
-  Exec "$PLUGINSDIR\${MIROBAR_EXE} /OFFERED /TOOLBAR /DEFAULTSTART /DEFAULTSEARCH $ZUGO_FLAGS"
-  StrCpy $ZUGO_TOOLBAR "1"
-  StrCpy $ZUGO_DEFAULT_SEARCH "1"
-  StrCpy $ZUGO_HOMEPAGE "1"
-  Goto toolbar_options
-  
-toolbar_options:
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Type"   "label"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Text"   "Included Components"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Left"   "120"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Top"    "100"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 6" "Bottom" "110"
-
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Type"   "checkbox"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Text"   "${CONFIG_LONG_APP_NAME} core (required)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Left"   "120"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Top"    "115"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Bottom" "125"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "State"  "1"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 7" "Flags"  "DISABLED"
-
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Type"   "checkbox"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Text"   "MSN Homepage (powered by $ZUGO_PROVIDER)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Left"   "120"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Top"    "125"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "Bottom" "135"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "State"  "0"
-  StrCmp $ZUGO_HOMEPAGE "0" +2
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 8" "State"  "1"
-
-  StrCmp $ZUGO_COUNTRY "US" 0 no_toolbar
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Type"   "checkbox"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Text"   "StartNow Toolbar (powered by $ZUGO_PROVIDER)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Left"   "120"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Top"    "145"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "Bottom" "155"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "State"  "0"
-  StrCmp $ZUGO_TOOLBAR "0" +2
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 9" "State"  "1"
-
-no_toolbar:
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Type"   "checkbox"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Text"   "Set $ZUGO_PROVIDER as default search engine"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Left"   "120"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Top"    "135"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "Bottom" "145"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "State"  "0"
-  StrCmp $ZUGO_DEFAULT_SEARCH "0" +2
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 10" "State"  "1"
-
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Type"   "label"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Text"   "These optional search components help support our non-profit work and can be uninstalled at any time."
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Left"   "132"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Top"    "155"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 12" "Bottom" "175"
-
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Type"   "label"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Text"   "By clicking 'Next' you are agreeing to our toolbar and search"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Left"   "132"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Top"    "175"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 13" "Bottom" "183"
-
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Type"   "link"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Text"   "terms and conditions"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Left"   "132"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Right"  "315"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Top"    "183"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "Bottom" "193"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 14" "State"  "$ZUGO_TERMS"
-
-
-
-after_zugo:
-!endif
-FunctionEnd
-
-Function fix_background_color
-
-  Push $0
-  StrCpy $R1 1203
-  loop:
-    GetDlgItem $0 $MUI_HWND $R1
-    SetCtlColors $0 "" 0xFFFFFF
-    IntOp $R1 $R1 + 1
-    IntCmp $R1 1214 done
-    Goto loop
-  done:
-
-  CreateFont $R1 "Arial" "10" "600" ; bold
-  GetDlgItem $0 $MUI_HWND 1205
-  SendMessage $0 ${WM_SETFONT} $R1 0
-  GetDlgItem $0 $MUI_HWND 1210
-  SendMessage $0 ${WM_SETFONT} $R1 0
-
-  CreateFont $R1 "Arial" "7" "0" ; small
-  GetDlgItem $0 $MUI_HWND 1211
-  SendMessage $0 ${WM_SETFONT} $R1 0
-  GetDlgItem $0 $MUI_HWND 1212
-  SendMessage $0 ${WM_SETFONT} $R1 0
-
-  CreateFont $R1 "Arial" "7" "0" /UNDERLINE
-  GetDlgItem $0 $MUI_HWND 1213
-  SendMessage $0 ${WM_SETFONT} $R1 0
-  SetCtlColors $0 0x0000FF 0xFFFFFF
-  Pop $0
-FunctionEnd
-
-Function check_radio_buttons
-  StrCmp $ZUGO_COUNTRY "US" 0 end
-  ReadINIStr $ZUGO_HOMEPAGE "$PLUGINSDIR\ioSpecial.ini" "Field 8" "State"
-  StrCmp $ZUGO_COUNTRY "US" 0 +2 ; skip toolbar options if we're international
-  ReadINIStr $ZUGO_TOOLBAR "$PLUGINSDIR\ioSpecial.ini" "Field 9" "State"
-  ReadINIStr $ZUGO_DEFAULT_SEARCH "$PLUGINSDIR\ioSpecial.ini" "Field 10" "State"
-  StrCmp "$ZUGO_HOMEPAGE$ZUGO_TOOLBAR$ZUGO_DEFAULT_SEARCH" "000" 0 end
-  StrCpy $R1 "search toolbar"
-  StrCmp "$ZUGO_COUNTRY" "US" +2
-  StrCpy $R1 "start page"
-  MessageBox MB_YESNO|MB_USERICON|MB_TOPMOST "Help Support Miro!$\r$\n$\r$\nMiro is a non-profit organization, making free and open software for a better internet.  To afford to keep Miro available, we rely on partnerships with search engines.$\r$\n$\r$\nBy trying a Miro $R1, you can support our open mission; we get a bit of revenue for each install.$\r$\n$\r$\nWould you be willing to try this optional $R1? You can uninstall it at any time." IDNO end
-  StrCmp "$ZUGO_COUNTRY" "US" +3
-  StrCpy $ZUGO_HOMEPAGE "1"
-  Goto +2
-  StrCpy $ZUGO_TOOLBAR "1"
-end:
-FunctionEnd
-
-; License page
-; !insertmacro MUI_PAGE_LICENSE "license.txt"
-
-; Installation page
-; Not 100% sure but this should be the version that corresponds to 3.5 SP1
-!define DOTNET_VERSION "3.5.30729.01"
-Section "Main Section (Required)"
-  SectionIn RO
-  !insertmacro CheckDotNET ${DOTNET_VERSION}
-SectionEnd
-!insertmacro MUI_PAGE_INSTFILES
-
-; Finish page
-!define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_TITLE "${CONFIG_LONG_APP_NAME} has been installed!"
-!define MUI_FINISHPAGE_TITLE_3LINES
-!define MUI_FINISHPAGE_RUN_TEXT "Run ${CONFIG_LONG_APP_NAME}"
-!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
-!define MUI_FINISHPAGE_LINK "${CONFIG_PUBLISHER} homepage."
-!define MUI_FINISHPAGE_LINK_LOCATION "${CONFIG_PROJECT_URL}"
-!define MUI_FINISHPAGE_NOREBOOTSUPPORT
-!insertmacro MUI_PAGE_FINISH
-
-; Uninstaller pages
-!insertmacro MUI_UNPAGE_CONFIRM
-
-!insertmacro MUI_UNPAGE_INSTFILES
-!insertmacro MUI_UNPAGE_FINISH
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Languages                                                                 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-!insertmacro MUI_LANGUAGE "English" # first language is the default language
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Reserve files (interacts with solid compression to speed up installation) ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Macros
@@ -298,8 +82,15 @@ FunctionEnd
 ;; Sections                                                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-Section "-${CONFIG_LONG_APP_NAME}"
+!define DOTNET_VERSION "3.5.30729.01"
+Section "${CONFIG_LONG_APP_NAME} (required)" COM1 ;must be labelled COM1, you can add other sections COM2-COM9 if you want to
+  SectionIn RO
+  SetDetailsPrint both
+  !insertmacro CheckDotNET ${DOTNET_VERSION}
+SectionEnd
 
+Section "-${CONFIG_LONG_APP_NAME}" COM2
+  SectionIn RO
   ClearErrors
   SetShellVarContext all
 
@@ -327,37 +118,6 @@ files_ok:
 
 SectionEnd
 
-Function un.onInit
-  StrCpy $STARTMENU_FOLDER "${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
-FunctionEnd
-
-Function .onInit
-  StrCpy $STARTMENU_FOLDER "${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
-  StrCpy $ZUGO_PROVIDER "Bing™"
-  StrCpy $ZUGO_TERMS "http://www.startnow.com/terms/bing/"
-
-  ${GetOptions} "$R0" "/FORCEUS" $R1
-  IfErrors +4 0
-  StrCpy $ZUGO_COUNTRY "US"
-  StrCpy $ZUGO_FLAGS "/FORCEUS"
-  ClearErrors
-  ${GetOptions} "$R0" "/FORCESW" $R1
-  IfErrors +3 0
-  StrCpy $ZUGO_COUNTRY "SW"
-  ClearErrors
-
-  ; get the country Zugo thinks we're in
-  StrCmp $ZUGO_COUNTRY "" 0 +8
-  NSISdl::download_quiet /TIMEOUT=10000 /NOIEPROXY "http://track.zugo.com/getCountry/" "$PLUGINSDIR\getCountry" /END ; requires content length to be set!
-  Pop $R0 ; pop the request status
-  ClearErrors
-  FileOpen $0 $PLUGINSDIR\getCountry r
-  IfErrors +3
-  FileRead $0 $ZUGO_COUNTRY
-  FileClose $0
-
-FunctionEnd
-
 Function .onInstSuccess
 !ifdef MIROBAR_EXE
 ;StrCmp "$ZUGO_COUNTRY" "US" 0 +2
@@ -380,7 +140,7 @@ StrCpy $ZUGO_FLAGS "$ZUGO_FLAGS /FINISHURL='http://www.getmiro.com/welcome/?$R1'
 zugo_install:
 StrCmp "$ZUGO_FLAGS" "" end
 
-;MessageBox MB_OK "$PLUGINSDIR\${MIROBAR_EXE} $ZUGO_FLAGS"
+MessageBox MB_OK "$PLUGINSDIR\${MIROBAR_EXE} $ZUGO_FLAGS"
 Exec "$PLUGINSDIR\${MIROBAR_EXE} $ZUGO_FLAGS"
 end:
 !endif
@@ -426,3 +186,37 @@ Section "Uninstall" SEC91
 
   SetAutoClose true
 SectionEnd
+
+;INITIALIZATION
+Function .onInit
+         StrCpy $STARTMENU_FOLDER "${CONFIG_PUBLISHER}\${CONFIG_LONG_APP_NAME}"
+        SectionSetFlags ${COM1} 25 ;make the main component ticked (1), bold (8) and read-only (16)
+FunctionEnd
+
+;PAGE SETUP
+!define MUI_ABORTWARNING ;a confirmation message should be displayed if the user clicks cancel
+
+!define MUI_WELCOMEFINISHPAGE_BITMAP "modern-wizard.bmp"
+!insertmacro MUI_PAGE_WELCOME ;welcome page
+!insertmacro MUI_PAGE_INSTFILES ;install files page
+; Finish page
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_TITLE "${CONFIG_LONG_APP_NAME} has been installed!"
+!define MUI_FINISHPAGE_TITLE_3LINES
+!define MUI_FINISHPAGE_RUN_TEXT "Run ${CONFIG_LONG_APP_NAME}"
+!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
+!define MUI_FINISHPAGE_LINK "${CONFIG_PUBLISHER} homepage."
+!define MUI_FINISHPAGE_LINK_LOCATION "${CONFIG_PROJECT_URL}"
+!define MUI_FINISHPAGE_NOREBOOTSUPPORT
+!insertmacro MUI_PAGE_FINISH
+
+; Uninstaller pages
+!insertmacro MUI_UNPAGE_CONFIRM
+
+!insertmacro MUI_UNPAGE_INSTFILES
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "modern-wizard.bmp"
+!insertmacro MUI_UNPAGE_FINISH
+
+;LANGUAGE FILES
+!define MUI_LANGSTRINGS
+!insertmacro MUI_LANGUAGE "English"

@@ -28,6 +28,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
     abstract class ConversionFormat {
         public static readonly ConversionFormat[] All = new ConversionFormat[] { 
             AndroidVideoFormat.G1, 
+            CowonVideoFormat.Cowon,
+            AmazonVideoFormat.KindleFire,
             PSPVideoFormat.PSP, 
             TheoraVideoFormat.Theora, 
             MP3Format.MP3,
@@ -44,7 +46,9 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             AppleVideoFormat.iPad,
             AppleVideoFormat.iPodTouch, 
             AppleVideoFormat.iPodNano, 
-            AppleVideoFormat.iPodClassic
+            AppleVideoFormat.iPodClassic,
+            AppleVideoFormat.appleTV,
+            AppleVideoFormat.appleUniversal
         };
 
         public static ConversionFormat FindByDisplayName(string displayName) {
