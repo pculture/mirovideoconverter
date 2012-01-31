@@ -3,6 +3,8 @@
 // Latest build: 11/8/2010
 //
 
+//Note: there has been another build in January 2012. Due to an alleged bug in gcc a few source files in ffmpeg now must be compiled with clang instead of gcc for the i386 architecture. Several third party libraries have been incorporated into ffmpeg itself.  Some of the tarballs and binaries below may be out of date. However the scripts may still be a useful resource.  Feel free to write to me for help at colin@8planes.com.
+ 
 // Note: there has been another build on 10/27/2011.  As a result, libvpx, x264, and ffmpeg are out of date in this folder, as well as their build files and the main build file.
 
 Source code tarballs and build procedure:
