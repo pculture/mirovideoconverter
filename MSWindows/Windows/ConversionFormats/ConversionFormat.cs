@@ -42,6 +42,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             AndroidVideoFormat.Hero, 
             AndroidVideoFormat.CliqDEXT, 
             AndroidVideoFormat.BeholdII, 
+            AndroidVideoFormat.GalaxyTab,
+            AndroidVideoFormat.Xoom,
             AppleVideoFormat.iPhone, 
             AppleVideoFormat.iPad,
             AppleVideoFormat.iPodTouch, 

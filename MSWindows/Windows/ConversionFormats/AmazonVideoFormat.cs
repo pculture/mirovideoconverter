@@ -24,26 +24,34 @@ using System.Linq;
 using System.Text;
 using Mirosubs.Converter.Windows.Process;
 
-namespace Mirosubs.Converter.Windows.ConversionFormats
-{
-    class AmazonVideoFormat : ConversionFormat
-    {
+namespace Mirosubs.Converter.Windows.ConversionFormats {
+    class AmazonVideoFormat : ConversionFormat {
+        private static readonly VideoSize DEFAULT_DIM =
+            new VideoSize() { Width = 1024, Height = 600 };
+
         public readonly static ConversionFormat KindleFire =
             new AmazonVideoFormat("Kindle Fire", "kindlefire");
+        
+        private VideoSize size;
 
         private AmazonVideoFormat(string displayName, string filePart)
-            : base(displayName, filePart, "mp4", VideoFormatGroup.Other)
-        {
+            : this(displayName, filePart, DEFAULT_DIM) {
         }
 
-        public override string GetArguments(string inputFileName, string outputFileName)
-        {
-            return string.Format(
-                "-i \"{0}\" -acodec aac -ab 96k -vcodec libx264 -vpre slow -f mp4 -crf 22" +
-                " -s 1024x600 -strict experimental \"{1}\"", inputFileName, outputFileName);
+        private AmazonVideoFormat(string displayName,
+            string filePart, VideoSize size) 
+            : base(displayName, filePart, "mp4", VideoFormatGroup.Other) {
+            this.size = size;
         }
-        public override IVideoConverter MakeConverter(string fileName)
-        {
+
+        public override string GetArguments(string inputFileName, string outputFileName) {
+            string sizeArg = GetSizeArgument(inputFileName, this.size);
+            return string.Format(
+                "-i \"{0}\" -acodec aac -ab 96k {1} -vcodec libx264 -vpre slow -f mp4 -crf 22" +
+                " -strict experimental \"{2}\"", 
+                inputFileName, sizeArg, outputFileName);
+        }
+        public override IVideoConverter MakeConverter(string fileName) {
             return new FFMPEGVideoConverter(fileName, this);
         }
     }

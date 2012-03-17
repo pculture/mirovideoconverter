@@ -74,11 +74,22 @@ namespace Mirosubs.Converter.Windows.Process {
             IssueOutputEvent(line);
             if (updateRegex.IsMatch(line)) {
                 Match m = updateRegex.Match(line);
-                float duration = float.Parse(m.Groups[1].Value, 
+                float position;
+                float duration;
+                try
+                {
+                    position = float.Parse(m.Groups[2].Value,
                     NumberFormatInfo.InvariantInfo);
-                float position = float.Parse(m.Groups[2].Value, 
+                } catch (OverflowException) {
+                    position = 0.0f;
+                } finally {
+                    duration = float.Parse(m.Groups[1].Value,
                     NumberFormatInfo.InvariantInfo);
-                IssueConvertProgressEvent((int)(100 * position / duration));
+                }            
+                int progress = (int)(100 * position / duration);
+                if (progress < 0)
+                    progress = 999;
+                IssueConvertProgressEvent(progress);
             }
             else if (finishedRegex.IsMatch(line))
                 IssueFinishedEvent();

@@ -118,8 +118,16 @@ namespace Mirosubs.Converter.Windows {
         }
         private void converter_ConvertProgress(object sender, VideoConvertProgressArgs e) {
             if (this.Dispatcher.CheckAccess()) {
-                progressLabel.Content = string.Format("{0}% done", e.Progress);
-                progressBar.Value = e.Progress;
+                if (e.Progress == 999)
+                {
+                    progressLabel.Content = string.Format("Analyzing...");
+                    progressBar.Value = 0;
+                }
+                else
+                {
+                    progressLabel.Content = string.Format("{0}% done", e.Progress);
+                    progressBar.Value = e.Progress;
+                }
                 if (TaskbarManager.IsPlatformSupported) {
                     TaskbarManager.Instance.SetProgressState(
                         TaskbarProgressBarState.Normal);

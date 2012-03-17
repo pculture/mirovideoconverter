@@ -33,6 +33,10 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new VideoSize() { Width = 800, Height = 480 };
         private static readonly VideoSize DROID_DIM =
             new VideoSize() { Width = 854, Height = 480 };
+        private static readonly VideoSize GALAXY_TAB_DIM =
+            new VideoSize() { Width = 1024, Height = 800 };
+        private static readonly VideoSize XOOM_DIM =
+            new VideoSize() { Width = 1280, Height = 800 };
 
         public readonly static ConversionFormat G1 =
             new AndroidVideoFormat("G1", "g1");
@@ -52,6 +56,10 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new AndroidVideoFormat("Cliq / DEXT", "cliq");
         public readonly static ConversionFormat BeholdII =
             new AndroidVideoFormat("Behold II", "behold");
+        public readonly static ConversionFormat GalaxyTab =
+            new AndroidVideoFormat("Galaxy Tab", "galaxytab", GALAXY_TAB_DIM);
+        public readonly static ConversionFormat Xoom =
+            new AndroidVideoFormat("Motorola Xoom", "xoom", XOOM_DIM);
 
         private VideoSize size;
 
