@@ -33,12 +33,17 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new VideoSize() { Width = 800, Height = 480 };
         private static readonly VideoSize DROID_DIM =
             new VideoSize() { Width = 854, Height = 480 };
+        private static readonly VideoSize PYRAMID_DIM =
+            new VideoSize() { Width = 960, Height = 540 };
 
         public readonly static ConversionFormat G1 =
             new AndroidVideoFormat("G1", "g1");
         public readonly static ConversionFormat NexusOne =
             new AndroidVideoFormat("Nexus One", "nexusone",
                 NEXUS_DIM);
+        public readonly static ConversionFormat HTCSensation =
+            new AndroidVideoFormat("HTC Sensation", "htcsensation",
+                PYRAMID_DIM);
         public readonly static ConversionFormat MagicMyTouch =
             new AndroidVideoFormat("Magic / myTouch", "magic");
         public readonly static ConversionFormat Droid =
