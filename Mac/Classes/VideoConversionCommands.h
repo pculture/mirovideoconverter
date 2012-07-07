@@ -46,6 +46,7 @@ extern CGSize screenSizes[];
 -(NSString *) fFMPEGOutputFileForFile:(NSString *)inputFile andDevice:(NSString *)device;
 -(NSArray *) fFMPEGArgumentsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) formatQueryArgsForFile:(NSString *)file;
+-(NSArray *) pyramidArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) galaxyArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) xoomArgsForFile:(NSString *)file andDevice:(NSString *)device;
 -(NSArray *) nexusArgsForFile:(NSString *)file andDevice:(NSString *)device;
