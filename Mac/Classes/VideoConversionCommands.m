@@ -30,11 +30,11 @@
 @implementation VideoConversionCommands
 @synthesize screenSize;
 
-char *deviceNames[] = { "Android Devices", " Galaxy Tab", " Xoom", " Nexus One", " Dream / G1", " Magic / myTouch", " Droid", " Eris / Desire", " Hero", " Cliq / DEXT", " Behold II", nil, "Apple Devices", " iPhone", " iPod Touch", " iPod Nano", " iPod Classic", " iPhone 4 / iPod Touch 4", " iPad", " Apple Universal", nil, "Other Devices and Formats", " Kindle Fire", " Playstation Portable (PSP)", " Theora", " WebM (vp8)", " MP4", " MP3 (Audio only)", nil, nil };
-char *selectors[] = { "Android Devices", "galaxy", "xoom", "nexus", "dream", "magic", "droid", "eris", "hero", "cliq", "behold", nil, "Apple Devices", "ipod", "ipod", "ipod", "ipod", "ipod", "ipod", "ipod", nil, "Other Devices", "fire", "playstation", "theora", "vp8", "mp4", "mp3", nil, nil };
-char *fileExtensions[] = { "Android Devices", "galaxy.mp4", "xoom.mp4", "nexus.mp4", "dream.mp4", "magic.mp4", "droid.mp4", "eris.mp4", "hero.mp4", "cliq.mp4", "behold.mp4", nil, "Apple Devices", "iphone.mp4", "ipod.mp4", "ipod.mp4", "ipod.mp4", "iphone.mp4", "ipad.mp4", "apple.mp4", nil, "Other Devices", "fire.mp4", "psp.mp4", "theora.ogv", "webm", "mp4", "mp3", nil, nil };
-char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Apple Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Other Devices", "ffmpeg", "ffmpeg", "ffmpeg2theora", "ffmpeg", "ffmpeg", "ffmpeg", nil, nil };
-CGSize screenSizes[] = { { 0,0 }, { 1024,800 }, { 1280,800 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,480 }, { 480,320 }, { 480,320 }, { 480,320 }, { 480,320 }, { 0,0 }, { 0,0 }, { 480,320 },  { 480,320 }, { 480,320 }, { 480,320 }, { 640, 480 }, { 1024, 768 }, { 1280, 720 }, { 0,0 }, { 0,0 }, { 1024,600 }, { 480,320 },  { 1024,768 }, { 1024,768 }, { 1024,768 }, { 1024,768 }, { 0,0 }, { 0,0 } };
+char *deviceNames[] = { "Android Devices", " HTC Sensation", " Galaxy Tab", " Xoom", " Nexus One", " Dream / G1", " Magic / myTouch", " Droid", " Eris / Desire", " Hero", " Cliq / DEXT", " Behold II", nil, "Apple Devices", " iPhone", " iPod Touch", " iPod Nano", " iPod Classic", " iPhone 4 / iPod Touch 4", " iPad", " Apple Universal", nil, "Other Devices and Formats", " Kindle Fire", " Playstation Portable (PSP)", " Theora", " WebM (vp8)", " MP4", " MP3 (Audio only)", nil, nil };
+char *selectors[] = { "Android Devices", "pyramid", "galaxy", "xoom", "nexus", "dream", "magic", "droid", "eris", "hero", "cliq", "behold", nil, "Apple Devices", "ipod", "ipod", "ipod", "ipod", "ipod", "ipod", "ipod", nil, "Other Devices", "fire", "playstation", "theora", "vp8", "mp4", "mp3", nil, nil };
+char *fileExtensions[] = { "Android Devices", "pyramid.mp4", "galaxy.mp4", "xoom.mp4", "nexus.mp4", "dream.mp4", "magic.mp4", "droid.mp4", "eris.mp4", "hero.mp4", "cliq.mp4", "behold.mp4", nil, "Apple Devices", "iphone.mp4", "ipod.mp4", "ipod.mp4", "ipod.mp4", "iphone.mp4", "ipad.mp4", "apple.mp4", nil, "Other Devices", "fire.mp4", "psp.mp4", "theora.ogv", "webm", "mp4", "mp3", nil, nil };
+char *converterExecutables[] = { "Android Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Apple Devices", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", "ffmpeg", nil, "Other Devices", "ffmpeg", "ffmpeg", "ffmpeg2theora", "ffmpeg", "ffmpeg", "ffmpeg", nil, nil };
+CGSize screenSizes[] = { { 0,0 }, { 960,540 }, { 1024,800 }, { 1280,800 }, { 800,480 }, { 480,320 }, { 480,320 }, { 854,480 }, { 480,320 }, { 480,320 }, { 480,320 }, { 480,320 }, { 0,0 }, { 0,0 }, { 480,320 },  { 480,320 }, { 480,320 }, { 480,320 }, { 640, 480 }, { 1024, 768 }, { 1280, 720 }, { 0,0 }, { 0,0 }, { 1024,600 }, { 480,320 },  { 1024,768 }, { 1024,768 }, { 1024,768 }, { 1024,768 }, { 0,0 }, { 0,0 } };
 
 -(int) deviceIndex:(NSString *)device {
   int i; BOOL lastNull;
@@ -189,6 +189,10 @@ CGSize screenSizes[] = { { 0,0 }, { 1024,800 }, { 1280,800 }, { 800,480 }, { 480
   [args addObject:@"-i"];
   [args addObject:file];
   return [NSArray arrayWithArray:args];
+}
+
+-(NSArray *) pyramidArgsForFile:(NSString *)file andDevice:(NSString *)device {
+  return [self nexusArgsForFile:file andDevice:device];
 }
 
 -(NSArray *) galaxyArgsForFile:(NSString *)file andDevice:(NSString *)device {
