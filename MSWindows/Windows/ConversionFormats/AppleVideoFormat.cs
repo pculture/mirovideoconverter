@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mirosubs.Converter.Windows.Process;
+using System.Diagnostics;
 
 namespace Mirosubs.Converter.Windows.ConversionFormats {
     class AppleVideoFormat : ConversionFormat {
@@ -30,7 +31,13 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new VideoSize() { Width = 480, Height = 320 };
         private static readonly VideoSize IPAD_DIM =
             new VideoSize() { Width = 1024, Height = 768 };
+        private static readonly VideoSize APPLE_TV =
+            new VideoSize() { Width = 1280, Height = 720 };
+        private static readonly VideoSize APPLE_UNIVERSAL =
+            new VideoSize() { Width = 1280, Height = 720 };
 
+        public readonly static ConversionFormat appleUniversal =
+            new AppleVideoFormat("Apple Universal", "appleuniversal", APPLE_UNIVERSAL);
         public readonly static ConversionFormat iPhone =
             new AppleVideoFormat("iPhone", "iphone");
         public readonly static ConversionFormat iPad =
@@ -41,6 +48,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new AppleVideoFormat("iPod Nano", "ipodnano");
         public readonly static ConversionFormat iPodClassic =
             new AppleVideoFormat("iPod Classic", "ipodclassic");
+        public readonly static ConversionFormat appleTV =
+            new AppleVideoFormat("Apple TV", "appletv", APPLE_TV);
 
         // TODO: Some petit duplication has arisen between this class 
         // and AndroidVideoFormat. Maybe fix that.
@@ -57,8 +66,8 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
         public override string GetArguments(string inputFileName, string outputFileName) {
             string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
-                "-i \"{0}\" -acodec aac -ac 2 -strict experimental -ab 160k {1} -vcodec libx264 -vpre slow " +
-                "-vpre ipod640 -b 1200k -f mp4 -threads 0 \"{2}\"",
+                "-i \"{0}\" -acodec aac -ab 160k {1} -vcodec libx264 -vpre slow " +
+                "-vpre ipod640 -b:v 1200k -f mp4 -threads 0 -strict experimental \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
         public override IVideoConverter MakeConverter(string fileName) {

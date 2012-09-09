@@ -33,11 +33,15 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new VideoSize() { Width = 800, Height = 480 };
         private static readonly VideoSize DROID_DIM =
             new VideoSize() { Width = 854, Height = 480 };
+        private static readonly VideoSize GALAXY_TAB_DIM =
+            new VideoSize() { Width = 1024, Height = 800 };
+        private static readonly VideoSize XOOM_DIM =
+            new VideoSize() { Width = 1280, Height = 800 };
 
         public readonly static ConversionFormat G1 =
             new AndroidVideoFormat("G1", "g1");
         public readonly static ConversionFormat NexusOne =
-            new AndroidVideoFormat("Nexus One", "nexusone",
+            new AndroidVideoFormat("Nexus One / Droid Incredible", "nexusone",
                 NEXUS_DIM);
         public readonly static ConversionFormat MagicMyTouch =
             new AndroidVideoFormat("Magic / myTouch", "magic");
@@ -52,6 +56,10 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
             new AndroidVideoFormat("Cliq / DEXT", "cliq");
         public readonly static ConversionFormat BeholdII =
             new AndroidVideoFormat("Behold II", "behold");
+        public readonly static ConversionFormat GalaxyTab =
+            new AndroidVideoFormat("Galaxy Tab", "galaxytab", GALAXY_TAB_DIM);
+        public readonly static ConversionFormat Xoom =
+            new AndroidVideoFormat("Motorola Xoom", "xoom", XOOM_DIM);
 
         private VideoSize size;
 
@@ -68,7 +76,7 @@ namespace Mirosubs.Converter.Windows.ConversionFormats {
         public override string GetArguments(string inputFileName, string outputFileName) {
             string sizeArg = GetSizeArgument(inputFileName, this.size);
             return string.Format(
-                "-i \"{0}\" -y -acodec aac -ac 2 -strict experimental -ab 160k {1} -vcodec libx264 " +
+                "-i \"{0}\" -y -acodec aac -strict experimental -ab 160k {1} -vcodec libx264 " +
                 "-vpre slow -vpre ipod640 -crf 22 -f mp4 -threads 0 \"{2}\"",
                 inputFileName, sizeArg, outputFileName);
         }
